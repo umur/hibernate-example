@@ -1,0 +1,1 @@
+TRUNCATE TABLE reviews, movies, app_users RESTART IDENTITY CASCADE;

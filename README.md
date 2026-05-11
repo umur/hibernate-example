@@ -1,89 +1,44 @@
-# Hibernate & Spring Data JPA in Depth — Companion Code
+# Hibernate & Spring Data JPA in Depth
 
-Source code for all 28 chapters of **Hibernate & Spring Data JPA in Depth**.
+> Everything between `@Entity` and a production database, explained line by line.
 
-Each chapter is a self-contained Maven project built around a fictional streaming platform called **CineTrack**.
+Companion code for the book **Hibernate & Spring Data JPA in Depth** by [Umur Inan](https://umurinan.com).
 
----
+## About the book
+
+The persistence layer is where most Spring Boot applications quietly fail in production: N+1 queries, lost updates, unflushed sessions, mismatched cascades, Flyway migrations that lock for hours. This book walks through Hibernate's internals and Spring Data JPA's contract with the same example evolving across 28 chapters — **CineTrack**, a streaming platform's data layer — building up from a single entity to a sharded, partitioned, multi-tenant production schema.
+
+## Quick start
+
+```bash
+git clone https://github.com/umur/hibernate-example
+cd hibernate-example/chapter-01
+mvn spring-boot:run
+```
+
+## Layout
+
+One Maven project per chapter:
+
+- `chapter-01/ … chapter-28/` — self-contained Spring Boot projects, each representing the cumulative CineTrack data layer at the end of that chapter
+- Each directory has a `README.md` describing the chapter's focus and the Flyway migrations it adds
 
 ## Stack
 
-| Layer | Technology |
-|-------|-----------|
-| ORM | Hibernate 7 |
-| Data Access | Spring Data JPA 4 |
-| Framework | Spring Boot 4 |
-| Database | PostgreSQL 16 |
-| Migrations | Flyway |
-| Testing | JUnit 5 · Testcontainers · AssertJ |
-| Build | Maven 3.9+ |
+- Java 21 (LTS)
+- Spring Boot 4
+- Hibernate 7 / JPA 3.2
+- Spring Data JPA 4
+- PostgreSQL 16
+- Flyway for schema migrations
+- Testcontainers for integration tests
 
----
+## About the author
 
-## Prerequisites
+I'm Umur Inan. I write books about Spring Boot, Java, distributed systems, and the practices that make production reliable.
 
-- Java 21+
-- Maven 3.9+
-- Docker (for Testcontainers)
-
----
-
-## Running a Chapter
-
-```bash
-cd chapter-05
-mvn clean verify
-```
-
-Each project spins up a real PostgreSQL 16 container via Testcontainers — no in-memory database, no mocks.
-
----
-
-## Chapters
-
-| # | Topic |
-|---|-------|
-| 01 | First entity — mapping a `Movie` with Hibernate |
-| 02 | Persistence context, entity lifecycle, and flush modes |
-| 03 | Transactions, propagation, and event listeners |
-| 04 | Type mappings — JSONB, arrays, enums, and UUID generators |
-| 05 | Embeddables, formulas, and `@DynamicUpdate` |
-| 06 | Collections — `@OneToMany`, `@ManyToMany`, orphan removal |
-| 07 | Inheritance strategies — `SINGLE_TABLE`, `JOINED`, `TABLE_PER_CLASS` |
-| 08 | Natural IDs, composite keys, and UUID v7 |
-| 09 | Auditing, soft deletes, and projections |
-| 10 | JPQL, named queries, keyset pagination, and bulk operations |
-| 11 | Specifications and QueryDSL |
-| 12 | Projections — interfaces, DTOs, and tuple queries |
-| 13 | Optimistic locking and concurrent update handling |
-| 14 | Pessimistic locking and `SKIP LOCKED` queue pattern |
-| 15 | Fetch strategies — lazy, eager, `@BatchSize`, subselect |
-| 16 | N+1 problem — detection and solutions |
-| 17 | Batch inserts and `StatelessSession` |
-| 18 | Second-level cache with Caffeine |
-| 19 | Flyway migrations in production |
-| 20 | Multi-tenancy with schema-per-tenant |
-| 21 | Audit history with Hibernate Envers |
-| 22 | Filters, interceptors, and entity listeners |
-| 23 | HQL window functions and CTEs |
-| 24 | Custom Hibernate types |
-| 25 | Full-text search with Hibernate Search 8 |
-| 26 | Reactive data access with R2DBC |
-| 27 | Observability — Micrometer, statistics, and slow query logging |
-| 28 | Putting it all together |
-
----
-
-## Test Coverage
-
-Every chapter enforces **80% line coverage** via JaCoCo. Tests use real PostgreSQL 16 — no in-memory databases, no mocks for the persistence layer.
-
-```
-Total: 452 @Test methods across 76 test files
-```
-
----
+📚 **More writing and books → [umurinan.com](https://umurinan.com)**
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).

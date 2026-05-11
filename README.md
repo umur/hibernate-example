@@ -8,7 +8,7 @@ Companion code for the book **Hibernate & Spring Data JPA in Depth** by [Umur In
 
 ## About the book
 
-The persistence layer is where most Spring Boot applications quietly fail in production: N+1 queries, lost updates, unflushed sessions, mismatched cascades, Flyway migrations that lock for hours. This book walks through Hibernate's internals and Spring Data JPA's contract with the same example evolving across 28 chapters — **CineTrack**, a streaming platform's data layer — building up from a single entity to a sharded, partitioned, multi-tenant production schema.
+The persistence layer is where most Spring Boot applications quietly fail in production: N+1 queries, lost updates, unflushed sessions, mismatched cascades, Flyway migrations that lock for hours. This book walks through Hibernate's internals and Spring Data JPA's contract with the same example evolving across 28 chapters. **CineTrack**, a streaming platform's data layer. Building up from a single entity to a sharded, partitioned, multi-tenant production schema.
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ mvn spring-boot:run
 
 One Maven project per chapter:
 
-- `chapter-01/ … chapter-28/` — self-contained Spring Boot projects, each representing the cumulative CineTrack data layer at the end of that chapter
+- `chapter-01/ … chapter-28/`: self-contained Spring Boot projects, each representing the cumulative CineTrack data layer at the end of that chapter
 - Each directory has a `README.md` describing the chapter's focus and the Flyway migrations it adds
 
 ## Stack
@@ -49,4 +49,4 @@ I'm Umur Inan. I write books about Spring Boot, Java, distributed systems, and t
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

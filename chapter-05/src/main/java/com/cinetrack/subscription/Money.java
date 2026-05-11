@@ -8,7 +8,7 @@ import jakarta.persistence.Embeddable;
  *
  * <p>Declared as {@link Embeddable} so that Hibernate can inline its fields
  * ({@code amount_cents}, {@code currency}) directly into the owning entity's
- * table — no foreign key, no join, no extra table.
+ * table: no foreign key, no join, no extra table.
  *
  * <h2>Why store cents as an integer?</h2>
  * Floating-point arithmetic is unsuitable for money because IEEE 754 cannot
@@ -18,7 +18,7 @@ import jakarta.persistence.Embeddable;
  *
  * <h2>Record semantics</h2>
  * Java records are inherently immutable and provide {@code equals}, {@code hashCode},
- * and {@code toString} for free — ideal for value objects.  JPA/Hibernate supports
+ * and {@code toString} for free: ideal for value objects.  JPA/Hibernate supports
  * records as embeddables since Hibernate 6.2.
  */
 @Embeddable

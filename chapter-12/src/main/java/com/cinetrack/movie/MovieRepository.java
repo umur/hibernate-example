@@ -12,16 +12,16 @@ import java.util.List;
  * covered in Chapter 12.
  *
  * <ol>
- *   <li><strong>Closed interface projection</strong> — {@link #findByGenre(Genre)} returns
+ *   <li><strong>Closed interface projection</strong>: {@link #findByGenre(Genre)} returns
  *       a JDK proxy per movie; only the projected columns are included in the SQL
  *       {@code SELECT} list.</li>
- *   <li><strong>Open interface projection</strong> — {@link #findProjectedByGenre(Genre)}
+ *   <li><strong>Open interface projection</strong>: {@link #findProjectedByGenre(Genre)}
  *       returns a proxy whose {@code getGenreName()} is evaluated via SpEL
  *       against the full entity in memory.</li>
- *   <li><strong>Class-based DTO with constructor expression</strong> —
+ *   <li><strong>Class-based DTO with constructor expression</strong> : 
  *       {@link #findMovieStats()} uses {@code SELECT new …} JPQL to aggregate
  *       review data directly in the database.</li>
- *   <li><strong>Native query returning raw {@code Object[]}</strong> —
+ *   <li><strong>Native query returning raw {@code Object[]}</strong> : 
  *       {@link #findRawReviewData(Long)} shows the lowest-level escape hatch;
  *       the caller maps column positions manually (or via
  *       {@code @SqlResultSetMapping}).</li>
@@ -48,7 +48,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<MovieWithReviewerCount> findProjectedByGenre(Genre genre);
 
     // -------------------------------------------------------------------------
-    // 3. Class-based DTO — constructor expression
+    // 3. Class-based DTO: constructor expression
     //    AVG and COUNT are computed in one pass on the database side.
     //    Movies with no reviews get avgRating=0.0 and reviewCount=0 from
     //    the COALESCE handled implicitly by the AVG/COUNT over an empty set.
@@ -66,7 +66,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<MovieStats> findMovieStats();
 
     // -------------------------------------------------------------------------
-    // 4. Native query — raw Object[] result set
+    // 4. Native query: raw Object[] result set
     //    Column order: [0]=review.id, [1]=movie.title, [2]=user.username,
     //    [3]=review.rating. The caller (or a @SqlResultSetMapping) is
     //    responsible for casting each element.

@@ -19,11 +19,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <h3>Coverage</h3>
  * <ol>
- *   <li>Window function ({@code RANK() OVER}) — verifies query executes and
+ *   <li>Window function ({@code RANK() OVER}): verifies query executes and
  *       produces correct per-genre ranks.</li>
- *   <li>CTE + FILTER aggregate — verifies positive and negative review counts
+ *   <li>CTE + FILTER aggregate: verifies positive and negative review counts
  *       are correctly split.</li>
- *   <li>Custom {@code similarity()} function — verifies the pg_trgm function
+ *   <li>Custom {@code similarity()} function: verifies the pg_trgm function
  *       registered via {@link com.cinetrack.config.SimilarityFunctionContributor}
  *       is callable from HQL without error.</li>
  * </ol>
@@ -148,7 +148,7 @@ class HqlQueryTest extends AbstractIntegrationTest {
     @DisplayName("similarity(): custom pg_trgm function executes without error")
     @Transactional
     void similarityFunction_executesAndReturnsResults() {
-        // "Die Hard" fuzzy search — just verify no exception and result is a list
+        // "Die Hard" fuzzy search: just verify no exception and result is a list
         List<Movie> results = movieQueryService.findBySimilarTitle("Die");
 
         assertThat(results).isNotNull();
@@ -286,14 +286,14 @@ class HqlQueryTest extends AbstractIntegrationTest {
     @DisplayName("findBySimilarTitle: empty string does not throw and returns a non-null list")
     @Transactional
     void findBySimilarTitle_emptyString_returnsEmpty_orDoesNotThrow() {
-        // pg_trgm similarity against "" is a valid query — Hibernate must not throw.
+        // pg_trgm similarity against "" is a valid query: Hibernate must not throw.
         // The result may be empty or contain low-similarity matches; either is acceptable.
         List<Movie> results;
         try {
             results = movieQueryService.findBySimilarTitle("");
         } catch (Exception ex) {
             // If the database rejects an empty-string trigram query, that is also acceptable
-            // behaviour — we just ensure it is not a silent data-corruption.
+            // behaviour: we just ensure it is not a silent data-corruption.
             assertThat(ex).isInstanceOfAny(
                     org.hibernate.exception.GenericJDBCException.class,
                     jakarta.persistence.PersistenceException.class,
@@ -302,7 +302,7 @@ class HqlQueryTest extends AbstractIntegrationTest {
         }
         // Happy path: result must be non-null (never null from JPA)
         assertThat(results).isNotNull();
-        // Our three seeded movies have very low trigram similarity to "" — they must not appear
+        // Our three seeded movies have very low trigram similarity to "": they must not appear
         assertThat(results).extracting(Movie::getTitle)
                 .doesNotContain("Die Hard", "Generic Action", "The Shawshank Redemption");
     }
@@ -323,7 +323,7 @@ class HqlQueryTest extends AbstractIntegrationTest {
         MovieRankDto shawshank = results.stream()
                 .filter(r -> r.title().equals("The Shawshank Redemption")).findFirst().orElseThrow();
 
-        // Drama partition is independent — its rank starts at 1 regardless of Action ranks
+        // Drama partition is independent: its rank starts at 1 regardless of Action ranks
         assertThat(dieHard.genreRank()).isEqualTo(1L);
         assertThat(genericAction.genreRank()).isEqualTo(2L);
         assertThat(shawshank.genreRank()).isEqualTo(1L);
@@ -336,7 +336,7 @@ class HqlQueryTest extends AbstractIntegrationTest {
     @DisplayName("CTE + FILTER: movie above threshold with no reviews has negativeCount = 0")
     @Transactional
     void cte_movie_noReviews_zeroNegativeCount() {
-        // Add a top-rated movie with no reviews — it qualifies for the CTE (rating > 4.0)
+        // Add a top-rated movie with no reviews: it qualifies for the CTE (rating > 4.0)
         // but has no associated Review rows, so negativeCount must be 0.
         movieRepository.save(
                 Movie.builder()

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * Rules for @Embeddable composite keys:
  * <ul>
  *   <li>Must implement {@link Serializable}.</li>
- *   <li>Must override equals() and hashCode() based on all key fields —
+ *   <li>Must override equals() and hashCode() based on all key fields : 
  *       Lombok's @EqualsAndHashCode handles this correctly.</li>
  *   <li>Must have a no-arg constructor.</li>
  * </ul>

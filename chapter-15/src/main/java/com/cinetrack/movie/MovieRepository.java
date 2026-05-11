@@ -14,14 +14,14 @@ import java.util.Optional;
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     /**
-     * Explicit JOIN FETCH in JPQL — the gold standard for loading a collection
+     * Explicit JOIN FETCH in JPQL: the gold standard for loading a collection
      * alongside its parent in a single query.
      *
      * DISTINCT in JPQL tells Hibernate to de-duplicate the Movie objects in the
      * result list (the SQL result set has one row per movie+review pair, so
      * without DISTINCT you get one Movie instance per review).  Note that
      * "DISTINCT" here is a Hibernate instruction, not necessarily a SQL DISTINCT
-     * clause — Hibernate uses a pass-through ResultTransformer instead.
+     * clause: Hibernate uses a pass-through ResultTransformer instead.
      *
      * When to prefer this over @EntityGraph:
      * - You need a custom WHERE / ORDER BY that references the joined table.
@@ -42,7 +42,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findByRatingGreaterThan(BigDecimal rating);
 
     /**
-     * Plain finder — intentionally loads movies WITHOUT reviews.
+     * Plain finder: intentionally loads movies WITHOUT reviews.
      * Used in {@link com.cinetrack.movie.MovieService#getMovieSummaries()} to
      * demonstrate that lazy loading means "pay only for what you use".
      */

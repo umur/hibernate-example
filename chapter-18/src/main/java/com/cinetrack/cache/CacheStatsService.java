@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
  * <p>Hibernate's statistics subsystem tracks every cache interaction at the
  * region level.  The key counters are:
  * <ul>
- *   <li><b>hitCount</b> — the entry was found in the cache; no database query
+ *   <li><b>hitCount</b>: the entry was found in the cache; no database query
  *       was issued.</li>
- *   <li><b>missCount</b> — the entry was not in the cache; Hibernate fell
+ *   <li><b>missCount</b>: the entry was not in the cache; Hibernate fell
  *       through to the database and then put the loaded data into the cache.</li>
- *   <li><b>putCount</b> — a new entry was written to the cache (on first load
+ *   <li><b>putCount</b>: a new entry was written to the cache (on first load
  *       or after an update).</li>
  * </ul>
  *
@@ -61,7 +61,7 @@ public class CacheStatsService {
         Statistics stats = getStatistics();
         CacheRegionStatistics region = stats.getDomainDataRegionStatistics(regionName);
 
-        log.info("L2C region '{}' — hits: {}, misses: {}, puts: {}",
+        log.info("L2C region '{}': hits: {}, misses: {}, puts: {}",
                 regionName,
                 region.getHitCount(),
                 region.getMissCount(),
@@ -84,7 +84,7 @@ public class CacheStatsService {
         double hitRatio = (hits + misses) == 0 ? 0.0
                 : (double) hits / (hits + misses);
 
-        log.info("Global L2C — hits: {}, misses: {}, puts: {}, hit-ratio: {}%",
+        log.info("Global L2C: hits: {}, misses: {}, puts: {}, hit-ratio: {}%",
                 hits, misses, puts, String.format("%.1f", hitRatio * 100));
 
         return new L2cSummary(hits, misses, puts, hitRatio);

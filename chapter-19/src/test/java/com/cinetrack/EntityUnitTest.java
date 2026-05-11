@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Plain unit tests for the JPA entities. They verify that Lombok-generated
  * accessors and convenience constructors round-trip values correctly without
- * starting a Spring context — keeping coverage on entity classes high while
+ * starting a Spring context: keeping coverage on entity classes high while
  * adding negligible test runtime.
  */
 class EntityUnitTest {

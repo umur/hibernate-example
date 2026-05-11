@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
  * corresponding field is non-null. Because every {@link MovieSpecifications}
  * factory method is null-safe (returning a no-op conjunction for {@code null}
  * input), you can also write the composition unconditionally and get the same
- * result — but the explicit null-check makes the intent clearer for readers.</p>
+ * result: but the explicit null-check makes the intent clearer for readers.</p>
  *
  * <pre>{@code
- * // Equivalent: pass all specs unconditionally — nulls become conjunctions
+ * // Equivalent: pass all specs unconditionally: nulls become conjunctions
  * Specification<Movie> spec =
  *     hasGenre(req.genre())
  *         .and(releasedAfter(req.releaseAfter()))

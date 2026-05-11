@@ -14,7 +14,7 @@ import java.util.UUID;
  * delegates to the shared {@code EntityManager} (and therefore the shared
  * Hibernate {@code SessionFactory}).
  *
- * <p>Chapter 1 keeps this minimal — the focus is on understanding what
+ * <p>Chapter 1 keeps this minimal: the focus is on understanding what
  * Spring Boot sets up for you, not on query derivation or custom JPQL.
  */
 @Repository

@@ -17,7 +17,7 @@ import java.util.Optional;
  * statement and then resetting it to {@code 0} (wait forever) immediately after.
  * In several Hibernate 7 / PostgreSQL dialect combinations the reset is emitted
  * before the lock acquisition actually returns, with the practical effect that
- * a waiting acquirer never times out — the second thread blocks indefinitely.</p>
+ * a waiting acquirer never times out: the second thread blocks indefinitely.</p>
  *
  * <p>To produce a deterministic, dialect-independent timeout we step around the
  * dialect: first issue {@code SET LOCAL lock_timeout = 3000} on the active

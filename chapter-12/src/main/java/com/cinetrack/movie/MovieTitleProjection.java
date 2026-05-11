@@ -1,7 +1,7 @@
 package com.cinetrack.movie;
 
 /**
- * <strong>Closed interface projection</strong> — the simplest form of projection in
+ * <strong>Closed interface projection</strong>: the simplest form of projection in
  * Spring Data JPA.
  *
  * <h2>How it works</h2>
@@ -17,7 +17,7 @@ package com.cinetrack.movie;
  *
  * <h2>Contrast with open projections</h2>
  * <p>See {@link MovieWithReviewerCount} for an <em>open</em> projection that uses
- * a SpEL {@code @Value} expression — open projections must load the full entity
+ * a SpEL {@code @Value} expression: open projections must load the full entity
  * because the SpEL is evaluated in Java, not pushed into SQL.</p>
  */
 public interface MovieTitleProjection {

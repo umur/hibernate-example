@@ -59,11 +59,11 @@ public class HibernateStatisticsConfig {
      *
      * Metrics registered:
      * <ul>
-     *   <li>{@code hibernate.query.execution.count} — cumulative SQL query count</li>
-     *   <li>{@code hibernate.entity.load.count} — entity loads from DB</li>
-     *   <li>{@code hibernate.collection.load.count} — collection initialisations</li>
-     *   <li>{@code hibernate.second.level.cache.hit.count} — L2 cache hits</li>
-     *   <li>{@code hibernate.second.level.cache.miss.count} — L2 cache misses</li>
+     *   <li>{@code hibernate.query.execution.count}: cumulative SQL query count</li>
+     *   <li>{@code hibernate.entity.load.count}: entity loads from DB</li>
+     *   <li>{@code hibernate.collection.load.count}: collection initialisations</li>
+     *   <li>{@code hibernate.second.level.cache.hit.count}: L2 cache hits</li>
+     *   <li>{@code hibernate.second.level.cache.miss.count}: L2 cache misses</li>
      * </ul>
      *
      * These appear under {@code /actuator/metrics/hibernate.query.execution.count}

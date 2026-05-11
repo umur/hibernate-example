@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
  * in Chapter 17.
  *
  * <p>Each test inserts or reads 1 000 rows and asserts both correctness (row
- * count) and, where appropriate, a timing budget — not as a hard gate but as
+ * count) and, where appropriate, a timing budget: not as a hard gate but as
  * documentary evidence that the bulk path is meaningfully faster than row-by-row
  * processing would be.
  */
@@ -143,7 +143,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 4: batchImport — count and sample field verification
+    // Test 4: batchImport: count and sample field verification
     // -------------------------------------------------------------------------
 
     @Test
@@ -167,7 +167,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 5: statelessImport — count verification
+    // Test 5: statelessImport: count verification
     // -------------------------------------------------------------------------
 
     @Test
@@ -182,7 +182,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 6: streamAll — processes all records with AtomicLong counter
+    // Test 6: streamAll: processes all records with AtomicLong counter
     // -------------------------------------------------------------------------
 
     @Test
@@ -200,7 +200,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 7: streamAll — closed stream does not leak resources
+    // Test 7: streamAll: closed stream does not leak resources
     // -------------------------------------------------------------------------
 
     @Test
@@ -210,13 +210,13 @@ class BatchImportTest extends AbstractIntegrationTest {
 
         AtomicLong counter = new AtomicLong();
 
-        // streamAll uses try-with-resources internally — it always closes the
+        // streamAll uses try-with-resources internally: it always closes the
         // underlying cursor.  Processing only 3 rows then returning early must
         // not cause a resource leak or any exception.
         assertThatNoException().isThrownBy(() ->
                 batchService.streamAll(wl -> {
                     if (counter.incrementAndGet() >= 3) {
-                        // Stop processing after 3 — the service's try-with-resources
+                        // Stop processing after 3: the service's try-with-resources
                         // will close the stream when streamAll returns.
                         return;
                     }
@@ -285,7 +285,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 10: importBatch — empty list persists nothing
+    // Test 10: importBatch: empty list persists nothing
     // -------------------------------------------------------------------------
 
     @Test
@@ -300,7 +300,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 11: importStateless — empty list persists nothing
+    // Test 11: importStateless: empty list persists nothing
     // -------------------------------------------------------------------------
 
     @Test
@@ -315,7 +315,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 12: streamAll — empty table returns an empty stream
+    // Test 12: streamAll: empty table returns an empty stream
     // -------------------------------------------------------------------------
 
     @Test
@@ -334,7 +334,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 13: importBatch with BATCH_SIZE + 1 records — all persisted
+    // Test 13: importBatch with BATCH_SIZE + 1 records: all persisted
     // -------------------------------------------------------------------------
 
     @Test
@@ -357,7 +357,7 @@ class BatchImportTest extends AbstractIntegrationTest {
     // -------------------------------------------------------------------------
 
     private List<WatchLog> buildWatchLogs(int count) {
-        // We need managed AppUser / Movie references — load them in a transaction
+        // We need managed AppUser / Movie references: load them in a transaction
         AppUser user  = txTemplate.execute(s -> appUserRepository.findById(userId).orElseThrow());
         Movie   movie = txTemplate.execute(s -> movieRepository.findById(movieId).orElseThrow());
 

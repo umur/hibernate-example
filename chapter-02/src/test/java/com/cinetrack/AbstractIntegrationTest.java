@@ -10,8 +10,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * <p>A single PostgreSQL 16 container is started once and shared across all
  * test classes that extend this base (JVM-wide singleton via the {@code static}
  * field). {@link DynamicPropertySource} rewires the Spring datasource before
- * the application context is created, so every bean — including Flyway and the
- * JPA {@code EntityManagerFactory} — connects to the container.
+ * the application context is created, so every bean: including Flyway and the
+ * JPA {@code EntityManagerFactory}: connects to the container.
  */
 public abstract class AbstractIntegrationTest {
 

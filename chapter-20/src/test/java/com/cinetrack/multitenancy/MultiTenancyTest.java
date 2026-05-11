@@ -252,11 +252,11 @@ class MultiTenancyTest extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // New tests — spec additions
+    // New tests: spec additions
     // -----------------------------------------------------------------------
 
     @Test
-    @DisplayName("TenantContext: set then overwrite — get() returns the last value")
+    @DisplayName("TenantContext: set then overwrite: get() returns the last value")
     void tenantContext_set_overwrite_usesLastValue() {
         TenantContext.set("tenant_a");
         // Overwrite without clearing first
@@ -272,7 +272,7 @@ class MultiTenancyTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @DisplayName("TenantContext: never set on a fresh thread — get() returns null")
+    @DisplayName("TenantContext: never set on a fresh thread: get() returns null")
     void tenantContext_neverSet_getReturnsNull() {
         // Run in a fresh thread so the ThreadLocal has never been set in this thread's lifetime
         String[] result = new String[1];

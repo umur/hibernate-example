@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Wraps the real DataSource with datasource-proxy so that:
  * <ul>
- *   <li>Every query is counted — useful for asserting exact query counts in tests
+ *   <li>Every query is counted: useful for asserting exact query counts in tests
  *       via {@code QueryCountHolder}.</li>
  *   <li>Slow queries (> 100 ms) are logged at WARN level via SLF4J.</li>
  * </ul>
@@ -36,7 +36,7 @@ public class DataSourceProxyConfig {
                 .logSlowQueryBySlf4j(100, TimeUnit.MILLISECONDS, SLF4JLogLevel.WARN, "SlowQueryLogger")
                 // Enable per-thread query counting (used by QueryCountHolder in tests)
                 .countQuery()
-                // Also log all queries at DEBUG level — helpful during development
+                // Also log all queries at DEBUG level: helpful during development
                 .logQueryBySlf4j(SLF4JLogLevel.DEBUG, "QueryLogger")
                 .build();
     }

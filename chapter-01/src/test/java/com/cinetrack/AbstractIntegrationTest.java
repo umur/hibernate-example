@@ -15,9 +15,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
  *
  * <p>This approach gives you:
  * <ul>
- *   <li>A real database — no H2 dialect quirks</li>
+ *   <li>A real database: no H2 dialect quirks</li>
  *   <li>Flyway migrations running against exactly the same engine as production</li>
- *   <li>Isolation — the container is thrown away after the test run</li>
+ *   <li>Isolation: the container is thrown away after the test run</li>
  * </ul>
  */
 public abstract class AbstractIntegrationTest {

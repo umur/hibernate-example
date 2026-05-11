@@ -28,8 +28,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * <p>These tests exercise real transaction boundaries against a live PostgreSQL
  * database. Using {@code @SpringBootTest} (rather than a slice) ensures that
- * Spring's full transaction infrastructure — AOP proxies, event multicaster,
- * {@code TransactionSynchronizationManager} — is active.
+ * Spring's full transaction infrastructure: AOP proxies, event multicaster,
+ * {@code TransactionSynchronizationManager}: is active.
  *
  * <h2>Test isolation</h2>
  * <p>Each test method relies on {@code @BeforeEach} to insert the prerequisite
@@ -100,11 +100,11 @@ class ReviewServiceTest extends AbstractIntegrationTest {
         ).isInstanceOf(RuntimeException.class)
          .hasMessageContaining("outer transaction rolls back");
 
-        // Review must NOT exist — the outer transaction rolled back.
+        // Review must NOT exist: the outer transaction rolled back.
         List<Review> reviews = reviewRepository.findAll();
         assertThat(reviews).isEmpty();
 
-        // Audit log MUST exist — it committed in REQUIRES_NEW before the rollback.
+        // Audit log MUST exist: it committed in REQUIRES_NEW before the rollback.
         List<AuditLog> auditLogs = auditLogRepository
                 .findByEntityTypeAndEntityId("Review", anyReviewId());
         // We can't know the review id (it rolled back), so query all audit logs.
@@ -159,7 +159,7 @@ class ReviewServiceTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 4: addReviewWithAudit — success path (rollbackAfterAudit = false)
+    // Test 4: addReviewWithAudit: success path (rollbackAfterAudit = false)
     // -------------------------------------------------------------------------
 
     @Test

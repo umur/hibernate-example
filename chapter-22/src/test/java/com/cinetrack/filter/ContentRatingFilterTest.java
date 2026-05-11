@@ -20,8 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Integration tests for:
  * <ol>
- *   <li>Content-rating {@code @Filter} — unfiltered vs child-safe vs adult session</li>
- *   <li>Soft-delete via {@code @SQLDelete} + {@code @Where} — entity invisible after
+ *   <li>Content-rating {@code @Filter}: unfiltered vs child-safe vs adult session</li>
+ *   <li>Soft-delete via {@code @SQLDelete} + {@code @Where}: entity invisible after
  *       {@code delete()}, but underlying row still present</li>
  * </ol>
  */
@@ -104,13 +104,13 @@ class ContentRatingFilterTest extends AbstractIntegrationTest {
         movieRepository.delete(movie);
         movieRepository.flush();
 
-        // JPA query honours @Where(clause = "deleted = false") — movie gone
+        // JPA query honours @Where(clause = "deleted = false"): movie gone
         assertThat(movieRepository.findById(movieId)).isEmpty();
         assertThat(movieRepository.findAll())
                 .extracting(Movie::getTitle)
                 .doesNotContain("Family Fun");
 
-        // Raw JDBC bypasses @Where — row is still there, just flagged
+        // Raw JDBC bypasses @Where: row is still there, just flagged
         Boolean deletedFlag = jdbcTemplate.queryForObject(
                 "SELECT deleted FROM movies WHERE id = ?", Boolean.class, movieId);
         assertThat(deletedFlag).isTrue();
@@ -222,7 +222,7 @@ class ContentRatingFilterTest extends AbstractIntegrationTest {
     void reviewNormalizationListener_whitespaceContent_trimmed() {
         Movie movie = movieRepository.findAll().getFirst();
 
-        // reviewer is nullable in the schema — no FK constraint violation
+        // reviewer is nullable in the schema: no FK constraint violation
         Review review = Review.builder()
                 .movie(movie)
                 .content("   Great film!   ")
@@ -239,7 +239,7 @@ class ContentRatingFilterTest extends AbstractIntegrationTest {
     // -----------------------------------------------------------------------
 
     @Test
-    @DisplayName("AuditInterceptor.onSave: saving a Movie does not throw — interceptor fires on insert")
+    @DisplayName("AuditInterceptor.onSave: saving a Movie does not throw: interceptor fires on insert")
     @Transactional
     void auditInterceptor_onInsert_doesNotThrow() {
         // The AuditInterceptor is registered as a factory-scoped interceptor.
@@ -258,7 +258,7 @@ class ContentRatingFilterTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @DisplayName("AuditInterceptor.onFlushDirty: updating a Movie does not throw — interceptor fires on update")
+    @DisplayName("AuditInterceptor.onFlushDirty: updating a Movie does not throw: interceptor fires on update")
     @Transactional
     void auditInterceptor_onUpdate_doesNotThrow() {
         Movie movie = Movie.builder()
@@ -269,7 +269,7 @@ class ContentRatingFilterTest extends AbstractIntegrationTest {
         movie = movieRepository.save(movie);
         movieRepository.flush();
 
-        // Mutate the managed entity — dirty check will trigger onFlushDirty
+        // Mutate the managed entity: dirty check will trigger onFlushDirty
         final Long movieId = movie.getId();
         org.assertj.core.api.ThrowableAssert.ThrowingCallable update = () -> {
             Movie managed = movieRepository.findById(movieId).orElseThrow();
@@ -305,9 +305,9 @@ class ContentRatingFilterTest extends AbstractIntegrationTest {
     void filter_disabled_afterBeingEnabled_returnsAllRecords() {
         // findForUser(false) enables the contentRatingFilter inside its own transaction/session.
         // Each service call opens its own session, so the second call starts with a fresh,
-        // filter-free session — equivalent to "disabling" the filter for the new call.
+        // filter-free session: equivalent to "disabling" the filter for the new call.
         //
-        // setUp() saved: G, PG_13, R, NC_17 — 4 movies total.
+        // setUp() saved: G, PG_13, R, NC_17: 4 movies total.
         // findForUser(false) with maxRating=PG_13 returns only G and PG_13 → 2 movies.
         // findAllUnfiltered() returns all 4.
 
@@ -317,7 +317,7 @@ class ContentRatingFilterTest extends AbstractIntegrationTest {
         List<Movie> allResults = contentRatingService.findAllUnfiltered();
         int allCount = allResults.size();
 
-        // Unfiltered count must be strictly greater — proves the filter was only active
+        // Unfiltered count must be strictly greater: proves the filter was only active
         // in the first session, not in the second (no leak between sessions).
         assertThat(allCount).isGreaterThan(filteredCount);
         assertThat(filteredCount).isEqualTo(2);

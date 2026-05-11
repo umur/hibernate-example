@@ -12,14 +12,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * of all composite-key classes. No Spring context, no database.
  *
  * <p>Because {@code WatchlistEntryId} is a Java {@code record}, the compiler
- * generates structural equals/hashCode automatically — these tests confirm the
+ * generates structural equals/hashCode automatically: these tests confirm the
  * contract is upheld and will catch any accidental refactoring to a plain class.
  */
-@DisplayName("WatchlistEntryId — equals/hashCode contract")
+@DisplayName("WatchlistEntryId: equals/hashCode contract")
 class WatchlistEntryIdTest {
 
     @Test
-    @DisplayName("equals — same watchlistId and movieId returns true")
+    @DisplayName("equals: same watchlistId and movieId returns true")
     void equals_sameIds_isTrue() {
         WatchlistEntryId a = WatchlistEntryId.of(1L, 10L);
         WatchlistEntryId b = WatchlistEntryId.of(1L, 10L);
@@ -27,7 +27,7 @@ class WatchlistEntryIdTest {
     }
 
     @Test
-    @DisplayName("equals — different watchlistId returns false")
+    @DisplayName("equals: different watchlistId returns false")
     void equals_differentWatchlistId_isFalse() {
         WatchlistEntryId a = WatchlistEntryId.of(1L, 10L);
         WatchlistEntryId b = WatchlistEntryId.of(2L, 10L);
@@ -35,7 +35,7 @@ class WatchlistEntryIdTest {
     }
 
     @Test
-    @DisplayName("equals — different movieId returns false")
+    @DisplayName("equals: different movieId returns false")
     void equals_differentMovieId_isFalse() {
         WatchlistEntryId a = WatchlistEntryId.of(1L, 10L);
         WatchlistEntryId b = WatchlistEntryId.of(1L, 99L);
@@ -43,7 +43,7 @@ class WatchlistEntryIdTest {
     }
 
     @Test
-    @DisplayName("hashCode — equal objects have identical hash codes")
+    @DisplayName("hashCode: equal objects have identical hash codes")
     void hashCode_consistentWithEquals() {
         WatchlistEntryId a = WatchlistEntryId.of(5L, 42L);
         WatchlistEntryId b = WatchlistEntryId.of(5L, 42L);
@@ -52,7 +52,7 @@ class WatchlistEntryIdTest {
     }
 
     @Test
-    @DisplayName("hashCode — unequal objects typically have different hash codes")
+    @DisplayName("hashCode: unequal objects typically have different hash codes")
     void hashCode_differentForDifferentIds() {
         WatchlistEntryId a = WatchlistEntryId.of(1L, 1L);
         WatchlistEntryId b = WatchlistEntryId.of(2L, 3L);

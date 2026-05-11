@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * Integration tests for Chapter 14 — Pessimistic Locking.
+ * Integration tests for Chapter 14: Pessimistic Locking.
  *
  * Covers:
  * <ul>
@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *   <li>Consistent lock ordering: upgradeBoth avoids deadlock</li>
  * </ul>
  */
-@DisplayName("Chapter 14 — Pessimistic Locking")
+@DisplayName("Chapter 14: Pessimistic Locking")
 class SkipLockedTest extends AbstractIntegrationTest {
 
     @Autowired NotificationRepository notificationRepository;
@@ -62,11 +62,11 @@ class SkipLockedTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 1: SKIP LOCKED — disjoint claim sets
+    // Test 1: SKIP LOCKED: disjoint claim sets
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("SKIP LOCKED — two concurrent workers claim disjoint notification batches")
+    @DisplayName("SKIP LOCKED: two concurrent workers claim disjoint notification batches")
     void skipLocked_workersClaimDisjointSets() throws Exception {
         // Insert 20 PENDING notifications
         tx.executeWithoutResult(s -> {
@@ -131,7 +131,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("Lock timeout — PessimisticLockException when waiting exceeds configured timeout")
+    @DisplayName("Lock timeout: PessimisticLockException when waiting exceeds configured timeout")
     void lockTimeout_throwsWhenRowIsLocked() throws Exception {
         AppUser user = tx.execute(s -> userRepository.save(new AppUser("charlie", "charlie@example.com")));
         Long subId = tx.execute(s ->
@@ -154,7 +154,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
 
         lockAcquired.await(); // wait until thread-1 actually holds the lock
 
-        // Thread-2: tries to acquire the same lock — should time out
+        // Thread-2: tries to acquire the same lock: should time out
         assertThatThrownBy(() ->
             tx.executeWithoutResult(s ->
                 subscriptionRepository.findByIdForUpdate(subId).orElseThrow()
@@ -176,7 +176,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("Consistent lock ordering — upgradeBoth completes without deadlock")
+    @DisplayName("Consistent lock ordering: upgradeBoth completes without deadlock")
     void upgradeBoth_noDeadlock() throws Exception {
         AppUser user = tx.execute(s -> userRepository.save(new AppUser("dana", "dana@example.com")));
 
@@ -220,7 +220,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("processBatch — transitions notifications from PENDING to DONE")
+    @DisplayName("processBatch: transitions notifications from PENDING to DONE")
     void processBatch_marksNotificationsDone() {
         tx.executeWithoutResult(s -> {
             List<PendingNotification> notifications = IntStream.rangeClosed(1, 5)
@@ -244,7 +244,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("SKIP LOCKED — returns empty list when no PENDING notifications exist")
+    @DisplayName("SKIP LOCKED: returns empty list when no PENDING notifications exist")
     void skipLocked_withNoAvailableWork_returnsEmpty() {
         // Table is already empty from @BeforeEach teardown
         List<PendingNotification> result = tx.execute(s ->
@@ -261,9 +261,9 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("processBatch — empty table returns 0 and throws no exception")
+    @DisplayName("processBatch: empty table returns 0 and throws no exception")
     void processBatch_emptyInput_noException() {
-        // No notifications inserted — worker must handle empty batch gracefully
+        // No notifications inserted: worker must handle empty batch gracefully
         int processed = notificationWorker.processBatch(10);
 
         assertThat(processed)
@@ -282,7 +282,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("Notification lifecycle — PENDING to PROCESSING to DONE for 3 notifications")
+    @DisplayName("Notification lifecycle: PENDING to PROCESSING to DONE for 3 notifications")
     void notificationStatus_transitions_PENDING_to_PROCESSING_to_DONE() {
         tx.executeWithoutResult(s -> {
             List<PendingNotification> notifications = IntStream.rangeClosed(1, 3)
@@ -318,7 +318,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("SKIP LOCKED — 3 concurrent workers claim 10 notifications with no duplicates")
+    @DisplayName("SKIP LOCKED: 3 concurrent workers claim 10 notifications with no duplicates")
     void concurrentWorkers_10notifications_noDoubleClaim() throws Exception {
         tx.executeWithoutResult(s -> {
             List<PendingNotification> notifications = IntStream.rangeClosed(1, 10)
@@ -365,11 +365,11 @@ class SkipLockedTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 9: lock timeout — short timeout throws PessimisticLockingFailureException
+    // Test 9: lock timeout: short timeout throws PessimisticLockingFailureException
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("Lock timeout — second acquirer throws when lock is held beyond timeout")
+    @DisplayName("Lock timeout: second acquirer throws when lock is held beyond timeout")
     void lockTimeout_exceeded_throwsException() throws Exception {
         AppUser user = tx.execute(s ->
                 userRepository.save(new AppUser("eve", "eve@example.com"))
@@ -394,7 +394,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
 
         lockAcquired.await();
 
-        // Thread 2: tries to acquire the same lock — the repository's 3000 ms timeout
+        // Thread 2: tries to acquire the same lock: the repository's 3000 ms timeout
         // will expire because thread 1 holds the lock indefinitely until we release it.
         assertThatThrownBy(() ->
                 tx.executeWithoutResult(s ->
@@ -417,7 +417,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("upgrade_singleSubscription_tierChanges — calling upgrade() changes the tier of a single subscription")
+    @DisplayName("upgrade_singleSubscription_tierChanges: calling upgrade() changes the tier of a single subscription")
     void upgrade_singleSubscription_tierChanges() {
         // Arrange
         AppUser user = tx.execute(s ->
@@ -430,7 +430,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
         // Act
         upgradeService.upgrade(subId, SubscriptionTier.STANDARD);
 
-        // Assert — reload and verify tier changed
+        // Assert: reload and verify tier changed
         tx.execute(s -> {
             Subscription reloaded = subscriptionRepository.findById(subId).orElseThrow();
             assertThat(reloaded.getTier())
@@ -445,19 +445,19 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("processBatch_zero_batchSize_returnsZero — requesting 0 items claims nothing")
+    @DisplayName("processBatch_zero_batchSize_returnsZero: requesting 0 items claims nothing")
     void processBatch_zero_batchSize_returnsZero() {
-        // Arrange — insert 3 PENDING notifications to make sure the table is non-empty
+        // Arrange: insert 3 PENDING notifications to make sure the table is non-empty
         tx.executeWithoutResult(s -> {
             IntStream.rangeClosed(1, 3)
                     .forEach(i -> notificationRepository.save(
                             new PendingNotification((long) i, "Zero-batch message " + i)));
         });
 
-        // Act — request a batch of 0
+        // Act: request a batch of 0
         int processed = notificationWorker.processBatch(0);
 
-        // Assert — nothing claimed
+        // Assert: nothing claimed
         assertThat(processed)
                 .as("processBatch(0) must claim and process zero notifications")
                 .isEqualTo(0);
@@ -475,19 +475,19 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("processBatch_largerThanAvailable_claimsAll — batch larger than queue size claims all available")
+    @DisplayName("processBatch_largerThanAvailable_claimsAll: batch larger than queue size claims all available")
     void processBatch_largerThanAvailable_claimsAll() {
-        // Arrange — insert exactly 5 PENDING notifications
+        // Arrange: insert exactly 5 PENDING notifications
         tx.executeWithoutResult(s -> {
             IntStream.rangeClosed(1, 5)
                     .forEach(i -> notificationRepository.save(
                             new PendingNotification((long) i, "Large-batch message " + i)));
         });
 
-        // Act — request 100 (far more than available)
+        // Act: request 100 (far more than available)
         int processed = notificationWorker.processBatch(100);
 
-        // Assert — all 5 were claimed and processed
+        // Assert: all 5 were claimed and processed
         assertThat(processed)
                 .as("processBatch(100) must claim all 5 available notifications")
                 .isEqualTo(5);
@@ -505,7 +505,7 @@ class SkipLockedTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("upgradeBoth — sequential calls with same tiers produce correct final state")
+    @DisplayName("upgradeBoth: sequential calls with same tiers produce correct final state")
     void upgradeBoth_idempotent_onSameSubscriptionPair() throws Exception {
         AppUser user = tx.execute(s ->
                 userRepository.save(new AppUser("frank", "frank@example.com"))

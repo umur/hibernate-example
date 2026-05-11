@@ -15,8 +15,8 @@ import java.util.List;
  *
  * <h2>Association summary</h2>
  * <ul>
- *   <li>{@code @ManyToOne owner} — the user who owns this watchlist.</li>
- *   <li>{@code @OneToMany entries} — the intermediate entities connecting
+ *   <li>{@code @ManyToOne owner}: the user who owns this watchlist.</li>
+ *   <li>{@code @OneToMany entries}: the intermediate entities connecting
  *       movies to this watchlist.  {@code cascade = ALL} and
  *       {@code orphanRemoval = true} give the watchlist full lifecycle
  *       control over its entries.</li>
@@ -97,7 +97,7 @@ public class Watchlist {
     /**
      * Removes an entry from the watchlist.
      * Because {@code orphanRemoval = true}, Hibernate DELETEs the row at the
-     * next flush — no explicit repository call needed.
+     * next flush: no explicit repository call needed.
      *
      * @param entry the entry to remove; must belong to this watchlist
      */

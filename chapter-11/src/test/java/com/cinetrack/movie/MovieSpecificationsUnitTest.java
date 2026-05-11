@@ -10,13 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Pure unit tests for {@link MovieSpecifications} factory methods.
  *
  * <p>No Spring context, no database. Each test verifies only that the factory
- * returns a non-null {@link Specification} regardless of the input value — the
+ * returns a non-null {@link Specification} regardless of the input value: the
  * null-safety contract documented on the class.</p>
  */
 class MovieSpecificationsUnitTest {
 
     // -------------------------------------------------------------------------
-    // Null inputs — must return a non-null conjunction (no-op predicate)
+    // Null inputs: must return a non-null conjunction (no-op predicate)
     // -------------------------------------------------------------------------
 
     @Test
@@ -55,7 +55,7 @@ class MovieSpecificationsUnitTest {
     }
 
     // -------------------------------------------------------------------------
-    // Non-null inputs — factory must still return a non-null Specification
+    // Non-null inputs: factory must still return a non-null Specification
     // -------------------------------------------------------------------------
 
     @Test
@@ -87,7 +87,7 @@ class MovieSpecificationsUnitTest {
     }
 
     // -------------------------------------------------------------------------
-    // Composition — chaining two non-null specs must not throw
+    // Composition: chaining two non-null specs must not throw
     // -------------------------------------------------------------------------
 
     @Test

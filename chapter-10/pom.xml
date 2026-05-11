@@ -8,14 +8,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.5</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
     <groupId>com.cinetrack</groupId>
     <artifactId>chapter-10-jpql-queries</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Chapter 10 — JPQL, Native Queries, and @Query</name>
+    <name>Chapter 10: JPQL, Native Queries, and @Query</name>
     <description>Companion code for Chapter 10 of Hibernate &amp; Spring Data JPA in Depth</description>
 
     <properties>

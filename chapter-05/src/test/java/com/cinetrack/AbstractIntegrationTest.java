@@ -14,7 +14,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * <p>A single PostgreSQL 16 container is shared across all test classes in the
  * JVM via the {@code static} field. {@link DynamicPropertySource} overrides the
  * datasource URL/credentials before Spring builds the application context, so
- * Flyway runs against the real Postgres engine — required for {@code @Formula}
+ * Flyway runs against the real Postgres engine: required for {@code @Formula}
  * sub-SELECTs and the {@code EmailAddress} converter round-trip.
  */
 @DataJpaTest

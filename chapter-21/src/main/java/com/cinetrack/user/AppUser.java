@@ -10,7 +10,7 @@ import lombok.Setter;
  *
  * <p>User records are managed through a separate identity system in production;
  * change history for user accounts is tracked there rather than in Envers.
- * This also demonstrates that {@code @Audited} is opt-in per entity — its
+ * This also demonstrates that {@code @Audited} is opt-in per entity: its
  * absence does not prevent other entities from being audited.
  */
 @Entity

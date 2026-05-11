@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.Instant;
 
 /**
- * Application user. Uses a database SEQUENCE for the surrogate key —
+ * Application user. Uses a database SEQUENCE for the surrogate key : 
  * contrasting with {@link com.cinetrack.movie.Movie} which uses a UUID.
  * Long/sequence PKs are appropriate for high-insert tables where the
  * clustered index behaviour of monotone keys is desirable.

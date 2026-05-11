@@ -14,14 +14,14 @@ import java.util.List;
  *
  * <p>The {@code reviews} collection is LAZY by default. Without any fetch
  * strategy adjustment, iterating over a list of movies and accessing their
- * reviews triggers one extra SELECT per movie — the classic N+1 problem.
+ * reviews triggers one extra SELECT per movie: the classic N+1 problem.
  *
  * <p>Two complementary mitigations are shown in this chapter:
  * <ol>
- *   <li>{@code @BatchSize(size=25)} — Hibernate issues SELECT … WHERE movie_id IN (?,?,…)
+ *   <li>{@code @BatchSize(size=25)}: Hibernate issues SELECT … WHERE movie_id IN (?,?,…)
  *       batches instead of individual per-row queries. This is a low-effort fix
  *       that keeps lazy loading but reduces round-trips from N to N/25.</li>
- *   <li>JOIN FETCH in {@link MovieRepository#findAllWithReviews()} — a single
+ *   <li>JOIN FETCH in {@link MovieRepository#findAllWithReviews()}: a single
  *       query loads both sides at once, eliminating extra queries entirely.</li>
  * </ol>
  */
@@ -53,7 +53,7 @@ public class Movie {
     private Instant createdAt = Instant.now();
 
     /**
-     * LAZY collection — the source of N+1 when accessed naively.
+     * LAZY collection: the source of N+1 when accessed naively.
      *
      * <p>{@code @BatchSize(size=25)} reduces the number of extra queries from N
      * down to ceil(N/25) when the collection IS accessed outside a JOIN FETCH.

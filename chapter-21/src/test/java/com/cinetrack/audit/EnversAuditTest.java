@@ -253,7 +253,7 @@ class EnversAuditTest extends AbstractIntegrationTest {
 
     @Test
     @WithMockUser(username = "alice")
-    @DisplayName("createdAt is immutable — unchanged after an update")
+    @DisplayName("createdAt is immutable: unchanged after an update")
     void createdAt_immutable_afterUpdate() {
         Long movieId = createMovie("1917", "WAR");
 
@@ -294,7 +294,7 @@ class EnversAuditTest extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // New tests — spec additions
+    // New tests: spec additions
     // -----------------------------------------------------------------------
 
     @Test
@@ -303,7 +303,7 @@ class EnversAuditTest extends AbstractIntegrationTest {
     void getMovieAtRevision_invalidRevisionNumber_returnsNull() {
         Long movieId = createMovie("The Prestige", "THRILLER");
 
-        // Revision 999_999 almost certainly does not exist — must return null, not throw
+        // Revision 999_999 almost certainly does not exist: must return null, not throw
         Movie result = txTemplate.execute(s ->
                 movieAuditService.getMovieAtRevision(movieId, 999_999));
 
@@ -347,13 +347,13 @@ class EnversAuditTest extends AbstractIntegrationTest {
                 .isNotNull();
 
         // The listener always populates username from the security context.
-        // In the test harness (no real HTTP request) ipAddress will be null —
+        // In the test harness (no real HTTP request) ipAddress will be null : 
         // but the listener must not throw, and username must be set.
         assertThat(revision.getUsername())
                 .as("CineTrackRevisionListener must have set the username field")
                 .isEqualTo("auditUser");
 
-        // ipAddress is null in a non-web context — that is the expected, safe behaviour.
+        // ipAddress is null in a non-web context: that is the expected, safe behaviour.
         // We assert nothing about its value; just confirm the revision was stored.
     }
 
@@ -368,7 +368,7 @@ class EnversAuditTest extends AbstractIntegrationTest {
                 movieAuditService.getRevisionNumbers(movieId));
 
         assertThat(revNums).isNotEmpty();
-        // Examine the latest revision — it was written under @WithMockUser("testuser")
+        // Examine the latest revision: it was written under @WithMockUser("testuser")
         int lastRevNum = revNums.getLast().intValue();
 
         CineTrackRevision revision = txTemplate.execute(s -> {

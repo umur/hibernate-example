@@ -13,8 +13,8 @@ import java.time.Instant;
  *
  * <h2>Why an intermediate entity instead of a plain {@code @ManyToMany}?</h2>
  * A direct {@code @ManyToMany} produces a bare join table with only the two FK
- * columns.  As soon as the business needs extra data on the relationship —
- * here {@code addedAt} and {@code notes} — you must promote the join table to
+ * columns.  As soon as the business needs extra data on the relationship : 
+ * here {@code addedAt} and {@code notes}: you must promote the join table to
  * a full entity.  Doing so from the start avoids a painful migration later.
  *
  * <h2>{@code @EmbeddedId} with {@code @MapsId}</h2>
@@ -23,13 +23,13 @@ import java.time.Instant;
  * {@code @ManyToOne} association tells Hibernate which component of the
  * embedded ID to populate from the FK value:
  * <ul>
- *   <li>{@code @MapsId("watchlistId")} — copies {@code watchlist.id}
+ *   <li>{@code @MapsId("watchlistId")}: copies {@code watchlist.id}
  *       into {@code id.watchlistId}</li>
- *   <li>{@code @MapsId("movieId")} — copies {@code movie.id}
+ *   <li>{@code @MapsId("movieId")}: copies {@code movie.id}
  *       into {@code id.movieId}</li>
  * </ul>
  * This means the application never needs to construct or set the
- * {@link WatchlistEntryId} manually — Hibernate derives it from the associated
+ * {@link WatchlistEntryId} manually: Hibernate derives it from the associated
  * entities before the INSERT.
  */
 @Entity
@@ -45,7 +45,7 @@ public class WatchlistEntry {
     /**
      * Owning side FK that also drives the {@code watchlistId} PK component.
      * {@code insertable=false, updatable=false} is required when a column is
-     * managed both by the embedded ID and by a {@code @ManyToOne} — without
+     * managed both by the embedded ID and by a {@code @ManyToOne}: without
      * these flags Hibernate would attempt to write the column twice and throw.
      */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

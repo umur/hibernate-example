@@ -9,7 +9,7 @@ import org.hibernate.annotations.NaturalId;
 /**
  * Movie uses a database sequence generator with an allocationSize of 50,
  * meaning Hibernate fetches one sequence value and then hands out IDs
- * 1..50 in memory before hitting the DB again — 50x fewer round-trips
+ * 1..50 in memory before hitting the DB again: 50x fewer round-trips
  * than IDENTITY generation.
  *
  * The imdbId is declared as a @NaturalId: a business identifier that is

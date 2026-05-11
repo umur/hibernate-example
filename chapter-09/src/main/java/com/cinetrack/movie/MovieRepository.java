@@ -18,14 +18,14 @@ import static org.hibernate.jpa.HibernateHints.HINT_FETCH_SIZE;
  * MovieRepository demonstrates four advanced Spring Data JPA capabilities:
  *
  * <ol>
- *   <li><b>Interface projections</b> — findByGenre returns lightweight proxies,
+ *   <li><b>Interface projections</b>: findByGenre returns lightweight proxies,
  *       not full Movie entities.</li>
- *   <li><b>Streaming with @QueryHints</b> — streamAllByGenre uses a server-side
+ *   <li><b>Streaming with @QueryHints</b>: streamAllByGenre uses a server-side
  *       cursor (fetch size 50) to process large result sets without loading
  *       everything into the heap.</li>
- *   <li><b>Pessimistic locking</b> — findByIdForUpdate issues SELECT … FOR UPDATE,
+ *   <li><b>Pessimistic locking</b>: findByIdForUpdate issues SELECT … FOR UPDATE,
  *       preventing concurrent readers from acquiring a conflicting lock.</li>
- *   <li><b>Scrolling API</b> — findFirst20By uses keyset or offset pagination
+ *   <li><b>Scrolling API</b>: findFirst20By uses keyset or offset pagination
  *       introduced in Spring Data 3, avoiding the COUNT(*) overhead of
  *       traditional Page<T> queries.</li>
  * </ol>

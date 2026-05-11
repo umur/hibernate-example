@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * Service showcasing two distinct paths through Hibernate 7's SQM query pipeline.
  *
- * <h2>Path 1 — HQL with named parameters ({@link #findByGenreAndMinRating})</h2>
+ * <h2>Path 1: HQL with named parameters ({@link #findByGenreAndMinRating})</h2>
  * The HQL string is parsed into an SQM tree once at first execution (then cached).
  * Named parameters ({@code :genre}, {@code :minRating}) are resolved against the
- * SQM parameter nodes — Hibernate knows their Java types from the entity mapping and
+ * SQM parameter nodes: Hibernate knows their Java types from the entity mapping and
  * selects the correct {@code JdbcType} binder automatically.
  *
- * <h2>Path 2 — Array function query ({@link #findMoviesByStreamingPlatform})</h2>
+ * <h2>Path 2: Array function query ({@link #findMoviesByStreamingPlatform})</h2>
  * Hibernate 7 registers {@code array_contains(array, element)} as an SQM function.
  * It translates to PostgreSQL's {@code array_contains(streaming_platforms, ?)},
  * keeping the query portable across dialects that support arrays.
@@ -33,7 +33,7 @@ public class MovieQueryService {
     /**
      * Finds movies matching the given genre with a rating at or above {@code minRating}.
      *
-     * <p>The HQL uses named parameters bound by name, not position — this is the
+     * <p>The HQL uses named parameters bound by name, not position: this is the
      * recommended style in Hibernate 7 because it survives query refactoring.
      *
      * @param genre     the genre to filter by
@@ -62,7 +62,7 @@ public class MovieQueryService {
      *
      * <p>Hibernate 7 translates the HQL function call {@code array_contains()}
      * into the PostgreSQL-native form. The function is registered by
-     * {@code PostgreSQLDialect} and participates fully in SQM type resolution —
+     * {@code PostgreSQLDialect} and participates fully in SQM type resolution : 
      * the second argument is bound as {@code VARCHAR} matching the array's element type.
      *
      * <p>Equivalent SQL:

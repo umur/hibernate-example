@@ -10,12 +10,12 @@ import org.hibernate.annotations.Immutable;
 import java.time.Instant;
 
 /**
- * Watch log entry — an append-only audit record that is never updated.
+ * Watch log entry: an append-only audit record that is never updated.
  *
  * <h2>{@code @Immutable}</h2>
  * Declares this entity as read-only from Hibernate's perspective:
  * <ul>
- *   <li>Hibernate skips dirty-checking for {@code WatchLog} instances — no
+ *   <li>Hibernate skips dirty-checking for {@code WatchLog} instances: no
  *       {@code UPDATE} SQL is ever generated, even if fields are mutated in
  *       Java (the changes are silently discarded at flush time).</li>
  *   <li>The entity can still be deleted; {@code @Immutable} only suppresses
@@ -25,7 +25,7 @@ import java.time.Instant;
  * </ul>
  *
  * <p>This is the right tool for event/audit tables where the business rule is
- * "write once, never change" — it communicates intent clearly in the code and
+ * "write once, never change": it communicates intent clearly in the code and
  * eliminates unnecessary work during Hibernate's flush cycle.
  */
 @Entity

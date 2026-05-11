@@ -8,11 +8,11 @@ import lombok.Setter;
 /**
  * User profile entity sharing its primary key with {@link AppUser}.
  *
- * <h2>Shared-PK {@code @OneToOne} — owning side</h2>
+ * <h2>Shared-PK {@code @OneToOne}: owning side</h2>
  * {@code @MapsId} is the key annotation here. It tells Hibernate:
  * <ol>
  *   <li>Use the PK value from the associated {@link AppUser} as this entity's
- *       own PK — there is no separate sequence or identity column.</li>
+ *       own PK: there is no separate sequence or identity column.</li>
  *   <li>The {@code id} field is both the {@code @Id} and the FK to
  *       {@code app_users(id)}.</li>
  * </ol>
@@ -26,13 +26,13 @@ import lombok.Setter;
  *   <li>Eliminates a surrogate FK column on the profile table.</li>
  *   <li>Makes it impossible to have an orphan profile row (DB constraint).</li>
  *   <li>Allows loading the profile with a PK lookup using the already-known
- *       user ID — no extra index needed.</li>
+ *       user ID: no extra index needed.</li>
  * </ul>
  *
  * <h2>Fetch strategy</h2>
  * The association from {@code AppUser} to {@code UserProfile} is declared
  * {@code fetch = LAZY}. Loading a {@code UserProfile} by ID is efficient
- * because its PK equals the user's PK — a single {@code SELECT} on
+ * because its PK equals the user's PK: a single {@code SELECT} on
  * {@code user_profiles} by primary key.
  */
 @Entity

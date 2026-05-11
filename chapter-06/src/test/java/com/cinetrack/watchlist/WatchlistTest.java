@@ -22,12 +22,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * <p>Covers:
  * <ul>
- *   <li>addEntry — entry persists via cascade and is queryable</li>
- *   <li>removeEntry + orphanRemoval — entry is deleted from the DB</li>
+ *   <li>addEntry: entry persists via cascade and is queryable</li>
+ *   <li>removeEntry + orphanRemoval: entry is deleted from the DB</li>
  *   <li>Bidirectional sync helper consistency</li>
  * </ul>
  */
-@DisplayName("Watchlist — association behaviour")
+@DisplayName("Watchlist: association behaviour")
 class WatchlistTest extends AbstractIntegrationTest {
 
     @Autowired private WatchlistRepository watchlistRepository;
@@ -65,7 +65,7 @@ class WatchlistTest extends AbstractIntegrationTest {
         wl.addEntry(movie1, "Oscar winner");
         watchlistRepository.saveAndFlush(wl);
 
-        // THEN — evict and reload to verify DB state
+        // THEN: evict and reload to verify DB state
         em.detach(wl);
         Watchlist loaded = watchlistRepository.findByIdWithEntries(wl.getId()).orElseThrow();
         assertThat(loaded.getEntries()).hasSize(1);
@@ -93,33 +93,33 @@ class WatchlistTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("removeEntry via orphanRemoval deletes the entry row from the DB")
     void removeEntryDeletesFromDb() {
-        // GIVEN — watchlist with two entries
+        // GIVEN: watchlist with two entries
         Watchlist wl = new Watchlist(user, "Favourites");
         watchlistRepository.saveAndFlush(wl);
         wl.addEntry(movie1);
         wl.addEntry(movie2);
         watchlistRepository.saveAndFlush(wl);
 
-        // WHEN — remove one entry
+        // WHEN: remove one entry
         WatchlistEntry toRemove = wl.getEntries().stream()
                 .filter(e -> e.getMovie().getId().equals(movie1.getId()))
                 .findFirst().orElseThrow();
         wl.removeEntry(toRemove);
         watchlistRepository.saveAndFlush(wl);
 
-        // THEN — only movie2 entry survives
+        // THEN: only movie2 entry survives
         em.detach(wl);
         Watchlist loaded = watchlistRepository.findByIdWithEntries(wl.getId()).orElseThrow();
         assertThat(loaded.getEntries()).hasSize(1);
         assertThat(loaded.getEntries().get(0).getMovie().getId()).isEqualTo(movie2.getId());
     }
 
-    // ── orphanRemoval — clear all ─────────────────────────────────────────────
+    // ── orphanRemoval: clear all ─────────────────────────────────────────────
 
     @Test
     @DisplayName("removeAllEntries_viaOrphanRemoval_deletesAllFromDb: clearing entries removes all DB rows")
     void removeAllEntries_viaOrphanRemoval_deletesAllFromDb() {
-        // GIVEN — watchlist with three entries
+        // GIVEN: watchlist with three entries
         Movie movie3 = movieRepository.saveAndFlush(new Movie("Dunkirk", Genre.DRAMA));
         Watchlist wl = new Watchlist(user, "Clear Test");
         watchlistRepository.saveAndFlush(wl);
@@ -128,11 +128,11 @@ class WatchlistTest extends AbstractIntegrationTest {
         wl.addEntry(movie3);
         watchlistRepository.saveAndFlush(wl);
 
-        // WHEN — clear the entire collection
+        // WHEN: clear the entire collection
         wl.getEntries().clear();
         watchlistRepository.saveAndFlush(wl);
 
-        // THEN — no entry rows survive in the DB
+        // THEN: no entry rows survive in the DB
         em.detach(wl);
         Watchlist reloaded = watchlistRepository.findByIdWithEntries(wl.getId()).orElseThrow();
         assertThat(reloaded.getEntries()).isEmpty();
@@ -141,16 +141,16 @@ class WatchlistTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("cascade_persist_savesEntries: entries persisted via cascade without explicit save")
     void cascade_persist_savesEntries() {
-        // GIVEN — create watchlist and add entries before the first saveAndFlush
+        // GIVEN: create watchlist and add entries before the first saveAndFlush
         Watchlist wl = new Watchlist(user, "Cascade Test");
         watchlistRepository.saveAndFlush(wl);  // must persist watchlist first so id is assigned
         wl.addEntry(movie1, "via cascade");
         wl.addEntry(movie2);
 
-        // WHEN — save only the watchlist; entries cascade automatically
+        // WHEN: save only the watchlist; entries cascade automatically
         watchlistRepository.saveAndFlush(wl);
 
-        // THEN — both entries are in the DB without any explicit entry repository call
+        // THEN: both entries are in the DB without any explicit entry repository call
         em.detach(wl);
         Watchlist loaded = watchlistRepository.findByIdWithEntries(wl.getId()).orElseThrow();
         assertThat(loaded.getEntries()).hasSize(2);
@@ -165,11 +165,11 @@ class WatchlistTest extends AbstractIntegrationTest {
         wl.addEntry(movie1, "check title");
         watchlistRepository.saveAndFlush(wl);
 
-        // WHEN — evict and reload with entries + movie fetch
+        // WHEN: evict and reload with entries + movie fetch
         em.detach(wl);
         Watchlist loaded = watchlistRepository.findByIdWithEntries(wl.getId()).orElseThrow();
 
-        // THEN — movie title is accessible without LazyInitializationException
+        // THEN: movie title is accessible without LazyInitializationException
         assertThat(loaded.getEntries()).hasSize(1);
         assertThat(loaded.getEntries().get(0).getMovie().getTitle()).isEqualTo("Interstellar");
     }
@@ -199,7 +199,7 @@ class WatchlistTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("watchlist_delete_cascadesToEntries: deleting the watchlist removes its entries from the DB")
     void watchlist_delete_cascadesToEntries() {
-        // GIVEN — watchlist with two entries
+        // GIVEN: watchlist with two entries
         Watchlist wl = new Watchlist(user, "To Delete");
         watchlistRepository.saveAndFlush(wl);
         wl.addEntry(movie1);
@@ -213,11 +213,11 @@ class WatchlistTest extends AbstractIntegrationTest {
                 Integer.class, wlId);
         assertThat(entryCountBefore).isEqualTo(2);
 
-        // WHEN — delete the watchlist; CascadeType.ALL propagates the DELETE
+        // WHEN: delete the watchlist; CascadeType.ALL propagates the DELETE
         watchlistRepository.delete(wl);
         watchlistRepository.flush();
 
-        // THEN — all entries must be gone from the DB
+        // THEN: all entries must be gone from the DB
         Integer entryCountAfter = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM watchlist_entries WHERE watchlist_id = ?",
                 Integer.class, wlId);
@@ -229,13 +229,13 @@ class WatchlistTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("watchlistEntry_duplicateKey_throwsException: adding the same movie twice violates the composite PK")
     void watchlistEntry_duplicateKey_throwsException() {
-        // GIVEN — a watchlist with movie1 already added
+        // GIVEN: a watchlist with movie1 already added
         Watchlist wl = new Watchlist(user, "Duplicate Test");
         watchlistRepository.saveAndFlush(wl);
         wl.addEntry(movie1);
         watchlistRepository.saveAndFlush(wl);
 
-        // WHEN / THEN — inserting a duplicate (watchlist_id, movie_id) must fail
+        // WHEN / THEN: inserting a duplicate (watchlist_id, movie_id) must fail
         assertThatThrownBy(() ->
                 jdbcTemplate.update(
                         "INSERT INTO watchlist_entries (watchlist_id, movie_id) VALUES (?, ?)",

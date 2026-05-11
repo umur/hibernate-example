@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.time.Instant;
 
 /**
- * Application user — reviewer and watcher.
+ * Application user: reviewer and watcher.
  */
 @Entity
 @Table(name = "app_users")

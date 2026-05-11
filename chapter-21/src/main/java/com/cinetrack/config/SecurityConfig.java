@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * Minimal security configuration for the auditing demo.
  *
  * <p>HTTP Basic authentication is enabled so that tests can inject a principal
- * via {@code @WithMockUser}. All endpoints are permitted — authentication is
+ * via {@code @WithMockUser}. All endpoints are permitted: authentication is
  * only needed to populate the auditor in {@link JpaAuditingConfig}.
  */
 @Configuration

@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.*;
  *
  * <p>These tests confirm that Hibernate correctly inlines the two fields of
  * {@code Money} ({@code amount_cents}, {@code currency}) as plain columns on the
- * {@code subscriptions} table — no intermediate join table is created.
+ * {@code subscriptions} table: no intermediate join table is created.
  */
-@DisplayName("Money — @Embeddable round-trip")
+@DisplayName("Money: @Embeddable round-trip")
 class MoneyEmbeddableTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -71,7 +71,7 @@ class MoneyEmbeddableTest extends AbstractIntegrationTest {
     @DisplayName("Money embedded fields map to separate columns, not a joined table")
     void moneyMapsToSeparateColumns() {
         // Verify via native SQL that amount_cents and currency exist directly
-        // on the subscriptions table — i.e. no extra join table was created.
+        // on the subscriptions table: i.e. no extra join table was created.
         AppUser user = savedUser("dave");
         Money price = Money.of(999, "EUR");
         Subscription sub = new Subscription(user, SubscriptionTier.PREMIUM, price, Instant.now());

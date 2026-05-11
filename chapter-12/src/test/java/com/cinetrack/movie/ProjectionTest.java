@@ -25,11 +25,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <h2>Test structure</h2>
  * <ul>
- *   <li>Closed interface projection — verifies only the projected columns are
+ *   <li>Closed interface projection: verifies only the projected columns are
  *       accessible and the proxy correctly delegates to entity data.</li>
- *   <li>Open interface projection (SpEL) — verifies the derived expression is
+ *   <li>Open interface projection (SpEL): verifies the derived expression is
  *       evaluated correctly at runtime.</li>
- *   <li>Class-based DTO (constructor expression) — verifies aggregates are
+ *   <li>Class-based DTO (constructor expression): verifies aggregates are
  *       computed correctly and the record fields are populated.</li>
  * </ul>
  *
@@ -111,7 +111,7 @@ class ProjectionTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // 3. Class-based DTO — constructor expression with aggregation
+    // 3. Class-based DTO: constructor expression with aggregation
     // -------------------------------------------------------------------------
 
     @Test
@@ -197,7 +197,7 @@ class ProjectionTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("findMovieStats() returns count=0 and avgRating=0.0 for a movie with no reviews")
     void movieStats_noReviews_avgRatingIsZeroOrNull() {
-        // Arrange — persist a brand-new movie with no reviews
+        // Arrange: persist a brand-new movie with no reviews
         Movie fresh = new Movie("No Reviews At All", Genre.ANIMATION, 2024, new BigDecimal("7.5"));
         em.persistAndFlush(fresh);
         em.clear();
@@ -210,7 +210,7 @@ class ProjectionTest extends AbstractIntegrationTest {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("'No Reviews At All' not found in stats"));
 
-        // Assert — COALESCE(AVG(r.rating), 0.0) and COUNT over empty set = 0
+        // Assert: COALESCE(AVG(r.rating), 0.0) and COUNT over empty set = 0
         assertThat(result.reviewCount()).isZero();
         assertThat(result.avgRating()).isEqualTo(0.0);
     }
@@ -222,7 +222,7 @@ class ProjectionTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("findMovieStats() returns distinct stats for each of three newly saved movies")
     void movieStats_threeMovies_eachHasOwnStats() {
-        // Arrange — three movies with 1, 2, and 3 reviews respectively
+        // Arrange: three movies with 1, 2, and 3 reviews respectively
         AppUser reviewer = em.persistAndFlush(new AppUser("stats_user", "statsuser@example.com"));
 
         Movie m1 = em.persistAndFlush(new Movie("Stats Movie A", Genre.COMEDY, 2020, new BigDecimal("6.0")));
@@ -247,7 +247,7 @@ class ProjectionTest extends AbstractIntegrationTest {
         // Act
         List<MovieStats> stats = movieRepository.findMovieStats();
 
-        // Assert — each movie has its own entry with the correct count
+        // Assert: each movie has its own entry with the correct count
         MovieStats s1 = stats.stream().filter(s -> s.title().equals("Stats Movie A")).findFirst().orElseThrow();
         MovieStats s2 = stats.stream().filter(s -> s.title().equals("Stats Movie B")).findFirst().orElseThrow();
         MovieStats s3 = stats.stream().filter(s -> s.title().equals("Stats Movie C")).findFirst().orElseThrow();
@@ -258,22 +258,22 @@ class ProjectionTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // 8. Open projection SpEL — getGenreName() returns the enum constant name
+    // 8. Open projection SpEL: getGenreName() returns the enum constant name
     // -------------------------------------------------------------------------
 
     @Test
     @DisplayName("Open projection getGenreName() returns the genre enum name via SpEL")
     void openProjection_spelExpression_returnsCorrectString() {
-        // Arrange — save a movie with a known genre
+        // Arrange: save a movie with a known genre
         Movie movie = new Movie("SpEL Test Film", Genre.THRILLER, 2021, new BigDecimal("7.2"));
         em.persistAndFlush(movie);
         em.clear();
 
-        // Act — findProjectedByGenre uses the open projection (MovieWithReviewerCount)
+        // Act: findProjectedByGenre uses the open projection (MovieWithReviewerCount)
         List<MovieWithReviewerCount> projections =
                 movieRepository.findProjectedByGenre(Genre.THRILLER);
 
-        // Assert — must contain our movie and the SpEL expression must yield "THRILLER"
+        // Assert: must contain our movie and the SpEL expression must yield "THRILLER"
         assertThat(projections).isNotEmpty();
         MovieWithReviewerCount result = projections.stream()
                 .filter(p -> p.getTitle().equals("SpEL Test Film"))

@@ -64,7 +64,7 @@ public class MovieQuerydslService {
 
     /**
      * Returns movies matching an optional genre and a minimum rating.
-     * Either parameter may be {@code null} to skip that filter — QueryDSL
+     * Either parameter may be {@code null} to skip that filter: QueryDSL
      * silently ignores {@code null} predicates passed to {@code where()}.
      */
     public List<Movie> findByGenreAndMinRating(Genre genre, Double minRating) {

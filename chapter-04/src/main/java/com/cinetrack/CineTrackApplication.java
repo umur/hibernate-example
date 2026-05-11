@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Chapter 4 — Hibernate 7 Internals.
+ * Chapter 4: Hibernate 7 Internals.
  *
  * <p>This module demonstrates:
  * <ul>

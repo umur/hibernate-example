@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <p>The test class extends {@link AbstractIntegrationTest} to get a real
  * PostgreSQL container. {@code @DataJpaTest} bootstraps only the JPA slice, so
- * {@link com.cinetrack.movie.MovieService} is not in the context — we exercise
+ * {@link com.cinetrack.movie.MovieService} is not in the context: we exercise
  * the repository and specifications directly, which is the right unit of testing
  * for persistence logic.</p>
  */
@@ -129,8 +129,8 @@ class MovieSpecificationTest extends AbstractIntegrationTest {
 
         List<Movie> results = movieRepository.findAll(spec);
 
-        // Mad Max Fury Road: ACTION, 2015, 8.1 — matches all three
-        // The Dark Knight: ACTION, 2008 — does not pass releasedAfter(2010)
+        // Mad Max Fury Road: ACTION, 2015, 8.1: matches all three
+        // The Dark Knight: ACTION, 2008: does not pass releasedAfter(2010)
         assertThat(results).hasSize(1);
         assertThat(results.get(0).getTitle()).isEqualTo("Mad Max Fury Road");
     }
@@ -175,9 +175,9 @@ class MovieSpecificationTest extends AbstractIntegrationTest {
     @DisplayName("Three AND-combined specs return only the movie that satisfies all three")
     void threeSpecs_combined_AND_narrowsResults() {
         // From seed data:
-        //   Inception       — SCIENCE_FICTION, 2010, 8.8  → matches genre + year + rating
-        //   Interstellar    — SCIENCE_FICTION, 2014, 8.6  → matches genre + year, rating just below 8.7
-        //   The Dark Knight — ACTION, 2008, 9.0            → wrong genre, wrong year
+        //   Inception      : SCIENCE_FICTION, 2010, 8.8  → matches genre + year + rating
+        //   Interstellar   : SCIENCE_FICTION, 2014, 8.6  → matches genre + year, rating just below 8.7
+        //   The Dark Knight: ACTION, 2008, 9.0            → wrong genre, wrong year
         Specification<Movie> spec = MovieSpecifications.hasGenre(Genre.SCIENCE_FICTION)
                 .and(MovieSpecifications.releasedAfter(2009))
                 .and(MovieSpecifications.ratingAtLeast(8.7));
@@ -190,7 +190,7 @@ class MovieSpecificationTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // All-null specs act as a no-op — every saved movie is returned
+    // All-null specs act as a no-op: every saved movie is returned
     // -------------------------------------------------------------------------
 
     @Test
@@ -209,7 +209,7 @@ class MovieSpecificationTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Boundary value — ratingAtLeast is inclusive
+    // Boundary value: ratingAtLeast is inclusive
     // -------------------------------------------------------------------------
 
     @Test
@@ -225,12 +225,12 @@ class MovieSpecificationTest extends AbstractIntegrationTest {
         assertThat(results).isNotEmpty();
         assertThat(results).allSatisfy(m ->
                 assertThat(m.getRating().doubleValue()).isGreaterThanOrEqualTo(8.6));
-        // Interstellar (8.6) must be present — boundary is inclusive
+        // Interstellar (8.6) must be present: boundary is inclusive
         assertThat(results).extracting(Movie::getTitle).contains("Interstellar");
     }
 
     // -------------------------------------------------------------------------
-    // Pagination — first page has exactly N items when enough data exists
+    // Pagination: first page has exactly N items when enough data exists
     // -------------------------------------------------------------------------
 
     @Test

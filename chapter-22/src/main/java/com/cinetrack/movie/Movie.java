@@ -9,8 +9,8 @@ import java.time.Instant;
 /**
  * Movie entity demonstrating:
  * <ul>
- *   <li>{@code @FilterDef} / {@code @Filter} — session-scoped content-rating gate</li>
- *   <li>{@code @SQLDelete} + {@code @Where} — transparent soft-delete</li>
+ *   <li>{@code @FilterDef} / {@code @Filter}: session-scoped content-rating gate</li>
+ *   <li>{@code @SQLDelete} + {@code @Where}: transparent soft-delete</li>
  * </ul>
  */
 @Entity

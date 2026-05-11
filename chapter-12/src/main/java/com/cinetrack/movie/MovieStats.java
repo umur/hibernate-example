@@ -13,7 +13,7 @@ package com.cinetrack.movie;
  * }</pre>
  *
  * <p>Hibernate matches the constructor by the exact sequence and types of the
- * arguments. Unlike interface projections, no proxy is involved — {@code MovieStats}
+ * arguments. Unlike interface projections, no proxy is involved: {@code MovieStats}
  * is a plain Java record and can be used in pure unit tests without a
  * Spring context.</p>
  *
@@ -21,7 +21,7 @@ package com.cinetrack.movie;
  * <ul>
  *   <li>Supports aggregation functions ({@code AVG}, {@code COUNT}, etc.).</li>
  *   <li>Works with native queries if you use {@code @SqlResultSetMapping}.</li>
- *   <li>No lazy-loading surprises — all fields are populated at query time.</li>
+ *   <li>No lazy-loading surprises: all fields are populated at query time.</li>
  *   <li>Requires an exact constructor match; adding a field is a coordinated change.</li>
  * </ul>
  */

@@ -11,7 +11,7 @@ import java.util.List;
  * Service layer demonstrating correct fetch-strategy patterns and the pitfalls
  * they prevent.
  *
- * <h2>LazyInitializationException — the most common Hibernate mistake</h2>
+ * <h2>LazyInitializationException: the most common Hibernate mistake</h2>
  * If you load a {@link Movie} in one transaction and then try to access
  * {@code movie.getReviews()} after the transaction (and therefore the Session)
  * has closed, Hibernate throws {@code LazyInitializationException} because the
@@ -20,11 +20,11 @@ import java.util.List;
  * <p>The fix is always the same: ensure the collection is initialised while the
  * Session is still open.  The two canonical approaches are:
  * <ol>
- *   <li>JOIN FETCH / @EntityGraph — fetch the collection in the initial query</li>
+ *   <li>JOIN FETCH / @EntityGraph: fetch the collection in the initial query</li>
  *   <li>Keep the caller inside a {@code @Transactional} boundary long enough to
  *       initialise what it needs</li>
  * </ol>
- * Never use {@code FetchType.EAGER} on a collection as a band-aid — it causes
+ * Never use {@code FetchType.EAGER} on a collection as a band-aid: it causes
  * Cartesian products for multi-level associations and loads data you may never use.
  */
 @Slf4j
@@ -66,7 +66,7 @@ public class MovieService {
      * This is the correct pattern for summary/list views.  Because reviews are
      * LAZY, Hibernate does not issue any secondary SELECT.  The returned movie
      * objects must not have their {@code reviews} collection accessed after this
-     * method returns (Session is closed) — doing so would throw
+     * method returns (Session is closed): doing so would throw
      * {@code LazyInitializationException}.
      *
      * <p>If the caller needs reviews too, use {@link #getMovieWithReviews} or

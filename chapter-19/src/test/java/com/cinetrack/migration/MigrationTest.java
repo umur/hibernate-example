@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * <p>Key assertions:
  * <ul>
- *   <li>Spring context loads successfully — this alone proves migrations pass
+ *   <li>Spring context loads successfully: this alone proves migrations pass
  *       and validation succeeds.</li>
  *   <li>The repeatable migration {@code R__movie_search_function.sql} created
  *       the {@code search_movies} function.</li>
@@ -224,7 +224,7 @@ class MigrationTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("R__movie_search_function: search_movies() returns results without error")
     void repeatable_migration_function_callable() {
-        // Call with an empty / non-matching query — function must not throw
+        // Call with an empty / non-matching query: function must not throw
         java.util.List<java.util.Map<String, Object>> results = jdbc.queryForList(
                 "SELECT * FROM search_movies(?)", "nonexistentxyz");
 
@@ -235,7 +235,7 @@ class MigrationTest extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // New tests — Chapter 15 spec
+    // New tests: Chapter 15 spec
     // -----------------------------------------------------------------------
 
     @Test
@@ -299,7 +299,7 @@ class MigrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @DisplayName("app_users.email has a unique constraint — duplicate insert raises DataAccessException")
+    @DisplayName("app_users.email has a unique constraint: duplicate insert raises DataAccessException")
     void appUser_emailColumn_isUnique() {
         // Insert the first user
         jdbc.update(

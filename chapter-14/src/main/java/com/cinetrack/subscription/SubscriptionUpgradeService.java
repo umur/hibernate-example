@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A subscription upgrade typically involves an external payment step.  If we
  * used optimistic locking, a concurrent upgrade attempt could succeed at the
  * database layer while the payment for the "losing" transaction is still
- * in-flight — leaving us with a paid-but-not-upgraded or double-upgraded state.
+ * in-flight: leaving us with a paid-but-not-upgraded or double-upgraded state.
  * Holding a {@code SELECT ... FOR UPDATE} lock for the duration of the
  * transaction prevents any concurrent modification, making the payment +
  * status-change atomic from the database's perspective.
@@ -83,7 +83,7 @@ public class SubscriptionUpgradeService {
                 .findByIdForUpdate(secondId)
                 .orElseThrow(() -> new IllegalArgumentException("Subscription not found: " + secondId));
 
-        // Assign tiers — map back from sorted IDs to original arguments
+        // Assign tiers: map back from sorted IDs to original arguments
         if (firstId == idA) {
             first.setTier(tierA);
             second.setTier(tierB);

@@ -12,11 +12,11 @@ import java.util.Map;
  * Movie entity demonstrating two additional custom-type patterns:
  *
  * <ol>
- *   <li><strong>PostgreSQL text array via {@code @Array}</strong> — the {@code tags}
+ *   <li><strong>PostgreSQL text array via {@code @Array}</strong>: the {@code tags}
  *       field maps to a {@code TEXT[]} column.  Hibernate's {@code @Array} annotation
  *       (introduced in Hibernate 6.2) generates a proper array binding rather than
  *       serialising to a comma-separated string.</li>
- *   <li><strong>JSONB {@code Map} via {@code @JdbcTypeCode}</strong> — same pattern
+ *   <li><strong>JSONB {@code Map} via {@code @JdbcTypeCode}</strong>: same pattern
  *       as {@link com.cinetrack.subscription.Subscription#metadata}: arbitrary
  *       key-value pairs stored in a JSONB column and deserialised to
  *       {@code Map<String,Object>} by Jackson.</li>

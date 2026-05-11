@@ -21,9 +21,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for the {@code @Immutable} {@link WatchLog} entity.
  *
  * <p>Verifies that mutations to a managed {@code WatchLog} instance are silently
- * discarded at flush time — Hibernate never generates an UPDATE for immutable entities.
+ * discarded at flush time: Hibernate never generates an UPDATE for immutable entities.
  */
-@DisplayName("WatchLog — @Immutable entity behaviour")
+@DisplayName("WatchLog: @Immutable entity behaviour")
 class WatchLogImmutableTest extends AbstractIntegrationTest {
 
     @Autowired private WatchLogRepository watchLogRepository;
@@ -44,7 +44,7 @@ class WatchLogImmutableTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("Mutating a managed WatchLog and flushing does not update the DB row")
     void mutationWithinTransactionIsDiscarded() {
-        // GIVEN — persist a WatchLog
+        // GIVEN: persist a WatchLog
         AppUser user  = savedUser("jack");
         Movie   movie = savedMovie("Oldboy");
         Instant originalTime = Instant.parse("2024-01-01T10:00:00Z");
@@ -53,12 +53,12 @@ class WatchLogImmutableTest extends AbstractIntegrationTest {
         watchLogRepository.saveAndFlush(log);
         Long logId = log.getId();
 
-        // WHEN — mutate the managed instance and flush
+        // WHEN: mutate the managed instance and flush
         // @Immutable means Hibernate will silently skip the UPDATE
         setDuration(log, 999);  // attempt to change duration via reflection
         watchLogRepository.flush();
 
-        // THEN — the DB row still has the original duration
+        // THEN: the DB row still has the original duration
         Integer durationInDb = jdbcTemplate.queryForObject(
                 "SELECT duration_minutes FROM watch_logs WHERE id = ?",
                 Integer.class, logId);
@@ -67,7 +67,7 @@ class WatchLogImmutableTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @DisplayName("WatchLog can be persisted and reloaded — basic round-trip works")
+    @DisplayName("WatchLog can be persisted and reloaded: basic round-trip works")
     void watchLogPersistsAndReloads() {
         AppUser user  = savedUser("kate");
         Movie   movie = savedMovie("Moonlight");
@@ -94,11 +94,11 @@ class WatchLogImmutableTest extends AbstractIntegrationTest {
         watchLogRepository.saveAndFlush(log);
         Long logId = log.getId();
 
-        // Mutate in-memory and flush — @Immutable suppresses the UPDATE
+        // Mutate in-memory and flush: @Immutable suppresses the UPDATE
         setDuration(log, 1);
         watchLogRepository.flush();
 
-        // Verify via raw JDBC — the persisted value must still be 132
+        // Verify via raw JDBC: the persisted value must still be 132
         Integer dbValue = jdbcTemplate.queryForObject(
                 "SELECT duration_minutes FROM watch_logs WHERE id = ?",
                 Integer.class, logId);

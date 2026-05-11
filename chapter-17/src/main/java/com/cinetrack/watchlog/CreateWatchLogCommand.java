@@ -7,7 +7,7 @@ import java.time.Instant;
  * {@link WatchLog} row.
  *
  * <p>Used by {@link WatchLogBatchService#importStateless} so that callers do
- * not need to resolve entity references before calling the service — the
+ * not need to resolve entity references before calling the service: the
  * service handles the lookup internally, keeping the ID fetches inside the
  * StatelessSession for maximum throughput.
  *

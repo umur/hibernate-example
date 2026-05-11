@@ -22,7 +22,7 @@ import java.time.Instant;
  * <h2>{@code @Formula}</h2>
  * A formula property is a read-only virtual column backed by an arbitrary SQL
  * sub-SELECT.  Hibernate appends the SQL fragment as a subquery in the SELECT
- * list whenever the entity is loaded — no stored column, no trigger, no view
+ * list whenever the entity is loaded: no stored column, no trigger, no view
  * required.  Formulas participate in HQL WHERE clauses too.
  *
  * <p><strong>Caveat:</strong> formulas use native SQL, not HQL, so they are
@@ -52,7 +52,7 @@ public class Movie {
     private int releaseYear;
 
     /**
-     * Count of reviews for this movie — computed in-database, never stored.
+     * Count of reviews for this movie: computed in-database, never stored.
      *
      * <p>The SQL fragment references {@code id} (unqualified) which Hibernate
      * resolves to the owning table's primary-key column in the generated SELECT.
@@ -61,7 +61,7 @@ public class Movie {
     private long reviewCount;
 
     /**
-     * Average reviewer rating — {@code COALESCE} returns 0.0 when there are no
+     * Average reviewer rating: {@code COALESCE} returns 0.0 when there are no
      * reviews, avoiding a NULL in the Java field.
      */
     @Formula("(SELECT COALESCE(AVG(r.rating), 0) FROM reviews r WHERE r.movie_id = id)")

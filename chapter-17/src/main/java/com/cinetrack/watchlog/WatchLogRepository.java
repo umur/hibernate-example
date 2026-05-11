@@ -28,7 +28,7 @@ public interface WatchLogRepository extends JpaRepository<WatchLog, Long> {
      *
      * <p>The {@code org.hibernate.fetchSize} hint instructs the JDBC driver to
      * fetch rows in chunks of 500 instead of loading the entire result set into
-     * memory at once — essential for processing millions of rows without
+     * memory at once: essential for processing millions of rows without
      * exhausting the heap.
      *
      * <p>The caller MUST consume the stream inside an active transaction and

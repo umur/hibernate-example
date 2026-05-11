@@ -9,7 +9,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * Base class for all integration tests in chapter-24.
  *
  * <p>Uses a static {@link PostgreSQLContainer} so the container is started
- * once per JVM and reused across test classes — significantly faster than
+ * once per JVM and reused across test classes: significantly faster than
  * spinning up a fresh container per class.</p>
  */
 @SpringBootTest

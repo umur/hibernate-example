@@ -37,7 +37,7 @@ public class AppUser {
     /**
      * Added via the V4 expand-contract migration.
      * New rows default to 'FREE'; existing rows were backfilled before the
-     * NOT NULL constraint was applied — zero downtime for running instances.
+     * NOT NULL constraint was applied: zero downtime for running instances.
      */
     @Column(name = "subscription_tier", nullable = false, length = 20)
     private String subscriptionTier = "FREE";

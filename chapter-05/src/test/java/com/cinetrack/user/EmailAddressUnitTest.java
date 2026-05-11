@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.*;
 
 /**
  * Pure unit tests for the {@link EmailAddress} value object.
- * No Spring context, no database — just the domain rules.
+ * No Spring context, no database: just the domain rules.
  */
-@DisplayName("EmailAddress — value object unit tests")
+@DisplayName("EmailAddress: value object unit tests")
 class EmailAddressUnitTest {
 
     @Test

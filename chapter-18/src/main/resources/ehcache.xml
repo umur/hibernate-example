@@ -2,7 +2,7 @@
 <config xmlns='http://www.ehcache.org/v3'>
 
     <!--
-        Movie entity cache — READ_WRITE strategy.
+        Movie entity cache: READ_WRITE strategy.
         Entries expire 30 minutes after creation.  Heap limit of 1 000 entries
         keeps memory usage bounded.
     -->
@@ -14,7 +14,7 @@
     </cache>
 
     <!--
-        Genre reference-data cache — READ_ONLY strategy.
+        Genre reference-data cache: READ_ONLY strategy.
         Genre codes never change at runtime so a 24-hour TTL is safe.
     -->
     <cache alias="com.cinetrack.genre.GenreEntity">

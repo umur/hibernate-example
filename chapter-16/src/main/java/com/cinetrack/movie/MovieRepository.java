@@ -20,14 +20,14 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
      * <p>Issue: every call to {@code movie.getReviews()} on the returned list
      * triggers a separate SELECT against the {@code reviews} table.  With 5
      * movies that means 1 query for the movies + 5 queries for reviews = 6
-     * total — the textbook N+1 pattern.
+     * total: the textbook N+1 pattern.
      *
      * <p>Note: {@code @BatchSize(size=25)} on the collection reduces this to
      * 1 + ceil(N/25) queries, but does not eliminate the extra round-trips.
      * The method is intentionally left as-is so the test can demonstrate the
      * unmitigated case before @BatchSize kicks in for larger datasets.
      */
-    // findAll() is inherited — no override needed
+    // findAll() is inherited: no override needed
 
     /**
      * Loads movies together with their reviews in a single SQL query using a

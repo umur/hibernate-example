@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Pure unit tests for {@link TenantFilter} — no Spring context, no Postgres.
+ * Pure unit tests for {@link TenantFilter}: no Spring context, no Postgres.
  *
  * <p>Covers the three behaviors that integration tests do not exercise:
  * the X-Tenant-ID header is propagated, the public-schema fallback is used
@@ -95,7 +95,7 @@ class TenantFilterUnitTest {
         try {
             filter.doFilter(req, res, chain);
         } catch (ServletException expected) {
-            // expected — re-thrown by the filter
+            // expected: re-thrown by the filter
         }
 
         assertThat(TenantContext.get())

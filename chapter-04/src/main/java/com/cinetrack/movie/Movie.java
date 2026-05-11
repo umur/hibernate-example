@@ -16,14 +16,14 @@ import java.util.UUID;
  *
  * <h2>Key Hibernate 7 annotations used here</h2>
  * <ul>
- *   <li>{@link UuidGenerator} with {@code style = Style.TIME} — produces a time-ordered
+ *   <li>{@link UuidGenerator} with {@code style = Style.TIME}: produces a time-ordered
  *       (version-7) UUID so that inserts are naturally clustered in the index.</li>
- *   <li>{@link JdbcTypeCode} with {@link SqlTypes#JSON} — instructs Hibernate to use
+ *   <li>{@link JdbcTypeCode} with {@link SqlTypes#JSON}: instructs Hibernate to use
  *       the {@code JsonJdbcType} descriptor, serialising {@code Map<String,Object>}
  *       to/from PostgreSQL's native {@code jsonb} column without any custom converter.</li>
- *   <li>{@link Array} — maps a {@code TEXT[]} PostgreSQL array column directly to a
+ *   <li>{@link Array}: maps a {@code TEXT[]} PostgreSQL array column directly to a
  *       Java {@code String[]} field through Hibernate's {@code ArrayJdbcType}.</li>
- *   <li>{@link BatchSize} on the class — when multiple {@code Movie} proxies are
+ *   <li>{@link BatchSize} on the class: when multiple {@code Movie} proxies are
  *       initialised in the same session, Hibernate batches the SELECT statements
  *       into groups of 25 (the "IN-clause batch" strategy).</li>
  * </ul>
@@ -32,10 +32,10 @@ import java.util.UUID;
  * The Hibernate Maven plugin (configured in pom.xml) instruments this class at
  * build time to enable:
  * <ul>
- *   <li><em>Dirty tracking</em> — only changed fields are included in UPDATE statements.</li>
- *   <li><em>Lazy initialisation</em> — basic fields can be fetched lazily when annotated
+ *   <li><em>Dirty tracking</em>: only changed fields are included in UPDATE statements.</li>
+ *   <li><em>Lazy initialisation</em>: basic fields can be fetched lazily when annotated
  *       with {@code @Basic(fetch = FetchType.LAZY)}.</li>
- *   <li><em>Association management</em> — bidirectional associations are kept in sync
+ *   <li><em>Association management</em>: bidirectional associations are kept in sync
  *       automatically on the bytecode level.</li>
  * </ul>
  */
@@ -52,7 +52,7 @@ public class Movie {
      *
      * <p>{@link UuidGenerator.Style#TIME} generates a UUID where the most-significant
      * bits encode the current timestamp, ensuring that new rows sort after older ones
-     * in the B-tree index — far better for insert performance than random UUID v4.
+     * in the B-tree index: far better for insert performance than random UUID v4.
      */
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -74,7 +74,7 @@ public class Movie {
     private int releaseYear;
 
     /**
-     * Rating stored as NUMERIC(3,1) — e.g. 8.4.
+     * Rating stored as NUMERIC(3,1): e.g. 8.4.
      * {@code precision=3} means three significant digits total; {@code scale=1} means
      * one digit after the decimal point.
      */
@@ -100,7 +100,7 @@ public class Movie {
      *
      * <p>Hibernate 7 introduced the {@code @Array} annotation together with a
      * dedicated {@code ArrayJdbcType} that communicates with PostgreSQL's array
-     * protocol directly — no serialisation to/from a delimited string.
+     * protocol directly: no serialisation to/from a delimited string.
      *
      * <p>Example: {@code {"Netflix","HBO Max","Apple TV+"}}
      */

@@ -8,7 +8,7 @@ import lombok.*;
 import java.time.Instant;
 
 /**
- * Records a single viewing event — which user watched which movie, when, and
+ * Records a single viewing event: which user watched which movie, when, and
  * for how long.
  *
  * <h2>ID generation strategy</h2>
@@ -17,7 +17,7 @@ import java.time.Instant;
  * migration and {@code hibernate.jdbc.batch_size}.  This is crucial for
  * efficient batching: Hibernate pre-allocates a block of 50 IDs from the
  * sequence in a single round-trip, then assigns them in memory without
- * contacting the database per row — eliminating the "sequence per insert"
+ * contacting the database per row: eliminating the "sequence per insert"
  * anti-pattern that would break JDBC batching.
  *
  * <p>With {@code IDENTITY} generation (auto-increment), the database returns

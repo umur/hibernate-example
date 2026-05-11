@@ -1,11 +1,11 @@
 # Test profile overrides for @DataJpaTest slice tests.
 #
-# ddl-auto: create-drop  — JPA exports the schema from entity metadata at test
+# ddl-auto: create-drop : JPA exports the schema from entity metadata at test
 #                          startup and drops it on shutdown. This means Flyway
 #                          is not needed for slice tests; the schema comes
 #                          directly from the entity annotations.
 #
-# flyway.enabled: false  — Flyway is disabled for the test slice to avoid
+# flyway.enabled: false : Flyway is disabled for the test slice to avoid
 #                          conflicts with the JPA schema export above.
 spring:
   jpa:

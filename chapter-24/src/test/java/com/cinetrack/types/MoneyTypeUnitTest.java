@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Pure unit tests for {@link MoneyType} — covers the rare paths that the
+ * Pure unit tests for {@link MoneyType}: covers the rare paths that the
  * integration test does not exercise: null handling, SQL type metadata,
  * mutability flags, deepCopy/equals/hashCode, JSON deserialization errors,
  * and the disassemble/assemble round-trip used by the second-level cache.

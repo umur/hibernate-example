@@ -5,7 +5,7 @@ package com.cinetrack.movie;
  * via {@code @Enumerated(EnumType.STRING)}.
  *
  * <p>Storing the name rather than the ordinal means adding new values
- * never invalidates existing rows — a best practice with Hibernate.
+ * never invalidates existing rows: a best practice with Hibernate.
  */
 public enum Genre {
     ACTION,

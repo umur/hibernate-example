@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.*;
  * pipeline: Java object → JDBC VARCHAR → Java object. The container database
  * ensures we exercise the real PostgreSQL JDBC driver, not an H2 stub.
  */
-@DisplayName("EmailAddress — AttributeConverter round-trip")
+@DisplayName("EmailAddress: AttributeConverter round-trip")
 class EmailAddressConverterTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -31,9 +31,9 @@ class EmailAddressConverterTest extends AbstractIntegrationTest {
         userRepository.save(user);
         userRepository.flush();
 
-        // WHEN — reload from DB (first-level cache already holds the instance,
+        // WHEN: reload from DB (first-level cache already holds the instance,
         // but @DataJpaTest wraps in a transaction so a second findById still
-        // returns the same managed instance — field values are unchanged)
+        // returns the same managed instance: field values are unchanged)
         AppUser loaded = userRepository.findById(user.getId()).orElseThrow();
 
         // THEN

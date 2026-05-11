@@ -25,14 +25,14 @@ import java.util.UUID;
 public interface MovieRepository extends JpaRepository<Movie, UUID> {
 
     /**
-     * Derived query — Spring Data infers the SQM from the method name.
+     * Derived query: Spring Data infers the SQM from the method name.
      * Equivalent HQL: {@code SELECT m FROM Movie m WHERE m.genre = :genre}
      */
     List<Movie> findByGenre(Genre genre);
 
     /**
      * Named-parameter HQL query processed by the SQM pipeline.
-     * Note the use of {@code :genre} and {@code :minRating} — SQM validates that
+     * Note the use of {@code :genre} and {@code :minRating}: SQM validates that
      * these parameter names exist on the {@code Movie} metamodel at startup.
      */
     @Query("SELECT m FROM Movie m WHERE m.genre = :genre AND m.rating >= :minRating ORDER BY m.rating DESC")

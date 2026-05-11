@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * <h2>Propagation recap</h2>
  * <ul>
- *   <li>{@code REQUIRED} (default) — join an existing transaction or start one.
+ *   <li>{@code REQUIRED} (default): join an existing transaction or start one.
  *       All work inside shares a single commit/rollback boundary.</li>
- *   <li>{@code REQUIRES_NEW} — always suspend the current transaction and open
+ *   <li>{@code REQUIRES_NEW}: always suspend the current transaction and open
  *       a fresh one. The new transaction commits or rolls back independently.</li>
  * </ul>
  *
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * the bean. When external code calls {@code reviewService.someMethod()}, it
  * goes through the proxy and Spring can intercept it to start/join a
  * transaction. But when <em>this class</em> calls {@code this.someMethod()}
- * internally, the call bypasses the proxy entirely — no transaction demarcation
+ * internally, the call bypasses the proxy entirely: no transaction demarcation
  * occurs. See {@link #selfInvocationTrap()} for a concrete example.
  */
 @Slf4j
@@ -37,7 +37,7 @@ public class ReviewService {
     private final AuditService auditService;
 
     // -------------------------------------------------------------------------
-    // addReview — REQUIRED propagation (default)
+    // addReview: REQUIRED propagation (default)
     // -------------------------------------------------------------------------
 
     /**
@@ -55,7 +55,7 @@ public class ReviewService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public Review addReview(Movie movie, AppUser reviewer, String content, int rating) {
-        log.info("ReviewService.addReview() — participating in current transaction (REQUIRED)");
+        log.info("ReviewService.addReview(): participating in current transaction (REQUIRED)");
 
         Review review = Review.builder()
                 .movie(movie)
@@ -70,21 +70,21 @@ public class ReviewService {
     }
 
     // -------------------------------------------------------------------------
-    // addReviewWithAudit — shows REQUIRES_NEW audit surviving outer rollback
+    // addReviewWithAudit: shows REQUIRES_NEW audit surviving outer rollback
     // -------------------------------------------------------------------------
 
     /**
      * Saves a review and records an audit entry, then deliberately throws to
-     * roll back the review INSERT — while the audit row survives.
+     * roll back the review INSERT: while the audit row survives.
      *
      * <p>Flow:
      * <ol>
      *   <li>Outer {@code REQUIRED} transaction starts.</li>
-     *   <li>{@code addReview()} joins the outer transaction — review is staged.</li>
+     *   <li>{@code addReview()} joins the outer transaction: review is staged.</li>
      *   <li>{@code auditService.recordEvent()} opens a {@code REQUIRES_NEW} transaction,
      *       inserts the audit row, and commits it immediately.</li>
      *   <li>If {@code rollbackAfterAudit} is {@code true}, a {@link RuntimeException}
-     *       is thrown, rolling back the outer transaction — the review INSERT is lost.</li>
+     *       is thrown, rolling back the outer transaction: the review INSERT is lost.</li>
      *   <li>The audit row is unaffected because it committed in its own transaction.</li>
      * </ol>
      *
@@ -99,15 +99,15 @@ public class ReviewService {
     public Review addReviewWithAudit(Movie movie, AppUser reviewer,
                                      String content, int rating,
                                      boolean rollbackAfterAudit) {
-        log.info("ReviewService.addReviewWithAudit() — outer REQUIRED transaction");
+        log.info("ReviewService.addReviewWithAudit(): outer REQUIRED transaction");
 
         Review review = addReview(movie, reviewer, content, rating);
 
-        // auditService.recordEvent() runs in REQUIRES_NEW — commits independently.
+        // auditService.recordEvent() runs in REQUIRES_NEW: commits independently.
         auditService.recordEvent("Review", review.getId(), "CREATE", reviewer.getUsername());
 
         if (rollbackAfterAudit) {
-            log.warn("Simulating failure after audit — outer transaction will roll back");
+            log.warn("Simulating failure after audit: outer transaction will roll back");
             throw new RuntimeException("Simulated failure: outer transaction rolls back, audit survives");
         }
 
@@ -115,16 +115,16 @@ public class ReviewService {
     }
 
     // -------------------------------------------------------------------------
-    // selfInvocationTrap — documented BAD example
+    // selfInvocationTrap: documented BAD example
     // -------------------------------------------------------------------------
 
     /**
-     * <strong>BAD EXAMPLE — self-invocation bypasses the Spring proxy.</strong>
+     * <strong>BAD EXAMPLE: self-invocation bypasses the Spring proxy.</strong>
      *
      * <p>This non-transactional method calls {@code this.transactionalInnerMethod()}
      * directly. Because the call goes through {@code this} (the raw bean object)
      * rather than the Spring proxy, the {@code @Transactional} annotation on
-     * {@code transactionalInnerMethod()} is completely ignored — no transaction
+     * {@code transactionalInnerMethod()} is completely ignored: no transaction
      * is started.
      *
      * <p>The fix: inject {@code ReviewService} into itself (via
@@ -138,10 +138,10 @@ public class ReviewService {
      */
     public void selfInvocationTrap() {
         log.warn("=== SELF-INVOCATION TRAP ===");
-        log.warn("Calling this.transactionalInnerMethod() directly — the proxy is bypassed.");
+        log.warn("Calling this.transactionalInnerMethod() directly: the proxy is bypassed.");
         log.warn("@Transactional on transactionalInnerMethod() will have NO effect.");
 
-        // BAD: calling via `this` bypasses the proxy — no transaction demarcation.
+        // BAD: calling via `this` bypasses the proxy: no transaction demarcation.
         this.transactionalInnerMethod();
 
         log.warn("If transactionalInnerMethod() threw, there would be NO rollback.");
@@ -150,12 +150,12 @@ public class ReviewService {
 
     /**
      * Intended to run inside a transaction, but only works correctly when called
-     * through the Spring proxy — i.e., from external code, not from within
+     * through the Spring proxy: i.e., from external code, not from within
      * {@code ReviewService} itself.
      */
     @Transactional
     public void transactionalInnerMethod() {
-        log.info("transactionalInnerMethod() — transaction active? Only if called via proxy.");
+        log.info("transactionalInnerMethod(): transaction active? Only if called via proxy.");
         // In a real scenario this would do DB work. The point is that if reached
         // via selfInvocationTrap(), it runs WITHOUT a transaction.
     }

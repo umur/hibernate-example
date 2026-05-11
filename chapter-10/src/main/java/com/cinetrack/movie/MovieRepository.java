@@ -27,7 +27,7 @@ import java.util.Optional;
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     // -------------------------------------------------------------------------
-    // 1. JPQL constructor expression — projects into a DTO without loading the
+    // 1. JPQL constructor expression: projects into a DTO without loading the
     //    full entity graph. AVG and COUNT are aggregate functions over the joined
     //    reviews relation.
     // -------------------------------------------------------------------------
@@ -44,7 +44,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<MovieSummaryDto> findMovieSummaries();
 
     // -------------------------------------------------------------------------
-    // 2. JOIN FETCH — loads Movie + its Review collection in a single SQL JOIN,
+    // 2. JOIN FETCH: loads Movie + its Review collection in a single SQL JOIN,
     //    avoiding the classic N+1 problem. DISTINCT removes duplicate Movie rows
     //    that the SQL JOIN would otherwise produce.
     // -------------------------------------------------------------------------
@@ -58,7 +58,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findByGenreWithReviews(@Param("genre") Genre genre);
 
     // -------------------------------------------------------------------------
-    // 3. Native query — escapes to raw SQL when JPQL cannot express what you
+    // 3. Native query: escapes to raw SQL when JPQL cannot express what you
     //    need (e.g. database-specific functions, LIMIT/OFFSET syntax, CTEs).
     //    Spring Data maps results to the entity via column-name matching.
     // -------------------------------------------------------------------------
@@ -76,7 +76,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findTopRated(@Param("minRating") double minRating, @Param("limit") int limit);
 
     // -------------------------------------------------------------------------
-    // 4. @Modifying — required for any DML statement (UPDATE / DELETE).
+    // 4. @Modifying: required for any DML statement (UPDATE / DELETE).
     //    clearAutomatically = true evicts the affected entities from the
     //    first-level cache so subsequent reads see the updated values.
     // -------------------------------------------------------------------------
@@ -86,7 +86,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     int updateRating(@Param("id") Long id, @Param("rating") BigDecimal rating);
 
     // -------------------------------------------------------------------------
-    // 5. @QueryHints — passes JDBC/Hibernate hints alongside the query.
+    // 5. @QueryHints: passes JDBC/Hibernate hints alongside the query.
     //    HINT_READONLY tells Hibernate to skip dirty-checking for the returned
     //    entities, reducing first-level cache overhead for read-only operations.
     // -------------------------------------------------------------------------
@@ -98,7 +98,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findReleasedAfterReadOnly(@Param("year") int year);
 
     // -------------------------------------------------------------------------
-    // 6. @EntityGraph — overrides fetch plan at the query site without touching
+    // 6. @EntityGraph: overrides fetch plan at the query site without touching
     //    the entity mapping. Loads Movie + reviews + reviews.reviewer eagerly
     //    in two LEFT OUTER JOINs (no N+1, no LazyInitializationException).
     // -------------------------------------------------------------------------
@@ -107,7 +107,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Optional<Movie> findWithReviewsById(Long id);
 
     // -------------------------------------------------------------------------
-    // 7. Keyset (scroll) pagination — Spring Data 3 Window API.
+    // 7. Keyset (scroll) pagination: Spring Data 3 Window API.
     //    Unlike offset pagination, keyset pagination uses the last seen id as
     //    a "cursor", making it stable and O(1) regardless of page depth.
     //    Callers pass ScrollPosition.keyset() or ScrollPosition.offset(0).

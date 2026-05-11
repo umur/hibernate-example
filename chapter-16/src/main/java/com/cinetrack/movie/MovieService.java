@@ -12,7 +12,7 @@ import java.util.List;
  *
  * <p>Both methods are read-only transactions so Hibernate's dirty-checking
  * overhead is skipped and the session is closed immediately after the method
- * returns — making query counts easy to measure in tests.
+ * returns: making query counts easy to measure in tests.
  */
 @Service
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class MovieService {
      * <p>Query count breakdown:
      * <ol>
      *   <li>1 SELECT to fetch all movies.</li>
-     *   <li>N additional SELECTs — one per movie — to initialise the lazy
+     *   <li>N additional SELECTs: one per movie: to initialise the lazy
      *       {@code reviews} collection when it is first accessed.</li>
      * </ol>
      *
@@ -43,7 +43,7 @@ public class MovieService {
     public List<Movie> getMovieNplusOne() {
         List<Movie> movies = movieRepository.findAll();
 
-        // Deliberately trigger lazy loading inside the loop — this is what
+        // Deliberately trigger lazy loading inside the loop: this is what
         // causes N+1. Each getReviews() call that has not been batch-loaded
         // yet fires an individual SQL statement.
         movies.forEach(m ->
@@ -66,7 +66,7 @@ public class MovieService {
     public List<Movie> getMovieFixed() {
         List<Movie> movies = movieRepository.findAllWithReviews();
 
-        // getReviews() here does NOT hit the database — the collection was
+        // getReviews() here does NOT hit the database: the collection was
         // populated by the JOIN FETCH above.
         movies.forEach(m ->
                 log.debug("Movie '{}' has {} review(s) [JOIN FETCH]", m.getTitle(), m.getReviews().size())

@@ -17,7 +17,7 @@ import java.time.Instant;
  * Every repository in the application then inherits this behaviour automatically.</p>
  *
  * <p>The implementation uses reflection to call a {@code setDeletedAt(Instant)}
- * method if the entity exposes one — making the base class generic without
+ * method if the entity exposes one: making the base class generic without
  * requiring a common entity supertype beyond AuditableEntity.</p>
  */
 public class SoftDeletableRepositoryImpl<T, ID extends Serializable>
@@ -45,7 +45,7 @@ public class SoftDeletableRepositoryImpl<T, ID extends Serializable>
                 setter.invoke(entity, Instant.now());
                 entityManager.merge(entity);
             } catch (NoSuchMethodException e) {
-                // Entity does not support soft delete — fall back to hard delete
+                // Entity does not support soft delete: fall back to hard delete
                 entityManager.remove(entityManager.contains(entity)
                         ? entity
                         : entityManager.merge(entity));

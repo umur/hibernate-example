@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * proxies and a real PostgreSQL database (via Testcontainers).
  *
  * <p>Tests that need to cross transaction boundaries use {@link TransactionTemplate}
- * instead of {@code @Transactional} on the test method — because if the test
+ * instead of {@code @Transactional} on the test method: because if the test
  * method itself is transactional, all nested calls share the same transaction
  * and we cannot observe commit/rollback effects between them.
  */
@@ -84,7 +84,7 @@ class PersistenceContextTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("Mutating a managed entity without calling save() still persists the change on commit")
     void dirtyChecking_updatesWithoutExplicitSave() {
-        String newTitle = "The Dark Knight — Director's Cut";
+        String newTitle = "The Dark Knight: Director's Cut";
 
         // Transaction 1: load the movie, change its title without calling save().
         // Hibernate's dirty checker detects the mutation and issues an UPDATE on commit.
@@ -110,16 +110,16 @@ class PersistenceContextTest extends AbstractIntegrationTest {
                 movieRepository.findById(savedMovieId).orElseThrow().getTitle()
         );
 
-        // Load, detach, mutate — but do NOT call merge.
+        // Load, detach, mutate: but do NOT call merge.
         // The detached entity's mutation must not reach the database.
         txTemplate.execute(status -> {
             Movie movie = em.find(Movie.class, savedMovieId);
             em.detach(movie);
 
-            // Mutate the detached entity — Hibernate is blind to this change.
+            // Mutate the detached entity: Hibernate is blind to this change.
             movie.setTitle("[SHOULD NOT PERSIST] " + movie.getTitle());
 
-            // No merge(), no save() — the transaction commits with no dirty entity.
+            // No merge(), no save(): the transaction commits with no dirty entity.
             return null;
         });
 
@@ -149,7 +149,7 @@ class PersistenceContextTest extends AbstractIntegrationTest {
         movieRepository.save(fresh);
         em.flush(); // ensure the INSERT is issued before demonstrateDetachReattach loads it
 
-        // demonstrateDetachReattach is @Transactional — it joins this test's
+        // demonstrateDetachReattach is @Transactional: it joins this test's
         // transaction, so 'managed' is tracked by the same persistence context.
         Movie managed = demoService.demonstrateDetachReattach(fresh.getId());
 
@@ -174,7 +174,7 @@ class PersistenceContextTest extends AbstractIntegrationTest {
             return movieRepository.save(m).getId();
         });
 
-        // Transaction 2: mutate in memory then refresh — should reset to DB value.
+        // Transaction 2: mutate in memory then refresh: should reset to DB value.
         txTemplate.execute(st -> {
             Movie m = movieRepository.findById(movieId).orElseThrow();
             m.setTitle("Changed In Memory");
@@ -263,11 +263,11 @@ class PersistenceContextTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 9: FlushMode.COMMIT — pending change not visible to JPQL in same tx
+    // Test 9: FlushMode.COMMIT: pending change not visible to JPQL in same tx
     // -------------------------------------------------------------------------
 
     @Test
-    @DisplayName("FlushMode.COMMIT — in-memory title change is NOT visible to a JPQL query within the same tx")
+    @DisplayName("FlushMode.COMMIT: in-memory title change is NOT visible to a JPQL query within the same tx")
     void flushModeCommit_pendingChange_notVisibleToQueryInSameTx() {
         // The original title we know the movie has after setUp().
         String originalTitle = txTemplate.execute(st ->
@@ -278,13 +278,13 @@ class PersistenceContextTest extends AbstractIntegrationTest {
             Movie movie = movieRepository.findById(savedMovieId).orElseThrow();
             String changedTitle = "[COMMIT-MODE-CHANGE] " + originalTitle;
 
-            // Switch to COMMIT flush mode — Hibernate will NOT flush before queries.
+            // Switch to COMMIT flush mode: Hibernate will NOT flush before queries.
             em.setFlushMode(jakarta.persistence.FlushModeType.COMMIT);
 
-            // Mutate the managed entity — not yet flushed.
+            // Mutate the managed entity: not yet flushed.
             movie.setTitle(changedTitle);
 
-            // Run a JPQL query — with COMMIT mode, no flush happens first.
+            // Run a JPQL query: with COMMIT mode, no flush happens first.
             // The query should return the OLD title from the DB, not the in-memory change.
             String queriedTitle = em
                     .createQuery("SELECT m.title FROM Movie m WHERE m.id = :id", String.class)
@@ -339,13 +339,13 @@ class PersistenceContextTest extends AbstractIntegrationTest {
         });
 
         // Load and detach the Review inside a transaction, then access the lazy proxy
-        // OUTSIDE — where there is no active session to back-fill the proxy.
+        // OUTSIDE: where there is no active session to back-fill the proxy.
         com.cinetrack.review.Review detachedReview = txTemplate.execute(st -> {
             com.cinetrack.review.Review review =
                     reviewRepository.findById(reviewId).orElseThrow();
             // Detach: the Review (and its uninitialized lazy Movie proxy) leaves the PC.
             em.detach(review);
-            return review; // returned detached — proxy is NOT initialized
+            return review; // returned detached: proxy is NOT initialized
         });
 
         // Accessing the title on the uninitialized lazy proxy of a detached entity,

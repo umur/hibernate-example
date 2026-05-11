@@ -33,12 +33,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * Integration tests for Chapter 13 — Optimistic Locking.
+ * Integration tests for Chapter 13: Optimistic Locking.
  *
  * Each test spins up real transactions against a PostgreSQL 16 container so that
  * the version-check behaviour is exactly what production will see.
  */
-@DisplayName("Chapter 13 — Optimistic Locking")
+@DisplayName("Chapter 13: Optimistic Locking")
 class OptimisticLockTest extends AbstractIntegrationTest {
 
     @Autowired ReviewRepository reviewRepository;
@@ -74,7 +74,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 1: concurrent updates — second writer loses
+    // Test 1: concurrent updates: second writer loses
     // ------------------------------------------------------------------
 
     @Test
@@ -90,7 +90,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
          *
          *   Thread-1 reads the row (version=0), then BLOCKS before committing.
          *   Thread-2 reads the row (version=0) and commits its UPDATE (version→1).
-         *   Thread-1 resumes and tries to commit — Hibernate sees version=1 in DB
+         *   Thread-1 resumes and tries to commit: Hibernate sees version=1 in DB
          *   vs version=0 in its snapshot → OptimisticLockException.
          */
         CountDownLatch thread2Read    = new CountDownLatch(1);
@@ -149,7 +149,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@OptimisticLock(excluded=true) — incrementing viewCount does not bump the entity version")
+    @DisplayName("@OptimisticLock(excluded=true): incrementing viewCount does not bump the entity version")
     void viewCountIncrement_doesNotBumpVersion() {
         long versionBefore = tx.execute(s -> movieRepository.findById(movie.getId()).orElseThrow().getVersion());
 
@@ -175,13 +175,13 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("CAS cancel — returns 1 when ACTIVE, returns 0 when already CANCELLED")
+    @DisplayName("CAS cancel: returns 1 when ACTIVE, returns 0 when already CANCELLED")
     void casCancel_idempotentCancellation() {
         Long subId = tx.execute(s ->
                 subscriptionRepository.save(new Subscription(alice)).getId()
         );
 
-        // First cancel — should affect 1 row
+        // First cancel: should affect 1 row
         int affected = tx.execute(s -> subscriptionRepository.cancelIfActive(subId));
         assertThat(affected).isEqualTo(1);
 
@@ -191,7 +191,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
         );
         assertThat(status).isEqualTo(SubscriptionStatus.CANCELLED);
 
-        // Second cancel — guard condition fails, 0 rows updated
+        // Second cancel: guard condition fails, 0 rows updated
         int affected2 = tx.execute(s -> subscriptionRepository.cancelIfActive(subId));
         assertThat(affected2).isEqualTo(0);
     }
@@ -201,7 +201,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("updateRatingOrThrow — throws when expectedVersion does not match current version")
+    @DisplayName("updateRatingOrThrow: throws when expectedVersion does not match current version")
     void updateRatingOrThrow_throwsOnVersionMismatch() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, bob, "Good film", 4)).getId()
@@ -222,7 +222,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@Retryable — updateRating eventually succeeds despite a stale read")
+    @DisplayName("@Retryable: updateRating eventually succeeds despite a stale read")
     void retryable_eventuallySucceeds() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, alice, "Amazing!", 5)).getId()
@@ -236,7 +236,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
         });
 
         // updateRating reads the stale version on its first attempt, gets a lock failure,
-        // then retries and reads the current version — this must succeed within 3 attempts.
+        // then retries and reads the current version: this must succeed within 3 attempts.
         Review result = reviewService.updateRating(reviewId, 2);
         assertThat(result.getRating()).isEqualTo(2);
     }
@@ -246,7 +246,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@Version — version increments by 1 on each successful update")
+    @DisplayName("@Version: version increments by 1 on each successful update")
     void version_incrementsOnEachUpdate() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, alice, "First draft", 3)).getId()
@@ -282,11 +282,11 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 7: @OptimisticLock(excluded=true) — viewCount does not bump version
+    // Test 7: @OptimisticLock(excluded=true): viewCount does not bump version
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@OptimisticLock(excluded=true) — viewCount update leaves version unchanged")
+    @DisplayName("@OptimisticLock(excluded=true): viewCount update leaves version unchanged")
     void version_doesNotIncrementOnExcludedField() {
         long v1 = tx.execute(s ->
                 movieRepository.findById(movie.getId()).orElseThrow().getVersion()
@@ -325,14 +325,14 @@ class OptimisticLockTest extends AbstractIntegrationTest {
             return r;
         });
 
-        // tx2: update the row — increments version in DB
+        // tx2: update the row: increments version in DB
         tx.executeWithoutResult(s -> {
             Review r = reviewRepository.findById(reviewId).orElseThrow();
             r.setRating(5);
             reviewRepository.saveAndFlush(r);
         });
 
-        // tx3: attempt to merge the old snapshot — version mismatch must be detected
+        // tx3: attempt to merge the old snapshot: version mismatch must be detected
         assertThatThrownBy(() ->
                 tx.executeWithoutResult(s -> {
                     detached.setContent("Stale attempt");
@@ -347,11 +347,11 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 9: 5 concurrent threads — exactly 1 succeeds, rest fail
+    // Test 9: 5 concurrent threads: exactly 1 succeeds, rest fail
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("5 concurrent updates to the same review — exactly 1 succeeds")
+    @DisplayName("5 concurrent updates to the same review: exactly 1 succeeds")
     void concurrentUpdates_5threads_atLeast4Fail() throws Exception {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, alice, "Race condition bait", 3)).getId()
@@ -399,7 +399,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
         // Timing note: with real DB concurrency, threads may execute sequentially
         // enough that more than one wins (each reading the latest version in turn).
         // The guarantee optimistic locking gives is that concurrent writers racing
-        // on the SAME version snapshot cannot both succeed — so at least one must
+        // on the SAME version snapshot cannot both succeed: so at least one must
         // win and at least one must lose when there is genuine contention.
         assertThat(successCount.get())
                 .as("At least one thread must win")
@@ -410,11 +410,11 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 10: cancelIfActive — idempotent CAS on subscription
+    // Test 10: cancelIfActive: idempotent CAS on subscription
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("cancelIfActive — returns 1 on first call, 0 on second (idempotent CAS)")
+    @DisplayName("cancelIfActive: returns 1 on first call, 0 on second (idempotent CAS)")
     void cancelIfActive_alreadyCancelled_returnsZero() {
         Long subId = tx.execute(s ->
                 subscriptionRepository.save(new Subscription(alice)).getId()
@@ -440,7 +440,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("Bulk JPQL UPDATE — bypasses @Version check, version stays unchanged")
+    @DisplayName("Bulk JPQL UPDATE: bypasses @Version check, version stays unchanged")
     void bulkUpdate_bypassesVersionCheck() {
         Long movieId = tx.execute(s ->
                 movieRepository.save(new Movie("Dune", Genre.SCI_FI)).getId()
@@ -450,7 +450,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
                 movieRepository.findById(movieId).orElseThrow().getVersion()
         );
 
-        // incrementViewCount uses a bulk JPQL UPDATE — no version column involved
+        // incrementViewCount uses a bulk JPQL UPDATE: no version column involved
         tx.executeWithoutResult(s ->
                 movieRepository.incrementViewCount(movieId)
         );
@@ -468,11 +468,11 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 12a: validateRating boundary — 0 throws
+    // Test 12a: validateRating boundary: 0 throws
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("addReview_rating0_throwsValidationException — rating below 1 is rejected")
+    @DisplayName("addReview_rating0_throwsValidationException: rating below 1 is rejected")
     void addReview_rating0_throwsValidationException() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, alice, "Initial", 3)).getId()
@@ -484,11 +484,11 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 12b: validateRating boundary — 6 throws
+    // Test 12b: validateRating boundary: 6 throws
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("addReview_rating6_throwsValidationException — rating above 5 is rejected")
+    @DisplayName("addReview_rating6_throwsValidationException: rating above 5 is rejected")
     void addReview_rating6_throwsValidationException() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, alice, "Initial", 3)).getId()
@@ -500,11 +500,11 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 12c: validateRating boundary — 1 is valid (lower inclusive bound)
+    // Test 12c: validateRating boundary: 1 is valid (lower inclusive bound)
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("addReview_rating1_succeeds — rating of 1 is valid (lower inclusive bound)")
+    @DisplayName("addReview_rating1_succeeds: rating of 1 is valid (lower inclusive bound)")
     void addReview_rating1_succeeds() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, alice, "Initial", 3)).getId()
@@ -516,11 +516,11 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 12d: validateRating boundary — 5 is valid (upper inclusive bound)
+    // Test 12d: validateRating boundary: 5 is valid (upper inclusive bound)
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("addReview_rating5_succeeds — rating of 5 is valid (upper inclusive bound)")
+    @DisplayName("addReview_rating5_succeeds: rating of 5 is valid (upper inclusive bound)")
     void addReview_rating5_succeeds() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, bob, "Initial", 3)).getId()
@@ -536,7 +536,7 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("updateRatingOrThrow_wrongVersion_throws — wrong expectedVersion causes immediate failure")
+    @DisplayName("updateRatingOrThrow_wrongVersion_throws: wrong expectedVersion causes immediate failure")
     void updateRatingOrThrow_wrongVersion_throws() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, alice, "Version test", 3)).getId()
@@ -551,11 +551,11 @@ class OptimisticLockTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 12: @Retryable — recovers in real DB scenario, final state correct
+    // Test 12: @Retryable: recovers in real DB scenario, final state correct
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@Retryable — updateRating converges to correct final value after stale-read failure")
+    @DisplayName("@Retryable: updateRating converges to correct final value after stale-read failure")
     void retryable_method_eventuallySucceeds() {
         Long reviewId = tx.execute(s ->
                 reviewRepository.save(new Review(movie, bob, "Will be retried", 2)).getId()

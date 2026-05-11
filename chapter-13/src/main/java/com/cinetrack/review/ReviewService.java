@@ -14,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
  * collisions in a Spring application:
  *
  * <ol>
- *   <li><b>Automatic retry</b> — {@link #updateRating} uses {@code @Retryable}
+ *   <li><b>Automatic retry</b>: {@link #updateRating} uses {@code @Retryable}
  *       to transparently re-attempt the transaction when the version check
  *       fails.  Each retry re-reads the entity, so it automatically picks up
  *       the winner's changes.  Suitable when the operation is idempotent or
  *       "last writer wins" is acceptable.</li>
- *   <li><b>Fail-fast with client feedback</b> — {@link #updateRatingOrThrow}
+ *   <li><b>Fail-fast with client feedback</b>: {@link #updateRatingOrThrow}
  *       accepts the caller's expected version and throws immediately when there
  *       is a mismatch, letting the API layer return a 409 Conflict.  Suitable
  *       for collaborative editing where you want to tell the user "someone else
@@ -42,7 +42,7 @@ public class ReviewService {
      * to the same row between our read and our flush, Hibernate throws
      * {@code ObjectOptimisticLockingFailureException}.  Spring Retry catches
      * that exception, waits {@code delay * multiplier^attempt} ms, then calls
-     * this method again from scratch — which re-reads the now-current row.
+     * this method again from scratch: which re-reads the now-current row.
      *
      * <p>The transaction annotation ensures that the entire read-modify-write
      * cycle (including the version check at flush time) happens within a single
@@ -68,7 +68,7 @@ public class ReviewService {
     }
 
     // ------------------------------------------------------------------
-    // Strategy 2: CAS-style fail-fast — caller supplies expected version
+    // Strategy 2: CAS-style fail-fast: caller supplies expected version
     // ------------------------------------------------------------------
 
     /**

@@ -26,7 +26,7 @@ import java.time.Instant;
  *
  * <h2>{@code @Embedded Money price}</h2>
  * The {@link Money} record's two fields ({@code amount_cents}, {@code currency}) are
- * mapped as regular columns on the {@code subscriptions} table — no join needed.
+ * mapped as regular columns on the {@code subscriptions} table: no join needed.
  *
  * <h2>Optimistic locking</h2>
  * {@link Version} on a {@code long} field tells Hibernate to append
@@ -55,7 +55,7 @@ public class Subscription {
     private SubscriptionTier tier;
 
     /**
-     * Monetary price — composed inline via {@code @Embedded}.
+     * Monetary price: composed inline via {@code @Embedded}.
      * Hibernate maps {@code Money.amountCents} → {@code amount_cents}
      * and {@code Money.currency} → {@code currency} on the same row.
      */

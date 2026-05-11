@@ -127,7 +127,7 @@ class HibernateStatisticsTest extends AbstractIntegrationTest {
         org.springframework.web.client.RestTemplate restTemplate =
                 new org.springframework.web.client.RestTemplate();
 
-        // Obtain the server port from the environment — @SpringBootTest uses a random port
+        // Obtain the server port from the environment: @SpringBootTest uses a random port
         // exposed via the @LocalServerPort mechanism. Since HibernateStatisticsIT extends
         // AbstractIntegrationTest (which uses @SpringBootTest without RANDOM_PORT), we
         // call the endpoint via the default embedded-server port 8080 only if the context
@@ -142,7 +142,7 @@ class HibernateStatisticsTest extends AbstractIntegrationTest {
             assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
             assertThat(response.getBody()).containsKey("queryExecutionCount");
         } catch (Exception ignored) {
-            // Web environment not available in this test slice — skip gracefully
+            // Web environment not available in this test slice: skip gracefully
         }
     }
 
@@ -152,7 +152,7 @@ class HibernateStatisticsTest extends AbstractIntegrationTest {
 
     @Test
     void statisticsEndpoint_getStats_returns200_andBodyHasQueryExecutionCount() {
-        // Directly exercise StatisticsEndpoint bean — no HTTP needed, avoids port issues.
+        // Directly exercise StatisticsEndpoint bean: no HTTP needed, avoids port issues.
         com.cinetrack.config.StatisticsEndpoint endpoint =
                 new com.cinetrack.config.StatisticsEndpoint(entityManagerFactory);
 

@@ -10,10 +10,10 @@ package com.cinetrack.user;
  * {@link org.springframework.transaction.event.TransactionalEventListener}
  * can choose when to react:
  * <ul>
- *   <li>{@code AFTER_COMMIT} — safest; fires only if the user row actually
+ *   <li>{@code AFTER_COMMIT}: safest; fires only if the user row actually
  *       committed. Use this for side-effects like sending welcome emails.</li>
- *   <li>{@code AFTER_ROLLBACK} — useful for compensating actions.</li>
- *   <li>{@code BEFORE_COMMIT} — fires inside the transaction; can still
+ *   <li>{@code AFTER_ROLLBACK}: useful for compensating actions.</li>
+ *   <li>{@code BEFORE_COMMIT}: fires inside the transaction; can still
  *       participate in rollback.</li>
  * </ul>
  *

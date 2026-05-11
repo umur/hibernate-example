@@ -15,13 +15,13 @@ import lombok.Setter;
  *
  * <p>On this (inverse) side:
  * <ul>
- *   <li>{@code mappedBy = "user"} — {@code UserProfile.user} owns the relationship.</li>
- *   <li>{@code cascade = CascadeType.ALL} — saving/deleting a user cascades to the
+ *   <li>{@code mappedBy = "user"}: {@code UserProfile.user} owns the relationship.</li>
+ *   <li>{@code cascade = CascadeType.ALL}: saving/deleting a user cascades to the
  *       profile automatically.</li>
- *   <li>{@code fetch = FetchType.LAZY} — the profile is not loaded until accessed.
+ *   <li>{@code fetch = FetchType.LAZY}: the profile is not loaded until accessed.
  *       With bytecode enhancement this is truly lazy even for {@code @OneToOne};
  *       without enhancement Hibernate may issue an extra query to check for null.</li>
- *   <li>{@code optional = true} (default) — a profile is not required for every
+ *   <li>{@code optional = true} (default): a profile is not required for every
  *       user. Hibernate must verify existence on load rather than assuming a row
  *       is always present.</li>
  * </ul>

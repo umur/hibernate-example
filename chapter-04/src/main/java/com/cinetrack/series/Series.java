@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Television series entity — demonstrates storing a {@code List<String>} cast list
+ * Television series entity: demonstrates storing a {@code List<String>} cast list
  * as a PostgreSQL {@code jsonb} column.
  *
  * <h2>Why JSONB for a string list?</h2>
  * PostgreSQL arrays ({@code TEXT[]}) work well for simple flat lists, but JSONB gives
  * you richer query operators ({@code @>}, {@code jsonb_array_elements}, GIN indexes)
- * and is schema-free — the cast list can later evolve to objects without a migration.
+ * and is schema-free: the cast list can later evolve to objects without a migration.
  *
  * <h2>Hibernate 7 type resolution</h2>
  * {@code @JdbcTypeCode(SqlTypes.JSON)} tells Hibernate to use {@code JsonJdbcType}.

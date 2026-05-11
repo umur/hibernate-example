@@ -11,7 +11,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * <p>A single PostgreSQL 16 container is shared across the entire suite.
  * {@link com.cinetrack.config.TenantSchemaInitializer} runs on context startup
  * and creates the {@code tenant_a} and {@code tenant_b} schemas with their
- * tables — no Flyway involvement.
+ * tables: no Flyway involvement.
  */
 @SpringBootTest
 public abstract class AbstractIntegrationTest {

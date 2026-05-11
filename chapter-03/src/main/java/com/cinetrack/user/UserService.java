@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <ul>
  *   <li>Listeners annotated with {@code @TransactionalEventListener(phase = AFTER_COMMIT)}
  *       are invoked <em>after</em> the commit succeeds.</li>
- *   <li>If the transaction rolls back, those listeners are never called — the
+ *   <li>If the transaction rolls back, those listeners are never called: the
  *       user row doesn't exist, so sending a welcome email would be wrong.</li>
  * </ul>
  *

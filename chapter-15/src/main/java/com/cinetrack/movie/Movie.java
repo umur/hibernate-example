@@ -29,13 +29,13 @@ import static jakarta.persistence.GenerationType.IDENTITY;
  * The named graph {@code "Movie.withReviews"} is referenced by
  * {@link MovieRepository#findByRatingGreaterThan}, which tells Spring Data to
  * annotate its query with {@code @EntityGraph}.  Hibernate translates this
- * into a single {@code LEFT JOIN FETCH} — one query for any number of movies,
+ * into a single {@code LEFT JOIN FETCH}: one query for any number of movies,
  * regardless of batch size.
  *
  * <p>Both strategies solve N+1 but suit different call sites:
  * <ul>
- *   <li>JOIN FETCH / EntityGraph — when you <em>always</em> need the reviews</li>
- *   <li>@BatchSize — when you <em>sometimes</em> traverse the collection and want
+ *   <li>JOIN FETCH / EntityGraph: when you <em>always</em> need the reviews</li>
+ *   <li>@BatchSize: when you <em>sometimes</em> traverse the collection and want
  *       lazy loading to remain the default</li>
  * </ul>
  */
@@ -63,7 +63,7 @@ public class Movie {
     private BigDecimal rating;
 
     /**
-     * LAZY is the correct default for collections — never use EAGER here.
+     * LAZY is the correct default for collections: never use EAGER here.
      * @BatchSize limits the N+1 cost to ⌈N/25⌉ + 1 queries when the
      * collection is accessed outside a JOIN FETCH context.
      */

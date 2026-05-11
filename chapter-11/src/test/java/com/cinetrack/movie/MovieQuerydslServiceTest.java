@@ -66,7 +66,7 @@ class MovieQuerydslServiceTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // findByGenreAndMinRating — null params are treated as no-filter
+    // findByGenreAndMinRating: null params are treated as no-filter
     // -------------------------------------------------------------------------
 
     @Test

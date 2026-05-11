@@ -9,10 +9,10 @@ import org.hibernate.annotations.Immutable;
 /**
  * Reference-data entity representing a film genre (e.g. ACTION, DRAMA).
  *
- * <h2>Second-level cache — READ_ONLY strategy</h2>
+ * <h2>Second-level cache: READ_ONLY strategy</h2>
  * <p>{@code CacheConcurrencyStrategy.READ_ONLY} is the most efficient L2C
  * strategy: Hibernate never acquires a lock on cache entries and never
- * invalidates them on update — because updates are not expected.  Choosing
+ * invalidates them on update: because updates are not expected.  Choosing
  * READ_ONLY on a mutable entity would lead to stale reads, so this strategy
  * is only appropriate for truly immutable reference data.
  *
@@ -21,7 +21,7 @@ import org.hibernate.annotations.Immutable;
  * exception, preventing accidental mutations.
  *
  * <p>The corresponding Ehcache region is configured in {@code ehcache.xml} with
- * a 24-hour TTL — genre codes are effectively never changed at runtime.
+ * a 24-hour TTL: genre codes are effectively never changed at runtime.
  */
 @Entity
 @Table(name = "genres")

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * {@link WatchlistRepository} basic save/reload.
  */
 @SpringBootTest
-@DisplayName("Chapter 15 — MovieService & WatchlistRepository")
+@DisplayName("Chapter 15: MovieService & WatchlistRepository")
 class MovieServiceIT extends AbstractIntegrationTest {
 
     @Autowired MovieService         movieService;
@@ -44,7 +44,7 @@ class MovieServiceIT extends AbstractIntegrationTest {
         tx = new TransactionTemplate(txManager);
         // Delete watchlists (and cascade-delete entries) in a separate transaction
         // so the DELETEs are flushed to the database before the bulk JPQL
-        // operations on app_users run — otherwise the FK from watchlists to
+        // operations on app_users run: otherwise the FK from watchlists to
         // app_users still references rows we are about to delete.
         tx.executeWithoutResult(s -> {
             reviewRepository.deleteAllInBatch();
@@ -60,7 +60,7 @@ class MovieServiceIT extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // getMovieWithReviews — not found
+    // getMovieWithReviews: not found
     // -----------------------------------------------------------------------
 
     @Test
@@ -72,7 +72,7 @@ class MovieServiceIT extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // getMovieWithReviews — found with reviews
+    // getMovieWithReviews: found with reviews
     // -----------------------------------------------------------------------
 
     @Test
@@ -94,7 +94,7 @@ class MovieServiceIT extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // getMovieSummaries — returns all movies
+    // getMovieSummaries: returns all movies
     // -----------------------------------------------------------------------
 
     @Test
@@ -114,7 +114,7 @@ class MovieServiceIT extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // WatchlistRepository — save and reload
+    // WatchlistRepository: save and reload
     // -----------------------------------------------------------------------
 
     @Test

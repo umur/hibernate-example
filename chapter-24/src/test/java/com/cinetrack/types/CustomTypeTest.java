@@ -24,11 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <h3>Coverage</h3>
  * <ol>
- *   <li><strong>MoneyType (UserType)</strong> — {@link Money} persists as JSONB and
+ *   <li><strong>MoneyType (UserType)</strong>: {@link Money} persists as JSONB and
  *       round-trips with correct {@code amountCents} and {@code currency}.</li>
- *   <li><strong>JSONB Map (@JdbcTypeCode)</strong> — arbitrary {@code Map<String,Object>}
+ *   <li><strong>JSONB Map (@JdbcTypeCode)</strong>: arbitrary {@code Map<String,Object>}
  *       metadata survives a save/reload cycle intact.</li>
- *   <li><strong>TEXT[] array (@Array)</strong> — a {@code String[]} tags array is
+ *   <li><strong>TEXT[] array (@Array)</strong>: a {@code String[]} tags array is
  *       stored in a native PostgreSQL array column and reloaded without corruption.</li>
  * </ol>
  *
@@ -52,7 +52,7 @@ class CustomTypeTest extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // MoneyType — UserType<Money>
+    // MoneyType: UserType<Money>
     // -----------------------------------------------------------------------
 
     @Test
@@ -81,7 +81,7 @@ class CustomTypeTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @DisplayName("MoneyType: equality is structural — same cents+currency compares equal")
+    @DisplayName("MoneyType: equality is structural: same cents+currency compares equal")
     @Transactional
     void moneyType_equalityIsStructural() {
         Money a = Money.of(500, "EUR");
@@ -117,7 +117,7 @@ class CustomTypeTest extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // JSONB Map — @JdbcTypeCode(SqlTypes.JSON)
+    // JSONB Map: @JdbcTypeCode(SqlTypes.JSON)
     // -----------------------------------------------------------------------
 
     @Test
@@ -172,7 +172,7 @@ class CustomTypeTest extends AbstractIntegrationTest {
     }
 
     // -----------------------------------------------------------------------
-    // TEXT[] array — @Array
+    // TEXT[] array: @Array
     // -----------------------------------------------------------------------
 
     @Test
@@ -319,7 +319,7 @@ class CustomTypeTest extends AbstractIntegrationTest {
     // -----------------------------------------------------------------------
 
     @Test
-    @DisplayName("MoneyType nullSafeSet: Subscription with null price column — column is nullable=false so saving null throws")
+    @DisplayName("MoneyType nullSafeSet: Subscription with null price column: column is nullable=false so saving null throws")
     @Transactional
     void moneyType_null_nullSafeSet_doesNotThrow() {
         // The Subscription.price column is declared nullable=false in the DDL.
@@ -343,7 +343,7 @@ class CustomTypeTest extends AbstractIntegrationTest {
             Subscription reloaded = subscriptionRepository.findById(sub.getId()).orElseThrow();
             assertThat(reloaded.getPrice()).isNull();
         } catch (Exception ex) {
-            // Constraint violation or persistence exception — expected given nullable=false
+            // Constraint violation or persistence exception: expected given nullable=false
             assertThat(ex).isInstanceOfAny(
                     org.springframework.dao.DataIntegrityViolationException.class,
                     jakarta.persistence.PersistenceException.class);
@@ -385,7 +385,7 @@ class CustomTypeTest extends AbstractIntegrationTest {
                 .user(user)
                 .tier(SubscriptionTier.STANDARD)
                 .price(Money.of(500, "USD"))
-                .metadata(null)       // explicitly null — no metadata
+                .metadata(null)       // explicitly null: no metadata
                 .build());
         subscriptionRepository.flush();
 

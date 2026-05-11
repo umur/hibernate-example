@@ -8,14 +8,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.5</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
     <groupId>com.cinetrack</groupId>
     <artifactId>chapter-05</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>chapter-05 — Entity Mapping Deep Dive</name>
+    <name>chapter-05: Entity Mapping Deep Dive</name>
     <description>AttributeConverter, @Embedded/@Embeddable, @DynamicUpdate, @Formula, @ColumnTransformer, @Immutable</description>
 
     <properties>

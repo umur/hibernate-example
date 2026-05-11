@@ -8,14 +8,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.5</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
     <groupId>com.cinetrack</groupId>
     <artifactId>chapter-11-dynamic-queries</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Chapter 11 — Dynamic Queries: Specifications and QueryDSL</name>
+    <name>Chapter 11: Dynamic Queries: Specifications and QueryDSL</name>
     <description>Companion code for Chapter 11 of Hibernate &amp; Spring Data JPA in Depth</description>
 
     <properties>
@@ -72,7 +72,7 @@
             <version>${querydsl.version}</version>
         </dependency>
 
-        <!-- QueryDSL APT — provides Q-type annotation processing at compile time -->
+        <!-- QueryDSL APT: provides Q-type annotation processing at compile time -->
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
@@ -136,7 +136,7 @@
                 </configuration>
             </plugin>
 
-            <!-- maven-compiler-plugin — generates Q-types via querydsl-apt processor
+            <!-- maven-compiler-plugin: generates Q-types via querydsl-apt processor
                  directly during compile phase, avoiding the deprecated apt-maven-plugin. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -166,7 +166,7 @@
                         <path>
                             <groupId>org.springframework.data</groupId>
                             <artifactId>spring-data-jpa</artifactId>
-                            <version>4.0.4</version>
+                            <version>4.0.5</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

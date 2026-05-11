@@ -10,7 +10,7 @@ import java.time.Instant;
 /**
  * Application user entity.
  *
- * <p>The {@code email} field is of type {@link EmailAddress} — a domain value object.
+ * <p>The {@code email} field is of type {@link EmailAddress}: a domain value object.
  * Because {@link EmailAddressConverter} is registered with {@code autoApply=true},
  * Hibernate automatically converts it to/from the {@code email} VARCHAR column with
  * no additional annotation required on this field.

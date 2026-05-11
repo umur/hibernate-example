@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * Integration tests for Chapter 15 — Fetch Strategies.
+ * Integration tests for Chapter 15: Fetch Strategies.
  *
  * Runs as a full {@code @SpringBootTest} against PostgreSQL 16 (via Testcontainers).
  * Hibernate statistics are enabled so we can assert exact SQL query counts,
@@ -34,15 +34,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * <p>Test inventory:
  * <ol>
- *   <li>JOIN FETCH — single SQL query for movies + reviews</li>
- *   <li>@BatchSize — limits N+1 to ⌈N/batchSize⌉ + 1 queries</li>
- *   <li>LazyInitializationException — accessing lazy collection on detached entity</li>
- *   <li>@EntityGraph — findByRatingGreaterThan loads reviews in one query</li>
- *   <li>getMovieSummaries — no collection load, zero secondary queries</li>
+ *   <li>JOIN FETCH: single SQL query for movies + reviews</li>
+ *   <li>@BatchSize: limits N+1 to ⌈N/batchSize⌉ + 1 queries</li>
+ *   <li>LazyInitializationException: accessing lazy collection on detached entity</li>
+ *   <li>@EntityGraph: findByRatingGreaterThan loads reviews in one query</li>
+ *   <li>getMovieSummaries: no collection load, zero secondary queries</li>
  * </ol>
  */
 @SpringBootTest
-@DisplayName("Chapter 15 — Fetch Strategies")
+@DisplayName("Chapter 15: Fetch Strategies")
 class FetchStrategyTest extends AbstractIntegrationTest {
 
     @Autowired MovieRepository movieRepository;
@@ -99,11 +99,11 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 1: JOIN FETCH — single SQL query
+    // Test 1: JOIN FETCH: single SQL query
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("JOIN FETCH — loads movies with reviews in exactly 1 SQL query")
+    @DisplayName("JOIN FETCH: loads movies with reviews in exactly 1 SQL query")
     void joinFetch_singleQuery() {
         persistMoviesWithReviews(5, 3, Genre.ACTION, BigDecimal.valueOf(7.5));
 
@@ -124,11 +124,11 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 2: @BatchSize — limits N+1 queries
+    // Test 2: @BatchSize: limits N+1 queries
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@BatchSize(25) — accessing reviews for 30 movies issues ⌈30/25⌉ + 1 = 3 queries")
+    @DisplayName("@BatchSize(25): accessing reviews for 30 movies issues ⌈30/25⌉ + 1 = 3 queries")
     void batchSize_limitsNPlusOne() {
         persistMoviesWithReviews(30, 2, Genre.DRAMA, BigDecimal.valueOf(6.0));
 
@@ -142,7 +142,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
             long afterLoad = hibernateStatistics.getQueryExecutionCount();
             assertThat(afterLoad).isEqualTo(1L);
 
-            // Access reviews — triggers batch initialisation
+            // Access reviews: triggers batch initialisation
             movies.forEach(m -> m.getReviews().size());
 
             long afterCollectionAccess = hibernateStatistics.getQueryExecutionCount();
@@ -161,7 +161,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("LazyInitializationException — accessing lazy collection on detached entity throws")
+    @DisplayName("LazyInitializationException: accessing lazy collection on detached entity throws")
     void lazyCollection_detachedEntity_throwsLazyInitializationException() {
         Long movieId = tx.execute(s -> {
             Movie movie = movieRepository.save(
@@ -170,7 +170,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
             return movie.getId();
         });
 
-        // Load outside a transaction — entity returned is detached (no open Session)
+        // Load outside a transaction: entity returned is detached (no open Session)
         Movie detached = movieRepository.findById(movieId).orElseThrow();
 
         // Accessing the lazy proxy on a detached entity throws LazyInitializationException
@@ -184,7 +184,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@EntityGraph — findByRatingGreaterThan loads reviews in a single SQL query")
+    @DisplayName("@EntityGraph: findByRatingGreaterThan loads reviews in a single SQL query")
     void entityGraph_singleQuery() {
         persistMoviesWithReviews(4, 2, Genre.COMEDY, BigDecimal.valueOf(8.0));
         tx.executeWithoutResult(s ->
@@ -208,11 +208,11 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 6: lazy proxy — not initialized before first access
+    // Test 6: lazy proxy: not initialized before first access
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("Lazy proxy — reviews collection is not initialized until first access within session")
+    @DisplayName("Lazy proxy: reviews collection is not initialized until first access within session")
     void lazyProxy_isNotInitializedBeforeAccess() {
         Long movieId = tx.execute(s -> {
             Movie movie = movieRepository.save(new Movie("Lazy Proxy Movie", Genre.ACTION, BigDecimal.valueOf(7.0)));
@@ -223,7 +223,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
         tx.executeWithoutResult(s -> {
             Movie movie = movieRepository.findById(movieId).orElseThrow();
 
-            // Collection proxy exists but has not been touched — must NOT be initialized
+            // Collection proxy exists but has not been touched: must NOT be initialized
             assertThat(org.hibernate.Hibernate.isInitialized(movie.getReviews()))
                     .as("reviews collection must not be initialized before first access")
                     .isFalse();
@@ -240,11 +240,11 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 7: @BatchSize with 30 movies — fewer than 30 queries
+    // Test 7: @BatchSize with 30 movies: fewer than 30 queries
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@BatchSize(25) — 30 movies produce fewer than 30 collection-load queries")
+    @DisplayName("@BatchSize(25): 30 movies produce fewer than 30 collection-load queries")
     void batchSize_30movies_producesFewer30Queries() {
         persistMoviesWithReviews(30, 1, Genre.HORROR, BigDecimal.valueOf(5.5));
 
@@ -254,7 +254,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
             List<Movie> movies = movieRepository.findAll();
             assertThat(movies).hasSize(30);
 
-            // Access every movie's reviews collection — without batching this would fire 30 queries
+            // Access every movie's reviews collection: without batching this would fire 30 queries
             movies.forEach(m -> m.getReviews().size());
         });
 
@@ -266,11 +266,11 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 8: @EntityGraph — loads reviews but not reviewer sub-associations
+    // Test 8: @EntityGraph: loads reviews but not reviewer sub-associations
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("@EntityGraph(Movie.withReviews) — reviews initialized, reviewer proxy is NOT initialized")
+    @DisplayName("@EntityGraph(Movie.withReviews): reviews initialized, reviewer proxy is NOT initialized")
     void entityGraph_loadsSpecifiedAssociations_notOthers() {
         tx.executeWithoutResult(s -> {
             Movie movie = movieRepository.save(new Movie("EntityGraph Movie", Genre.DRAMA, BigDecimal.valueOf(8.5)));
@@ -279,7 +279,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
 
         hibernateStatistics.clear();
 
-        // findByRatingGreaterThan uses @EntityGraph("Movie.withReviews") — fetches reviews only
+        // findByRatingGreaterThan uses @EntityGraph("Movie.withReviews"): fetches reviews only
         List<Movie> movies = tx.execute(s ->
                 movieRepository.findByRatingGreaterThan(BigDecimal.valueOf(8.0))
         );
@@ -297,7 +297,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
         assertThat(movie.getReviews()).isNotEmpty();
         com.cinetrack.review.Review firstReview = movie.getReviews().get(0);
         assertThat(org.hibernate.Hibernate.isInitialized(firstReview.getReviewer()))
-                .as("reviewer proxy must NOT be initialized — it is outside the entity graph")
+                .as("reviewer proxy must NOT be initialized: it is outside the entity graph")
                 .isFalse();
     }
 
@@ -306,7 +306,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("LazyInitializationException — accessing reviews on detached movie outside session throws")
+    @DisplayName("LazyInitializationException: accessing reviews on detached movie outside session throws")
     void lazyInitializationException_outsideSession_throws() {
         Long movieId = tx.execute(s -> {
             Movie movie = movieRepository.save(new Movie("LIE Movie", Genre.THRILLER, BigDecimal.valueOf(6.5)));
@@ -314,7 +314,7 @@ class FetchStrategyTest extends AbstractIntegrationTest {
             return movie.getId();
         });
 
-        // Load outside of any transaction — the returned entity is detached (session is closed)
+        // Load outside of any transaction: the returned entity is detached (session is closed)
         Movie detached = movieRepository.findById(movieId).orElseThrow();
 
         // Accessing the lazy collection with no active session must throw
@@ -324,11 +324,11 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 10: JOIN FETCH — single query verified by Hibernate statistics
+    // Test 10: JOIN FETCH: single query verified by Hibernate statistics
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("JOIN FETCH — findByGenreWithReviews fires exactly 1 SQL query (statistics verified)")
+    @DisplayName("JOIN FETCH: findByGenreWithReviews fires exactly 1 SQL query (statistics verified)")
     void joinFetch_singleQuery_verifiedByStatistics() {
         persistMoviesWithReviews(4, 3, Genre.SCI_FI, BigDecimal.valueOf(8.0));
 
@@ -348,17 +348,17 @@ class FetchStrategyTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 5: plain findAll — no collection queries fired
+    // Test 5: plain findAll: no collection queries fired
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("Plain findAll — loads movies without touching the reviews collection")
+    @DisplayName("Plain findAll: loads movies without touching the reviews collection")
     void findAll_noCollectionLoad() {
         persistMoviesWithReviews(3, 4, Genre.SCI_FI, BigDecimal.valueOf(7.0));
 
         hibernateStatistics.clear();
 
-        // findAll() outside transaction — reviews are lazy proxies, never initialised
+        // findAll() outside transaction: reviews are lazy proxies, never initialised
         List<Movie> summaries = movieRepository.findAll();
 
         long queryCount = hibernateStatistics.getQueryExecutionCount();

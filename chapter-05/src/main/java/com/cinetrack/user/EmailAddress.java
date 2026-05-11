@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Value object representing a validated e-mail address.
  *
- * <p>This is a plain Java class — not a JPA entity and not an embeddable.
+ * <p>This is a plain Java class: not a JPA entity and not an embeddable.
  * It is mapped to/from the {@code email} VARCHAR column by
  * {@link EmailAddressConverter}, which is registered with
  * {@code @Converter(autoApply=true)}, so JPA applies it automatically
@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  */
 public final class EmailAddress {
 
-    // RFC 5322-ish simplified pattern — good enough for illustration.
+    // RFC 5322-ish simplified pattern: good enough for illustration.
     private static final Pattern PATTERN =
             Pattern.compile("^[\\w.+\\-]+@[\\w\\-]+(\\.[\\w\\-]+)+$");
 

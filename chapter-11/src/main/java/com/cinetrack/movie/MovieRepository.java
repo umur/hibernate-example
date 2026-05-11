@@ -11,16 +11,16 @@ import org.springframework.stereotype.Repository;
  * query-building strategies simultaneously:
  *
  * <ol>
- *   <li>{@link JpaRepository} — standard CRUD and derived query methods.</li>
- *   <li>{@link JpaSpecificationExecutor} — accepts {@code Specification<Movie>}
+ *   <li>{@link JpaRepository}: standard CRUD and derived query methods.</li>
+ *   <li>{@link JpaSpecificationExecutor}: accepts {@code Specification<Movie>}
  *       predicates composed from {@link MovieSpecifications}.</li>
- *   <li>{@link QuerydslPredicateExecutor} — accepts QueryDSL
+ *   <li>{@link QuerydslPredicateExecutor}: accepts QueryDSL
  *       {@link BooleanExpression} predicates built with the generated
  *       {@code QMovie} class.</li>
  * </ol>
  *
  * <p>All three interfaces share the same underlying {@code EntityManager} and
- * produce standard JPQL/SQL — there is no extra infrastructure required beyond
+ * produce standard JPQL/SQL: there is no extra infrastructure required beyond
  * the dependency declarations in {@code pom.xml}.</p>
  */
 @Repository

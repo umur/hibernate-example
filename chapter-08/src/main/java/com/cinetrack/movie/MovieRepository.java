@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface MovieRepository extends JpaRepository<Movie, Long>, MovieRepositoryCustom {
 
     /**
-     * Derived query — translates to WHERE imdb_id = ?1.
+     * Derived query: translates to WHERE imdb_id = ?1.
      * Unlike findByImdbIdCached, this always issues SQL even if the entity
      * is already in the session cache. Useful as a baseline for comparison.
      */

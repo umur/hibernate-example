@@ -8,7 +8,7 @@ import lombok.Setter;
 /**
  * A movie entity scoped to a tenant schema.
  *
- * <p>The table name {@code movies} is unqualified — PostgreSQL resolves it
+ * <p>The table name {@code movies} is unqualified: PostgreSQL resolves it
  * against whatever schema is currently active on the connection (set by
  * {@code MultiTenantConnectionProviderImpl} via {@code SET search_path}).
  */

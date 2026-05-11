@@ -63,19 +63,19 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
     // -------------------------------------------------------------------------
 
     @Test
-    @DisplayName("Second findById() hits L2C — no additional DB query issued")
+    @DisplayName("Second findById() hits L2C: no additional DB query issued")
     void secondLoadServesFromCache() {
         // --- arrange ---
         Long movieId = txTemplate.execute(s ->
                 movieRepository.save(new Movie("Inception", "SCIENCE_FICTION", 2010)).getId()
         );
 
-        // --- act: first load — populates L2C ---
+        // --- act: first load: populates L2C ---
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         long hitsBefore = stats.getSecondLevelCacheHitCount();
 
-        // --- act: second load — must be served from L2C ---
+        // --- act: second load: must be served from L2C ---
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         // --- assert ---
@@ -102,7 +102,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
                 movieRepository.save(new Movie("The Matrix", "SCIENCE_FICTION", 1999)).getId()
         );
 
-        // First load — puts entity into L2C
+        // First load: puts entity into L2C
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         // --- act: update the movie in a separate transaction ---
@@ -143,14 +143,14 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
     // -------------------------------------------------------------------------
 
     @Test
-    @DisplayName("Repeated loads accumulate L2C hits — hitCount grows with each subsequent access")
+    @DisplayName("Repeated loads accumulate L2C hits: hitCount grows with each subsequent access")
     void repeatedLoadsAccumulateHits() {
         // --- arrange ---
         Long movieId = txTemplate.execute(s ->
                 movieRepository.save(new Movie("Interstellar", "SCIENCE_FICTION", 2014)).getId()
         );
 
-        // First load — cold cache, populates the region
+        // First load: cold cache, populates the region
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         // --- act: load five more times in separate sessions ---
@@ -173,7 +173,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 4: First load — miss count increments
+    // Test 4: First load: miss count increments
     // -------------------------------------------------------------------------
 
     @Test
@@ -186,7 +186,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
 
         long missesBefore = stats.getSecondLevelCacheMissCount();
 
-        // --- act: first load — cold cache ---
+        // --- act: first load: cold cache ---
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         // --- assert ---
@@ -197,7 +197,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 5: Second load after em.clear() — hit count increments
+    // Test 5: Second load after em.clear(): hit count increments
     // -------------------------------------------------------------------------
 
     @Test
@@ -208,7 +208,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
                 movieRepository.save(new Movie("Blade Runner 2049", "SCIENCE_FICTION", 2017)).getId()
         );
 
-        // First load — populates L2C, L1 cache is discarded at transaction end
+        // First load: populates L2C, L1 cache is discarded at transaction end
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         // Explicitly clear the L1 cache (shared EM) as belt-and-suspenders
@@ -216,7 +216,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
 
         long hitsBefore = stats.getSecondLevelCacheHitCount();
 
-        // --- act: second load in a new transaction — must come from L2C ---
+        // --- act: second load in a new transaction: must come from L2C ---
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         // --- assert ---
@@ -227,7 +227,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 6: Update invalidates L2C — next load is a miss again
+    // Test 6: Update invalidates L2C: next load is a miss again
     // -------------------------------------------------------------------------
 
     @Test
@@ -238,9 +238,9 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
                 movieRepository.save(new Movie("Heat", "CRIME", 1995)).getId()
         );
 
-        // Load once — miss (cold), puts into L2C
+        // Load once: miss (cold), puts into L2C
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
-        // Load again — hit, confirms it is cached
+        // Load again: hit, confirms it is cached
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         // --- act: update the entity → L2C entry is evicted / re-put ---
@@ -274,7 +274,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 7: READ_ONLY GenreEntity — second load hits L2C; mutation throws
+    // Test 7: READ_ONLY GenreEntity: second load hits L2C; mutation throws
     // -------------------------------------------------------------------------
 
     @Autowired com.cinetrack.genre.GenreRepository genreRepository;
@@ -286,7 +286,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
     void immutableEntity_cachedWithReadOnly_neverUpdated() {
         // --- arrange: load an existing seeded genre (V1 migration seeds HORROR
         // and friends).  GenreEntity is @Immutable, so we cannot persist a new
-        // row here without colliding with the unique `code` constraint — we
+        // row here without colliding with the unique `code` constraint: we
         // instead exercise the cache against the seeded reference data, which
         // matches how READ_ONLY entities are used in production.
         Long genreId = txTemplate.execute(s ->
@@ -301,12 +301,12 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
         emf.unwrap(SessionFactory.class).getCache().evictAll();
         stats.clear();
 
-        // First load — populates L2C
+        // First load: populates L2C
         txTemplate.executeWithoutResult(s -> genreRepository.findById(genreId).orElseThrow());
 
         long hitsBefore = stats.getSecondLevelCacheHitCount();
 
-        // --- act: second load — must be a hit ---
+        // --- act: second load: must be a hit ---
         txTemplate.executeWithoutResult(s -> genreRepository.findById(genreId).orElseThrow());
 
         long hitsAfter = stats.getSecondLevelCacheHitCount();
@@ -318,7 +318,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
         // Build a detached instance with the same PK so save() issues an UPDATE,
         // which Hibernate rejects on @Immutable entities.
         com.cinetrack.genre.GenreEntity detached =
-                new com.cinetrack.genre.GenreEntity("HORROR", "Horror — Modified");
+                new com.cinetrack.genre.GenreEntity("HORROR", "Horror: Modified");
         try {
             java.lang.reflect.Field f =
                     com.cinetrack.genre.GenreEntity.class.getDeclaredField("id");
@@ -331,7 +331,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
         assertThat(detached).isNotNull(); // ensure setup completed
 
         // Hibernate's @Immutable contract: any UPDATE to the row is silently
-        // discarded — neither merge() nor save() throws, but the database row
+        // discarded: neither merge() nor save() throws, but the database row
         // remains unchanged.  We verify the contract by attempting the merge
         // and then re-reading the row in a fresh transaction.
         txTemplate.executeWithoutResult(s -> genreRepository.save(detached));
@@ -376,7 +376,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
         Long movieId = txTemplate.execute(s ->
                 movieRepository.save(new Movie("Region Stats Movie", "THRILLER", 2021)).getId()
         );
-        // First load — populates the region
+        // First load: populates the region
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         org.hibernate.stat.CacheRegionStatistics regionStats =
@@ -390,7 +390,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 11: evictAll() — next load is a miss
+    // Test 11: evictAll(): next load is a miss
     // -------------------------------------------------------------------------
 
     @Test
@@ -410,7 +410,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
 
         long missesBefore = stats.getSecondLevelCacheMissCount();
 
-        // Load after eviction — must go to the database (miss)
+        // Load after eviction: must go to the database (miss)
         txTemplate.executeWithoutResult(s -> movieRepository.findById(movieId).orElseThrow());
 
         long missesAfter = stats.getSecondLevelCacheMissCount();
@@ -440,7 +440,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
             ids.add(id);
         }
 
-        // --- act: first pass — all misses, populates L2C ---
+        // --- act: first pass: all misses, populates L2C ---
         for (Long id : ids) {
             txTemplate.executeWithoutResult(s -> movieRepository.findById(id).orElseThrow());
         }
@@ -448,7 +448,7 @@ class SecondLevelCacheTest extends AbstractIntegrationTest {
         long hitsBefore  = stats.getSecondLevelCacheHitCount();
         long missesBefore = stats.getSecondLevelCacheMissCount();
 
-        // --- act: nine more passes — all should be hits ---
+        // --- act: nine more passes: all should be hits ---
         for (int pass = 1; pass < loadsPerMovie; pass++) {
             for (Long id : ids) {
                 txTemplate.executeWithoutResult(s -> movieRepository.findById(id).orElseThrow());

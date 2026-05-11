@@ -88,7 +88,7 @@ class NaturalIdTest extends AbstractIntegrationTest {
         entityManager.clear();
         statistics.clear();
 
-        // Act — first call: resolves natural-id → surrogate key via SQL, then loads entity
+        // Act: first call: resolves natural-id → surrogate key via SQL, then loads entity
         Optional<Movie> first = movieRepository.findByImdbIdCached("tt1375666");
         long queriesAfterFirst = statistics.getQueryExecutionCount();
 
@@ -138,17 +138,17 @@ class NaturalIdTest extends AbstractIntegrationTest {
         entityManager.clear();
         statistics.clear();
 
-        // First load — issues SQL (session.byNaturalId goes via PreparedStatement,
+        // First load: issues SQL (session.byNaturalId goes via PreparedStatement,
         // not JPQL, so we track prepare-statement count rather than
         // getQueryExecutionCount, which only counts HQL/JPQL/Criteria queries.)
         movieRepository.findByImdbIdCached("tt2222222");
         long afterFirst = statistics.getPrepareStatementCount();
 
-        // Clear session — evicts identity map and natural-id cache
+        // Clear session: evicts identity map and natural-id cache
         entityManager.clear();
         statistics.clear();
 
-        // Second load after clear — must re-issue SQL
+        // Second load after clear: must re-issue SQL
         movieRepository.findByImdbIdCached("tt2222222");
         long afterSecond = statistics.getPrepareStatementCount();
 
@@ -159,7 +159,7 @@ class NaturalIdTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("movie_nullImdbId_persistsWithoutNaturalIdCacheLookup: Movie with null imdbId persists normally")
     void movie_nullImdbId_persistsWithoutNaturalIdCacheLookup() {
-        // Arrange — imdbId column has no NOT NULL constraint on Movie; null is allowed
+        // Arrange: imdbId column has no NOT NULL constraint on Movie; null is allowed
         Movie movie = new Movie(null, "No IMDB Movie", "DRAMA");
         statistics.clear();
 
@@ -167,10 +167,10 @@ class NaturalIdTest extends AbstractIntegrationTest {
         Movie saved = movieRepository.saveAndFlush(movie);
         entityManager.clear();
 
-        // Assert — the entity was assigned a surrogate ID despite having no imdbId
+        // Assert: the entity was assigned a surrogate ID despite having no imdbId
         assertThat(saved.getId()).isNotNull();
 
-        // Reload by surrogate key — must work without any natural-id cache involvement
+        // Reload by surrogate key: must work without any natural-id cache involvement
         Movie reloaded = movieRepository.findById(saved.getId()).orElseThrow();
         assertThat(reloaded.getTitle()).isEqualTo("No IMDB Movie");
         assertThat(reloaded.getImdbId()).isNull();

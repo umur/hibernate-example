@@ -15,7 +15,7 @@ public interface NotificationRepository extends JpaRepository<PendingNotificatio
      *
      * {@code FOR UPDATE} acquires an exclusive row lock on each claimed row.
      * {@code SKIP LOCKED} skips any row that is already locked by another
-     * transaction instead of waiting for it — so two workers running this
+     * transaction instead of waiting for it: so two workers running this
      * query concurrently will each get a disjoint set of rows with no
      * blocking and no duplicates.
      *

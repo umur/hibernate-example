@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * the exact number of SELECT statements executed on the current thread.
  *
  * <h2>Test data</h2>
- * <p>5 movies, each with 2 reviews — a total of 10 review rows. The fixture is
+ * <p>5 movies, each with 2 reviews: a total of 10 review rows. The fixture is
  * re-created before every test so each test is fully isolated.
  */
 class NplusOneTest extends AbstractIntegrationTest {
@@ -47,7 +47,7 @@ class NplusOneTest extends AbstractIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        // Clean slate — order matters due to FK constraints
+        // Clean slate: order matters due to FK constraints
         txTemplate.executeWithoutResult(status -> {
             movieRepository.deleteAll();
             appUserRepository.deleteAll();
@@ -107,7 +107,7 @@ class NplusOneTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 3: naïve lazy access — documents actual query count (batched)
+    // Test 3: naïve lazy access: documents actual query count (batched)
     // ------------------------------------------------------------------
 
     @Test
@@ -132,11 +132,11 @@ class NplusOneTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 4: JOIN FETCH with 5 movies — exactly 1 query
+    // Test 4: JOIN FETCH with 5 movies: exactly 1 query
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("JOIN FETCH: findAllWithReviews() — 5 movies, exactly 1 SELECT verified by QueryCountHolder")
+    @DisplayName("JOIN FETCH: findAllWithReviews(): 5 movies, exactly 1 SELECT verified by QueryCountHolder")
     void joinFetch_5movies_produces1Query() {
         QueryCountHolder.clear();
 
@@ -202,7 +202,7 @@ class NplusOneTest extends AbstractIntegrationTest {
                 .as("First measurement must record exactly 1 SELECT")
                 .isEqualTo(1);
 
-        // Reset and re-measure — should start from 0 again, not accumulate
+        // Reset and re-measure: should start from 0 again, not accumulate
         QueryCountHolder.clear();
         movieRepository.findAll();
         long secondCount = QueryCountHolder.getGrandTotal().getSelect();
@@ -212,7 +212,7 @@ class NplusOneTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 7: movies with NO reviews — reviews collections are empty, not null
+    // Test 7: movies with NO reviews: reviews collections are empty, not null
     // ------------------------------------------------------------------
 
     @Test
@@ -247,7 +247,7 @@ class NplusOneTest extends AbstractIntegrationTest {
     }
 
     // ------------------------------------------------------------------
-    // Test 8: JOIN FETCH with 26 movies (> batch size 25) — still 1 query
+    // Test 8: JOIN FETCH with 26 movies (> batch size 25): still 1 query
     // ------------------------------------------------------------------
 
     @Test

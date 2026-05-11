@@ -66,7 +66,7 @@ class InheritanceTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @DisplayName("MovieRepository returns only Movies — Series and Episodes are excluded")
+    @DisplayName("MovieRepository returns only Movies: Series and Episodes are excluded")
     void typedRepositoryFiltersOnDiscriminator() {
         // Arrange
         movieRepository.save(new Movie("The Dark Knight", 2008, Genre.ACTION, 152));
@@ -89,7 +89,7 @@ class InheritanceTest extends AbstractIntegrationTest {
         Series series = seriesRepository.save(new Series("Severance", 2022, Genre.THRILLER, 2));
         movieRepository.flush();
 
-        // Act — read raw dtype values via JDBC to bypass ORM mapping
+        // Act: read raw dtype values via JDBC to bypass ORM mapping
         String movieDtype = jdbcTemplate.queryForObject(
                 "SELECT dtype FROM media_items WHERE id = ?", String.class, movie.getId());
         String seriesDtype = jdbcTemplate.queryForObject(
@@ -116,7 +116,7 @@ class InheritanceTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("movieRepository_doesNotReturnSeriesOrEpisode: typed repo returns only Movie rows")
     void movieRepository_doesNotReturnSeriesOrEpisode() {
-        // Arrange — one of each type
+        // Arrange: one of each type
         Movie movie = movieRepository.save(new Movie("Arrival", 2016, Genre.SCIENCE_FICTION, 116));
 
         Series series = new Series("Mindhunter", 2017, Genre.DRAMA, 2);
@@ -128,7 +128,7 @@ class InheritanceTest extends AbstractIntegrationTest {
         // Act
         List<Movie> movies = movieRepository.findAll();
 
-        // Assert — only Movie instances, no Series or Episode
+        // Assert: only Movie instances, no Series or Episode
         assertThat(movies).allMatch(m -> m.getClass().equals(Movie.class));
         assertThat(movies).extracting(Movie::getTitle).contains("Arrival");
     }
@@ -140,11 +140,11 @@ class InheritanceTest extends AbstractIntegrationTest {
         Movie movie = movieRepository.saveAndFlush(new Movie("Tenet", 2020, Genre.ACTION, 150));
         Series series = seriesRepository.saveAndFlush(new Series("Ozark", 2017, Genre.DRAMA, 4));
 
-        // Act — delete only the Movie
+        // Act: delete only the Movie
         movieRepository.delete(movie);
         movieRepository.flush();
 
-        // Assert — Series is still there
+        // Assert: Series is still there
         assertThat(seriesRepository.findById(series.getId())).isPresent();
         assertThat(movieRepository.findById(movie.getId())).isEmpty();
     }
@@ -172,7 +172,7 @@ class InheritanceTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("episode_dtype_isEPISODE: raw dtype column for Episode row is 'EPISODE'")
     void episode_dtype_isEPISODE() {
-        // Arrange — build the series-with-episode graph BEFORE persisting so that
+        // Arrange: build the series-with-episode graph BEFORE persisting so that
         // cascading from save() uses persist-semantics and writes IDs back onto
         // our local Episode reference. (Calling saveAndFlush on an already-managed
         // Series would trigger merge-cascade, which copies the transient Episode
@@ -184,7 +184,7 @@ class InheritanceTest extends AbstractIntegrationTest {
 
         Long epId = ep.getId();
 
-        // Act — bypass ORM and query the raw discriminator column
+        // Act: bypass ORM and query the raw discriminator column
         String dtype = jdbcTemplate.queryForObject(
                 "SELECT dtype FROM media_items WHERE id = ?", String.class, epId);
 
@@ -202,24 +202,24 @@ class InheritanceTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("audit_updatedAt_changesOnMutation: updatedAt is set after title change")
     void audit_updatedAt_changesOnMutation() throws InterruptedException {
-        // Arrange — save and capture the initial updatedAt
+        // Arrange: save and capture the initial updatedAt
         Movie movie = movieRepository.saveAndFlush(new Movie("Draft Title", 2023, Genre.ACTION, 95));
         java.time.Instant createdAt = movie.getCreatedAt();
 
         // Small sleep to guarantee a different timestamp resolution on fast machines
         Thread.sleep(2);
 
-        // Act — mutate and re-save
+        // Act: mutate and re-save
         movie.setTitle("Final Title");
         Movie updated = movieRepository.saveAndFlush(movie);
 
-        // Assert — updatedAt is set and not null (it may equal createdAt on very fast
+        // Assert: updatedAt is set and not null (it may equal createdAt on very fast
         // systems depending on clock resolution, but it must not be null)
         assertThat(updated.getUpdatedAt()).isNotNull();
         assertThat(updated.getTitle()).isEqualTo("Final Title");
     }
 
-    // ── AuditorAware — @CreatedBy / @LastModifiedBy ───────────────────────────
+    // ── AuditorAware: @CreatedBy / @LastModifiedBy ───────────────────────────
 
     @Test
     @DisplayName("audit_createdBy_isSystem: @CreatedBy is populated with 'system' on persist")
@@ -237,7 +237,7 @@ class InheritanceTest extends AbstractIntegrationTest {
                 new Movie("ModifiedBy Test", 2021, Genre.ACTION, 110));
 
         // Mutate to trigger a merge / update cycle
-        movie.setTitle("ModifiedBy Test — Updated");
+        movie.setTitle("ModifiedBy Test: Updated");
         Movie updated = movieRepository.saveAndFlush(movie);
 
         assertThat(updated.getUpdatedBy()).isEqualTo("system");
@@ -248,7 +248,7 @@ class InheritanceTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("polymorphicDelete_movie_survivesOtherSubtypes: deleting a Movie leaves Series count unchanged")
     void polymorphicDelete_movie_survivesOtherSubtypes() {
-        // Arrange — persist a Movie and a Series
+        // Arrange: persist a Movie and a Series
         Movie movie  = movieRepository.saveAndFlush(new Movie("Delete Me", 2020, Genre.ACTION, 90));
         Series series1 = seriesRepository.saveAndFlush(new Series("Keep Me 1", 2019, Genre.DRAMA, 3));
         Series series2 = seriesRepository.saveAndFlush(new Series("Keep Me 2", 2018, Genre.THRILLER, 2));
@@ -256,11 +256,11 @@ class InheritanceTest extends AbstractIntegrationTest {
 
         long seriesCountBefore = seriesRepository.count();
 
-        // Act — delete only the Movie
+        // Act: delete only the Movie
         movieRepository.delete(movie);
         movieRepository.flush();
 
-        // Assert — Series count is unchanged
+        // Assert: Series count is unchanged
         long seriesCountAfter = seriesRepository.count();
         assertThat(seriesCountAfter).isEqualTo(seriesCountBefore);
         assertThat(movieRepository.findById(movie.getId())).isEmpty();

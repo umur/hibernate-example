@@ -14,14 +14,14 @@ import java.util.List;
  * When multiple instances of this worker call {@link #processBatch} at the
  * same time, each issues the same {@code SELECT ... FOR UPDATE SKIP LOCKED}
  * query.  PostgreSQL locks the rows it returns to the first requester and
- * skips those rows for all subsequent requesters — so each worker gets a
+ * skips those rows for all subsequent requesters: so each worker gets a
  * completely disjoint set of notifications without any waiting or blocking.
  *
  * <h2>Contrast with SELECT FOR UPDATE (without SKIP LOCKED)</h2>
  * Without SKIP LOCKED, the second worker would block on the locked rows until
  * the first worker's transaction commits.  At that point those rows would have
  * status = PROCESSING or DONE and the second worker's query would return them
- * anyway — resulting in duplicate processing.
+ * anyway: resulting in duplicate processing.
  *
  * <h2>Transaction boundary</h2>
  * The lock is held for the entire transaction.  We update status to PROCESSING
@@ -62,7 +62,7 @@ public class NotificationWorker {
         for (PendingNotification notification : batch) {
             notification.setStatus(NotificationStatus.PROCESSING);
         }
-        // Flush PROCESSING status within the same transaction — locks held
+        // Flush PROCESSING status within the same transaction: locks held
         notificationRepository.saveAll(batch);
 
         // Simulate work (in production: call email/push API here)

@@ -13,7 +13,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 /**
- * Both associations are LAZY — the correct default for @ManyToOne in Hibernate.
+ * Both associations are LAZY: the correct default for @ManyToOne in Hibernate.
  *
  * EAGER on a @ManyToOne causes Hibernate to LEFT OUTER JOIN to the associated
  * table on every query, even when you only need the Review's own fields.

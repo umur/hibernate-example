@@ -49,7 +49,7 @@ class MovieQueryServiceTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Helper — insert a movie and return its generated id
+    // Helper: insert a movie and return its generated id
     // -------------------------------------------------------------------------
 
     private Long insertMovie(String title, String genre, int releaseYear, double rating) {
@@ -75,7 +75,7 @@ class MovieQueryServiceTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // findReviewSummaries — with data returns populated DTOs
+    // findReviewSummaries: with data returns populated DTOs
     // -------------------------------------------------------------------------
 
     @Test
@@ -100,13 +100,13 @@ class MovieQueryServiceTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // findReviewSummaries — no reviews returns empty list
+    // findReviewSummaries: no reviews returns empty list
     // -------------------------------------------------------------------------
 
     @Test
     @DisplayName("findReviewSummaries_noData_returnsEmpty")
     void findReviewSummaries_noData_returnsEmpty() {
-        // Arrange — a movie with no reviews
+        // Arrange: a movie with no reviews
         Long movieId = tx.execute(s -> insertMovie("Empty Film", "COMEDY", 2021, 6.0));
 
         // Act
@@ -118,13 +118,13 @@ class MovieQueryServiceTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // findReviewSummaries — tuple fields all accessible by alias, ordered DESC
+    // findReviewSummaries: tuple fields all accessible by alias, ordered DESC
     // -------------------------------------------------------------------------
 
     @Test
     @DisplayName("tupleResult_columns_accessibleByAlias")
     void tupleResult_columns_accessibleByAlias() {
-        // Arrange — two reviews on the same movie
+        // Arrange: two reviews on the same movie
         Long movieId = tx.execute(s -> insertMovie("Multi-Review Film", "THRILLER", 2019, 8.0));
         Long bobId   = tx.execute(s -> insertUser("alias_bob",   "alias_bob@example.com"));
         Long carolId = tx.execute(s -> insertUser("alias_carol", "alias_carol@example.com"));
@@ -137,7 +137,7 @@ class MovieQueryServiceTest extends AbstractIntegrationTest {
         List<ReviewSummaryDto> summaries = tx.execute(s ->
                 movieQueryService.findReviewSummaries(movieId));
 
-        // Assert — two DTOs, all fields non-null, ordered by rating DESC
+        // Assert: two DTOs, all fields non-null, ordered by rating DESC
         assertThat(summaries).hasSize(2);
         summaries.forEach(dto -> {
             assertThat(dto.reviewId()).isNotNull();

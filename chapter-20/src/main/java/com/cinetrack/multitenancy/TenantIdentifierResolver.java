@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * {@link TenantContext}, which is populated by {@link TenantFilter} from the
  * incoming {@code X-Tenant-ID} HTTP header.
  *
- * <p>Falls back to the {@code public} schema when no tenant is set — useful
+ * <p>Falls back to the {@code public} schema when no tenant is set: useful
  * during startup health-checks and actuator requests that do not carry a
  * tenant header.
  */

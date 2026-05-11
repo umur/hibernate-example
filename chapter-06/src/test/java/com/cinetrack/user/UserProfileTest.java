@@ -13,17 +13,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  * {@link AppUser} and {@link UserProfile}.
  *
  * <p>The defining invariant: after saving a user with its profile,
- * {@code profile.getId() == user.getId()} — the profile shares the user's PK
+ * {@code profile.getId() == user.getId()}: the profile shares the user's PK
  * rather than having an independent surrogate key.
  */
-@DisplayName("UserProfile — shared-PK @OneToOne")
+@DisplayName("UserProfile: shared-PK @OneToOne")
 class UserProfileTest extends AbstractIntegrationTest {
 
     @Autowired private AppUserRepository userRepository;
     @Autowired private EntityManager  em;
 
     @Test
-    @DisplayName("Saved profile.getId() equals user.getId() — shared primary key")
+    @DisplayName("Saved profile.getId() equals user.getId(): shared primary key")
     void profileSharesUserPrimaryKey() {
         // GIVEN
         AppUser user = new AppUser("frank", "frank@example.com");
@@ -33,7 +33,7 @@ class UserProfileTest extends AbstractIntegrationTest {
         // WHEN
         AppUser saved = userRepository.saveAndFlush(user);
 
-        // THEN — profile PK equals user PK
+        // THEN: profile PK equals user PK
         assertThat(saved.getProfile().getId())
                 .isNotNull()
                 .isEqualTo(saved.getId());
@@ -82,7 +82,7 @@ class UserProfileTest extends AbstractIntegrationTest {
 
         user.setProfile(profile);
 
-        // Before any persistence — both sides are wired in memory
+        // Before any persistence: both sides are wired in memory
         assertThat(user.getProfile()).isSameAs(profile);
         assertThat(profile.getUser()).isSameAs(user);
     }
@@ -94,7 +94,7 @@ class UserProfileTest extends AbstractIntegrationTest {
         // extra query on load. We verify the profile reference is null when none
         // was ever persisted (the DB has no matching user_profiles row).
         AppUser user = new AppUser("jake", "jake@example.com");
-        // Do NOT call setProfile — save user without a profile
+        // Do NOT call setProfile: save user without a profile
         userRepository.saveAndFlush(user);
         Long userId = user.getId();
 
@@ -113,7 +113,7 @@ class UserProfileTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("multipleUsers_profilesAreIndependent: each user has its own distinct profile")
     void multipleUsers_profilesAreIndependent() {
-        // GIVEN — two users with different profiles
+        // GIVEN: two users with different profiles
         AppUser user1 = new AppUser("luna", "luna@example.com");
         user1.setProfile(new UserProfile("Sci-fi fan", "https://cdn.example.com/luna.jpg"));
         userRepository.saveAndFlush(user1);
@@ -129,7 +129,7 @@ class UserProfileTest extends AbstractIntegrationTest {
         AppUser loaded1 = userRepository.findByIdWithProfile(user1.getId()).orElseThrow();
         AppUser loaded2 = userRepository.findByIdWithProfile(user2.getId()).orElseThrow();
 
-        // THEN — profiles are independent
+        // THEN: profiles are independent
         assertThat(loaded1.getProfile().getBio()).isEqualTo("Sci-fi fan");
         assertThat(loaded2.getProfile().getBio()).isEqualTo("Documentary lover");
         assertThat(loaded1.getProfile().getId()).isEqualTo(loaded1.getId());

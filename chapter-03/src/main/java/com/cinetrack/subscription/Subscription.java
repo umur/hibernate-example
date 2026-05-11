@@ -9,7 +9,7 @@ import java.time.LocalDate;
 /**
  * Subscription entity.
  *
- * <p>{@code @Version} provides optimistic locking — critical for subscription
+ * <p>{@code @Version} provides optimistic locking: critical for subscription
  * state transitions (e.g., concurrent CANCEL and RENEW requests on the same row).
  * Hibernate appends {@code AND version = ?} to every UPDATE; if another
  * transaction already incremented the version, an {@link jakarta.persistence.OptimisticLockException}

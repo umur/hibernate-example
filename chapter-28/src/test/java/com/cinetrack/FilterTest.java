@@ -64,7 +64,7 @@ class FilterTest extends AbstractIntegrationTest {
         movieRepository.save(deleted);
         movieRepository.flush();
 
-        // No filter enabled — all records visible
+        // No filter enabled: all records visible
         List<Movie> results = entityManager
                 .createQuery("SELECT m FROM Movie m", Movie.class)
                 .getResultList();
@@ -83,7 +83,7 @@ class FilterTest extends AbstractIntegrationTest {
         movieRepository.save(softDeleted);
         movieRepository.flush();
 
-        // No filter enabled — deleted movie IS visible in raw JPA query
+        // No filter enabled: deleted movie IS visible in raw JPA query
         List<Movie> results = entityManager
                 .createQuery("SELECT m FROM Movie m", Movie.class)
                 .getResultList();
@@ -103,7 +103,7 @@ class FilterTest extends AbstractIntegrationTest {
         movieRepository.save(softDeleted);
         movieRepository.flush();
 
-        // Enable filter — only non-deleted movies should appear
+        // Enable filter: only non-deleted movies should appear
         Session session = entityManager.unwrap(Session.class);
         session.enableFilter("activeMovies").setParameter("deleted", false);
 
@@ -132,7 +132,7 @@ class FilterTest extends AbstractIntegrationTest {
         movieRepository.save(deleted);
         movieRepository.flush();
 
-        // Enable filter with deleted=true — only the deleted movie should match
+        // Enable filter with deleted=true: only the deleted movie should match
         Session session = entityManager.unwrap(Session.class);
         session.enableFilter("activeMovies").setParameter("deleted", true);
 
@@ -177,7 +177,7 @@ class FilterTest extends AbstractIntegrationTest {
                     .size();
         });
 
-        // Transaction 2: new session — filter must NOT be carried over.
+        // Transaction 2: new session: filter must NOT be carried over.
         // Without filter, both movies are visible → count must be 2.
         long unfilteredCount = tx.execute(status ->
                 (long) entityManager
@@ -192,7 +192,7 @@ class FilterTest extends AbstractIntegrationTest {
                 .as("tx1 with filter(deleted=false) must see only the active movie")
                 .isEqualTo(1L);
 
-        // tx2 (no filter) must see both — proves the filter did not leak
+        // tx2 (no filter) must see both: proves the filter did not leak
         assertThat(unfilteredCount)
                 .as("tx2 without filter must see all movies (filter must not leak across sessions)")
                 .isEqualTo(2L);

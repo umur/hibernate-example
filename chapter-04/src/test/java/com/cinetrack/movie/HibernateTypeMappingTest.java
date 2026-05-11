@@ -22,11 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * <p>Extends {@link AbstractIntegrationTest} which supplies a real PostgreSQL 16
  * container via Testcontainers and configures the slice with {@code @DataJpaTest}.
  * {@link JdbcTemplate} is injected to verify raw column values independently of
- * the Hibernate type pipeline — this is the only reliable way to confirm that the
+ * the Hibernate type pipeline: this is the only reliable way to confirm that the
  * database actually stores what we expect (e.g., enum name vs. ordinal).
  */
 @Import(MovieQueryService.class)
-@DisplayName("Hibernate 7 type-system mapping — extended coverage")
+@DisplayName("Hibernate 7 type-system mapping: extended coverage")
 class HibernateTypeMappingTest extends AbstractIntegrationTest {
 
     @Autowired private MovieRepository    movieRepository;
@@ -38,7 +38,7 @@ class HibernateTypeMappingTest extends AbstractIntegrationTest {
     // ── Scenario 1: JSONB null metadata ──────────────────────────────────────
 
     @Test
-    @DisplayName("Saving a Movie with null metadata reloads as null — not an empty map")
+    @DisplayName("Saving a Movie with null metadata reloads as null: not an empty map")
     void jsonbNullMetadata_roundTrips_asNull() {
         Movie movie = new Movie("Null Metadata Film", Genre.DRAMA, 2020, new BigDecimal("6.5"));
         movie.setMetadata(null);

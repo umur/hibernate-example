@@ -7,13 +7,13 @@ import static org.assertj.core.api.Assertions.*;
 
 /**
  * Pure unit tests for the {@link Money} value object.
- * No Spring context, no database — just the domain rules.
+ * No Spring context, no database: just the domain rules.
  */
-@DisplayName("Money — value object unit tests")
+@DisplayName("Money: value object unit tests")
 class MoneyUnitTest {
 
     @Test
-    @DisplayName("Money.of(0, USD) is valid — zero amount is allowed")
+    @DisplayName("Money.of(0, USD) is valid: zero amount is allowed")
     void zeroAmountIsAllowed() {
         Money money = Money.of(0, "USD");
         assertThat(money.amountCents()).isZero();
@@ -21,7 +21,7 @@ class MoneyUnitTest {
     }
 
     @Test
-    @DisplayName("Money.equals — same amount and currency are equal")
+    @DisplayName("Money.equals: same amount and currency are equal")
     void equalsSameAmountAndCurrency() {
         Money a = Money.of(500, "EUR");
         Money b = Money.of(500, "EUR");
@@ -30,7 +30,7 @@ class MoneyUnitTest {
     }
 
     @Test
-    @DisplayName("Money.equals — different currency means not equal")
+    @DisplayName("Money.equals: different currency means not equal")
     void equalsDifferentCurrencyNotEqual() {
         Money usd = Money.of(500, "USD");
         Money eur = Money.of(500, "EUR");
@@ -38,7 +38,7 @@ class MoneyUnitTest {
     }
 
     @Test
-    @DisplayName("Money.equals — different amount means not equal")
+    @DisplayName("Money.equals: different amount means not equal")
     void equalsDifferentAmountNotEqual() {
         Money a = Money.of(100, "USD");
         Money b = Money.of(200, "USD");

@@ -21,7 +21,7 @@ public class Review {
     private Long id;
 
     /**
-     * LAZY many-to-one — loading a review does not automatically load the
+     * LAZY many-to-one: loading a review does not automatically load the
      * entire Movie graph. This is the correct default for @ManyToOne.
      */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

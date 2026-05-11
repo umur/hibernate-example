@@ -83,7 +83,7 @@ class MovieImportServiceTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 3: single invalid item — nothing is committed
+    // Test 3: single invalid item: nothing is committed
     // -------------------------------------------------------------------------
 
     @Test
@@ -113,7 +113,7 @@ class MovieImportServiceTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Test 5: release-year boundary — exactly 1888 and 2100 are valid
+    // Test 5: release-year boundary: exactly 1888 and 2100 are valid
     // -------------------------------------------------------------------------
 
     @Test

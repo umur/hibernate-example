@@ -13,7 +13,7 @@ import java.time.Instant;
 /**
  * Review entity with optimistic locking.
  *
- * <p>Reviews are mutable — a user may update their rating or content after
+ * <p>Reviews are mutable: a user may update their rating or content after
  * posting.  {@link Version} provides optimistic concurrency control: if two
  * sessions load the same review and both attempt to flush changes, the second
  * flush throws {@code OptimisticLockException} because the version column no

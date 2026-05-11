@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * subsequent find hits the database), then asserts that Hibernate correctly
  * round-tripped the value through its type-system pipeline.
  */
-@DisplayName("Movie — Hibernate 7 type-system mapping")
+@DisplayName("Movie: Hibernate 7 type-system mapping")
 class MovieMappingTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -39,7 +39,7 @@ class MovieMappingTest extends AbstractIntegrationTest {
         movieRepository.save(movie);
         movieRepository.flush();    // flush to DB within the transaction
 
-        // WHEN — force a fresh load from DB by evicting the entity
+        // WHEN: force a fresh load from DB by evicting the entity
         movieRepository.findById(movie.getId()); // warms the session cache
         // @DataJpaTest wraps each test in a transaction; use a new lookup to verify
         Movie loaded = movieRepository.findById(movie.getId()).orElseThrow();
@@ -79,14 +79,14 @@ class MovieMappingTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("@UuidGenerator assigns a non-null UUID on first persist")
     void uuidGeneratedOnPersist() {
-        // GIVEN — id is null before save
+        // GIVEN: id is null before save
         Movie movie = new Movie("Parasite", Genre.DRAMA, 2019, new BigDecimal("8.6"));
         assertThat(movie.getId()).isNull();
 
         // WHEN
         Movie saved = movieRepository.save(movie);
 
-        // THEN — Hibernate assigns the UUID during persist, before the INSERT
+        // THEN: Hibernate assigns the UUID during persist, before the INSERT
         assertThat(saved.getId())
                 .isNotNull()
                 .isInstanceOf(UUID.class);

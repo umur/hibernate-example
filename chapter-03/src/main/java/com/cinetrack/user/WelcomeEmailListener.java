@@ -15,7 +15,7 @@ import org.springframework.transaction.event.TransactionPhase;
  * and visible to all other sessions before we attempt any side-effect.
  *
  * <p>If the transaction rolls back (e.g., due to a unique-constraint violation
- * on the username), this method is <em>never</em> called — so we will never
+ * on the username), this method is <em>never</em> called: so we will never
  * send a welcome email to a user who doesn't actually exist in the database.
  *
  * <h2>Execution context</h2>
@@ -40,7 +40,7 @@ public class WelcomeEmailListener {
      */
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onUserCreated(UserCreatedEvent event) {
-        log.info("[WelcomeEmailListener] AFTER_COMMIT fired — would send welcome email to: {}",
+        log.info("[WelcomeEmailListener] AFTER_COMMIT fired: would send welcome email to: {}",
                 event.email());
         log.info("[WelcomeEmailListener] User details: id={}, username={}",
                 event.userId(), event.username());

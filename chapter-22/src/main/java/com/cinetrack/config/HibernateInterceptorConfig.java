@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * therefore stateful per unit-of-work. A <em>factory-scoped</em> interceptor
  * is a singleton registered once at bootstrap via the
  * {@code hibernate.session_factory.interceptor} property and is shared across
- * all sessions — so it must be thread-safe (stateless logging is fine).</p>
+ * all sessions: so it must be thread-safe (stateless logging is fine).</p>
  *
  * <p>Spring Boot exposes {@link HibernatePropertiesCustomizer} as the clean
  * way to inject arbitrary Hibernate properties without touching

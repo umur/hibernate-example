@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Movie entity demonstrating two types of collection mappings side by side.
  *
- * <h2>{@code @ElementCollection} — tags</h2>
+ * <h2>{@code @ElementCollection}: tags</h2>
  * {@code tags} is a {@code Set<String>} with no entity lifecycle of its own.
  * Hibernate stores each element as a row in the {@code movie_genres} collection
  * table and manages insertions/deletions automatically when the set is mutated.
@@ -23,23 +23,23 @@ import java.util.Set;
  * and avoids the "delete all, re-insert all" behaviour that bags trigger on any
  * collection mutation.
  *
- * <h2>Bidirectional {@code @OneToMany} — reviews</h2>
+ * <h2>Bidirectional {@code @OneToMany}: reviews</h2>
  * The inverse (non-owning) side of the bidirectional association with {@link Review}.
  * The owning side is {@code Review.movie} ({@code @ManyToOne}).
  *
  * <ul>
- *   <li>{@code cascade = CascadeType.ALL} — persisting or removing a {@code Movie}
+ *   <li>{@code cascade = CascadeType.ALL}: persisting or removing a {@code Movie}
  *       cascades to all its {@code Review} children.</li>
- *   <li>{@code orphanRemoval = true} — removing a {@code Review} from this list
+ *   <li>{@code orphanRemoval = true}: removing a {@code Review} from this list
  *       automatically DELETEs the orphaned review row, even without explicit
  *       {@code em.remove(review)}.</li>
- *   <li>{@code @BatchSize(size = 25)} — when Hibernate initialises this
+ *   <li>{@code @BatchSize(size = 25)}: when Hibernate initialises this
  *       collection for multiple {@code Movie} proxies in the same session it
  *       uses a batched IN-clause query rather than N individual SELECTs.</li>
  * </ul>
  *
  * <h2>Bag vs Set semantics</h2>
- * Reviews are stored in a {@code List} (a Hibernate "bag") — order is not
+ * Reviews are stored in a {@code List} (a Hibernate "bag"): order is not
  * guaranteed by the database but duplicates are permitted at the Java level.
  * Bags produce efficient SQL for collection loading but trigger a full
  * DELETE + re-INSERT when an element is added/removed from the middle.
@@ -79,7 +79,7 @@ public class Movie {
      *
      * <p>{@link CollectionTable} names the table and the FK column.
      * {@link Column} names the element column within that table.
-     * Hibernate handles all INSERTs and DELETEs when the set is modified —
+     * Hibernate handles all INSERTs and DELETEs when the set is modified : 
      * no repository method needed.
      */
     @ElementCollection
@@ -93,7 +93,7 @@ public class Movie {
      * Inverse side of the bidirectional Movie ↔ Review association.
      *
      * <p>{@code mappedBy = "movie"} tells Hibernate that {@code Review.movie}
-     * owns the FK column — this side never writes to the database.
+     * owns the FK column: this side never writes to the database.
      * Always use the helper methods {@link #addReview} and {@link #removeReview}
      * to keep both sides of the association in sync within the same session.
      */

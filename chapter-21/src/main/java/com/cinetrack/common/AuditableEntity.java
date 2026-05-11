@@ -17,8 +17,8 @@ import java.time.Instant;
  * <p>Spring Data populates the four fields automatically on every
  * INSERT and UPDATE:
  * <ul>
- *   <li>{@code createdAt} / {@code updatedAt} — set from the system clock.</li>
- *   <li>{@code createdBy} / {@code updatedBy} — resolved from the
+ *   <li>{@code createdAt} / {@code updatedAt}: set from the system clock.</li>
+ *   <li>{@code createdBy} / {@code updatedBy}: resolved from the
  *       {@link org.springframework.data.domain.AuditorAware} bean wired in
  *       {@link com.cinetrack.config.JpaAuditingConfig}, which reads the
  *       authenticated principal name from the Spring Security context.</li>

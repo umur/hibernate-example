@@ -8,7 +8,7 @@ import lombok.*;
 import java.time.Instant;
 
 /**
- * Review entity. Both associations are {@code LAZY} — the default for
+ * Review entity. Both associations are {@code LAZY}: the default for
  * {@code @ManyToOne} in JPA spec is EAGER, but that is almost always the
  * wrong choice. Explicit {@code fetch = FetchType.LAZY} makes the intent
  * visible and prevents accidental N+1 issues at the entity level.

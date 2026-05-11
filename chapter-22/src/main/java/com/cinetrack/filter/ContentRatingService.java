@@ -15,7 +15,7 @@ import java.util.List;
  * Service that demonstrates Hibernate's session-scoped {@code @Filter} API.
  *
  * <p>The {@code contentRatingFilter} is defined on {@link Movie} but is
- * <em>disabled by default</em> — Hibernate filters are opt-in per session.
+ * <em>disabled by default</em>: Hibernate filters are opt-in per session.
  * Calling {@link Session#enableFilter(String)} before any query in the same
  * transaction activates the filter SQL fragment for the lifetime of that
  * session.</p>

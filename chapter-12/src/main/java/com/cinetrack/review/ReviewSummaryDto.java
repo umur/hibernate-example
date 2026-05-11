@@ -10,7 +10,7 @@ package com.cinetrack.review;
  * relying on JPQL string literals.</p>
  *
  * <p>Because it is a plain record it is also usable as a response DTO in the
- * REST layer — no Jackson annotations needed; the record component names become
+ * REST layer: no Jackson annotations needed; the record component names become
  * JSON field names automatically.</p>
  */
 public record ReviewSummaryDto(

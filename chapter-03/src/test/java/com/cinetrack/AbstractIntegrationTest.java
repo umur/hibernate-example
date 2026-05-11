@@ -14,7 +14,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
  *
  * <p>We intentionally do NOT use {@code @Testcontainers} + {@code @Container}
  * here, because that combination stops the container after every test <em>class</em>
- * — even for {@code static} fields — which tears down HikariCP connections and
+ *: even for {@code static} fields: which tears down HikariCP connections and
  * causes {@code CannotCreateTransactionException} for subsequent test classes
  * that share the same Spring application context.
  *

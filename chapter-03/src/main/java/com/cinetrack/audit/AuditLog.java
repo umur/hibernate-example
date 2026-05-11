@@ -11,7 +11,7 @@ import java.time.Instant;
  * <p>Audit logs are written in a {@code REQUIRES_NEW} transaction (see
  * {@link AuditService}), which means they commit independently of the
  * outer business transaction. Even if the outer transaction rolls back,
- * the audit entry survives — providing a durable, tamper-evident trail.
+ * the audit entry survives: providing a durable, tamper-evident trail.
  *
  * <p>The entity intentionally has no {@code @Version} and no update path:
  * audit records are append-only.

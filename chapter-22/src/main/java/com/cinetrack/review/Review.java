@@ -10,9 +10,9 @@ import org.hibernate.annotations.SQLRestriction;
 /**
  * Review entity demonstrating:
  * <ul>
- *   <li>{@code @EntityListeners} — delegates pre-persist/pre-update normalisation
+ *   <li>{@code @EntityListeners}: delegates pre-persist/pre-update normalisation
  *       to {@link ReviewNormalizationListener}</li>
- *   <li>{@code @SQLDelete} + {@code @Where} — soft-delete pattern identical to
+ *   <li>{@code @SQLDelete} + {@code @Where}: soft-delete pattern identical to
  *       {@code Movie}, ensuring deleted reviews are invisible to JPQL queries</li>
  * </ul>
  */

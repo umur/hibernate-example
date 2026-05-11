@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * A single episode belonging to a Series. The series_id foreign key points
- * back to the same media_items table — a self-referential relationship
+ * back to the same media_items table: a self-referential relationship
  * that works cleanly under SINGLE_TABLE inheritance.
  */
 @Entity

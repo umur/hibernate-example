@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 
 /**
  * Maps to the {@code movies} table created by V2__create_movies.sql.
- * Column names and types must match exactly — ddl-auto=validate will reject
+ * Column names and types must match exactly: ddl-auto=validate will reject
  * any mismatch at startup.
  */
 @Entity

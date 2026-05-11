@@ -54,7 +54,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
     // -------------------------------------------------------------------------
 
     @Test
-    @DisplayName("Interface projection returns only title and rating — not the full entity")
+    @DisplayName("Interface projection returns only title and rating: not the full entity")
     void interfaceProjectionReturnsOnlyDeclaredFields() {
         // Arrange
         movieRepository.saveAndFlush(new Movie("Amélie", Genre.ROMANCE, new BigDecimal("8.3")));
@@ -68,7 +68,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         MovieSummary s = summaries.getFirst();
         assertThat(s.getTitle()).isEqualTo("Amélie");
         assertThat(s.getRating()).isEqualTo(8.3);
-        // The proxy is NOT a Movie instance — only the projection interface is exposed
+        // The proxy is NOT a Movie instance: only the projection interface is exposed
         assertThat(s).isNotInstanceOf(Movie.class);
     }
 
@@ -106,7 +106,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("Scrolling API returns the first window and correctly signals more data")
     void scrollingApiPagesThroughMovies() {
-        // Arrange — insert 25 movies
+        // Arrange: insert 25 movies
         for (int i = 1; i <= 25; i++) {
             movieRepository.save(
                     new Movie("Movie %02d".formatted(i), Genre.ACTION, new BigDecimal("7.0")));
@@ -115,7 +115,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
 
         Sort sort = Sort.by("title").ascending();
 
-        // Act — first window (up to 20 items)
+        // Act: first window (up to 20 items)
         Window<Movie> firstWindow = movieRepository.findFirst20By(
                 ScrollPosition.offset(), sort);
 
@@ -166,19 +166,19 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         movieRepository.deleteById(id);
         movieRepository.flush();
 
-        // Assert — entity still exists in the database
+        // Assert: entity still exists in the database
         Movie found = movieRepository.findById(id).orElseThrow();
         assertThat(found.getDeletedAt()).isNotNull();
     }
 
     // -------------------------------------------------------------------------
-    // Scrolling API — second window shares no IDs with first window
+    // Scrolling API: second window shares no IDs with first window
     // -------------------------------------------------------------------------
 
     @Test
     @DisplayName("Second scrolling window contains no IDs that appeared in the first window")
     void scrollingApi_secondWindow_doesNotRepeatFirstPageResults() {
-        // Arrange — 40 movies guarantees a full first window of 20 and a second window
+        // Arrange: 40 movies guarantees a full first window of 20 and a second window
         for (int i = 1; i <= 40; i++) {
             movieRepository.save(
                     new Movie("Scroll Movie %02d".formatted(i), Genre.ACTION, new BigDecimal("6.0")));
@@ -195,14 +195,14 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
                 firstWindow.positionAt(firstWindow.getContent().size() - 1), sort);
         assertThat(secondWindow.getContent()).isNotEmpty();
 
-        // Assert — the two windows share no IDs
+        // Assert: the two windows share no IDs
         List<Long> firstIds  = firstWindow.getContent().stream().map(Movie::getId).toList();
         List<Long> secondIds = secondWindow.getContent().stream().map(Movie::getId).toList();
         assertThat(secondIds).doesNotContainAnyElementsOf(firstIds);
     }
 
     // -------------------------------------------------------------------------
-    // Soft Delete — raw DB verification via JdbcTemplate
+    // Soft Delete: raw DB verification via JdbcTemplate
     // -------------------------------------------------------------------------
 
     @Autowired
@@ -220,7 +220,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         movieRepository.deleteById(id);
         movieRepository.flush();
 
-        // Assert via raw JDBC — the row must still exist with a non-null deleted_at
+        // Assert via raw JDBC: the row must still exist with a non-null deleted_at
         java.time.Instant deletedAt = jdbcTemplate.queryForObject(
                 "SELECT deleted_at FROM movies WHERE id = ?",
                 java.time.Instant.class,
@@ -229,7 +229,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Interface projection — closed interface returns proxies, not entities
+    // Interface projection: closed interface returns proxies, not entities
     // -------------------------------------------------------------------------
 
     @Test
@@ -243,7 +243,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         // Act
         List<MovieSummary> summaries = movieRepository.findByGenre(Genre.THRILLER);
 
-        // Assert — at least one result present
+        // Assert: at least one result present
         assertThat(summaries).isNotEmpty();
         MovieSummary first = summaries.stream()
                 .filter(s -> s.getTitle().equals(title))
@@ -259,13 +259,13 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Auditing — updatedAt advances on second save
+    // Auditing: updatedAt advances on second save
     // -------------------------------------------------------------------------
 
     @Test
     @DisplayName("updatedAt is greater than or equal to the original value after a second save")
     void audit_updatedAt_changesOnSecondSave() throws InterruptedException {
-        // Arrange — first save
+        // Arrange: first save
         Movie movie = movieRepository.saveAndFlush(
                 new Movie("Audit Movie", Genre.ROMANCE, new BigDecimal("6.5")));
         java.time.Instant originalUpdatedAt = movie.getUpdatedAt();
@@ -274,7 +274,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         // Small gap to ensure clock can advance
         Thread.sleep(1);
 
-        // Act — second save with a change
+        // Act: second save with a change
         movie.setRating(new BigDecimal("7.0"));
         Movie updated = movieRepository.saveAndFlush(movie);
 
@@ -283,13 +283,13 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Soft Delete — fallback to hard delete for entity without deletedAt
+    // Soft Delete: fallback to hard delete for entity without deletedAt
     // -------------------------------------------------------------------------
 
     @Test
     @DisplayName("softDelete_entityWithoutDeletedAt_fallsBackToHardDelete: AppUser has no deletedAt, so deleteById performs a real DELETE")
     void softDelete_entityWithoutDeletedAt_fallsBackToHardDelete() {
-        // Arrange — AppUser has no setDeletedAt method; SoftDeletableRepositoryImpl falls back to hard delete
+        // Arrange: AppUser has no setDeletedAt method; SoftDeletableRepositoryImpl falls back to hard delete
         com.cinetrack.user.AppUser user = appUserRepository.saveAndFlush(
                 new com.cinetrack.user.AppUser("hard_delete_user", "harddelete@example.com"));
         Long userId = user.getId();
@@ -298,12 +298,12 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         appUserRepository.deleteById(userId);
         appUserRepository.flush();
 
-        // Assert — the row is physically gone (hard delete)
+        // Assert: the row is physically gone (hard delete)
         assertThat(appUserRepository.findById(userId)).isEmpty();
     }
 
     // -------------------------------------------------------------------------
-    // Soft Delete — multiple entities each get a deletedAt timestamp
+    // Soft Delete: multiple entities each get a deletedAt timestamp
     // -------------------------------------------------------------------------
 
     @Test
@@ -314,13 +314,13 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         Movie m2 = movieRepository.saveAndFlush(new Movie("Film B", Genre.DRAMA, new BigDecimal("6.5")));
         Movie m3 = movieRepository.saveAndFlush(new Movie("Film C", Genre.THRILLER, new BigDecimal("8.0")));
 
-        // Act — soft-delete all three
+        // Act: soft-delete all three
         movieRepository.deleteById(m1.getId());
         movieRepository.deleteById(m2.getId());
         movieRepository.deleteById(m3.getId());
         movieRepository.flush();
 
-        // Assert via JdbcTemplate — each row must have a non-null deleted_at
+        // Assert via JdbcTemplate: each row must have a non-null deleted_at
         for (Long id : java.util.List.of(m1.getId(), m2.getId(), m3.getId())) {
             java.time.Instant ts = jdbcTemplate.queryForObject(
                     "SELECT deleted_at FROM movies WHERE id = ?",
@@ -330,7 +330,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Soft Delete — findAll still includes soft-deleted rows (no @Where on entity)
+    // Soft Delete: findAll still includes soft-deleted rows (no @Where on entity)
     // -------------------------------------------------------------------------
 
     @Test
@@ -345,7 +345,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         movieRepository.deleteById(id);
         movieRepository.flush();
 
-        // Assert — Movie entity has no @Where(clause="deleted_at IS NULL"),
+        // Assert: Movie entity has no @Where(clause="deleted_at IS NULL"),
         // so findAll returns the soft-deleted row (deletedAt is non-null but row still present)
         java.util.List<Movie> all = movieRepository.findAll();
         assertThat(all).extracting(Movie::getId).contains(id);
@@ -355,7 +355,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
-    // Custom fragment — exact boundary is included
+    // Custom fragment: exact boundary is included
     // -------------------------------------------------------------------------
 
     @Test
@@ -378,7 +378,7 @@ class MovieRepositoryTest extends AbstractIntegrationTest {
         // Act
         List<Movie> result = movieRepository.findMoviesWithMinReviews(minReviews);
 
-        // Assert — the movie with exactly minReviews reviews must appear
+        // Assert: the movie with exactly minReviews reviews must appear
         assertThat(result).extracting(Movie::getId).contains(movie.getId());
     }
 }

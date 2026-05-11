@@ -14,13 +14,13 @@ import java.util.Map;
  * Subscription entity demonstrating two custom type strategies side-by-side:
  *
  * <ol>
- *   <li><strong>{@link Money} via {@code UserType}</strong> — the {@code price}
+ *   <li><strong>{@link Money} via {@code UserType}</strong>: the {@code price}
  *       field uses {@link com.cinetrack.types.MoneyType}, registered globally by
  *       {@link com.cinetrack.types.CineTrackTypeContributor}.  Hibernate maps the
  *       field to a single JSONB column ({@code price}) without any annotation on
  *       the field itself.</li>
  *   <li><strong>{@code Map<String,Object>} via {@code @JdbcTypeCode(SqlTypes.JSON)}</strong>
- *       — the {@code metadata} field uses Hibernate's built-in JSON support backed
+ *      : the {@code metadata} field uses Hibernate's built-in JSON support backed
  *       by Jackson.  The annotation tells Hibernate's type resolution to use the
  *       JSON JDBC type descriptor, which serialises/deserialises the map
  *       transparently.</li>
@@ -51,7 +51,7 @@ public class Subscription {
      * Monetary price of this subscription.
      *
      * <p>Resolved to {@link com.cinetrack.types.MoneyType} by the global
-     * {@link com.cinetrack.types.CineTrackTypeContributor} — no {@code @Type}
+     * {@link com.cinetrack.types.CineTrackTypeContributor}: no {@code @Type}
      * annotation needed on this field.</p>
      *
      * <p>Column DDL: {@code price JSONB NOT NULL}</p>

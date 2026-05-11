@@ -16,7 +16,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
  * The {@code @Version} field on this entity is the primary demonstration
  * vehicle for Chapter 13.  When two transactions read the same Review row
  * and both try to flush a change, the second flush will detect a stale
- * version and throw {@code OptimisticLockException} — which Spring Data
+ * version and throw {@code OptimisticLockException}: which Spring Data
  * wraps as {@code ObjectOptimisticLockingFailureException}.
  */
 @Entity

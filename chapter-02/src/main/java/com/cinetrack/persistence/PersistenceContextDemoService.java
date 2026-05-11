@@ -16,8 +16,8 @@ import java.util.UUID;
  * <p>The {@link EntityManager} is injected via {@code @PersistenceContext}, which
  * gives a thread-safe, transaction-scoped proxy. Each public method is annotated
  * with {@code @Transactional} so that Spring opens a Hibernate Session (i.e., a
- * persistence context) at the start of the call and closes it — flushing any
- * pending changes — at the end.
+ * persistence context) at the start of the call and closes it: flushing any
+ * pending changes: at the end.
  */
 @Slf4j
 @Service
@@ -39,7 +39,7 @@ public class PersistenceContextDemoService {
     /**
      * Demonstrates that within a single persistence context (transaction),
      * {@code em.find()} always returns the <em>same Java object</em> for the
-     * same primary key — the identity map guarantee.
+     * same primary key: the identity map guarantee.
      *
      * <p>The first call issues a SELECT. The second call is served from the
      * first-level cache (identity map) with zero SQL. Because the cache returns
@@ -56,7 +56,7 @@ public class PersistenceContextDemoService {
         Movie first = em.find(Movie.class, id);
         log.info("First  find() → object@{}", Integer.toHexString(System.identityHashCode(first)));
 
-        // Second find: NO SQL — returned from the identity map
+        // Second find: NO SQL: returned from the identity map
         Movie second = em.find(Movie.class, id);
         log.info("Second find() → object@{}", Integer.toHexString(System.identityHashCode(second)));
 
@@ -75,7 +75,7 @@ public class PersistenceContextDemoService {
      * <p>After {@code em.find()}, the entity is <em>managed</em>. Hibernate
      * takes a snapshot of its state at load time. When the transaction commits,
      * Hibernate compares the current state against the snapshot and issues an
-     * UPDATE for every field that changed — without any explicit {@code save()}
+     * UPDATE for every field that changed: without any explicit {@code save()}
      * or {@code merge()} call.
      *
      * <p>This is the "Unit of Work" pattern: you work with plain Java objects,
@@ -91,7 +91,7 @@ public class PersistenceContextDemoService {
         Movie movie = em.find(Movie.class, id);
         log.info("Loaded: '{}' (managed = {})", movie.getTitle(), em.contains(movie));
 
-        // No repository.save(), no em.merge() — just a plain setter.
+        // No repository.save(), no em.merge(): just a plain setter.
         movie.setTitle(newTitle);
         log.info("Title changed to '{}' in memory. No explicit save called.", newTitle);
 
@@ -131,7 +131,7 @@ public class PersistenceContextDemoService {
 
         // Mutations on a detached entity are not tracked.
         movie.setTitle("[DETACHED] " + movie.getTitle());
-        log.info("Title mutated while detached — Hibernate is unaware.");
+        log.info("Title mutated while detached: Hibernate is unaware.");
 
         // merge() copies the detached state into a new managed instance.
         // The returned reference is the managed copy; the passed-in object
@@ -152,7 +152,7 @@ public class PersistenceContextDemoService {
      * {@link FlushModeType#COMMIT}.
      *
      * <p>With {@code AUTO} (the default), Hibernate flushes before executing a
-     * JPQL/criteria query that might be affected by pending changes — so that
+     * JPQL/criteria query that might be affected by pending changes: so that
      * the query sees up-to-date data. With {@code COMMIT}, flushing is deferred
      * entirely until commit time, meaning in-flight queries may read stale data
      * from the session but you avoid the extra flush overhead in read-heavy
@@ -176,11 +176,11 @@ public class PersistenceContextDemoService {
         log.info("Query result under AUTO (flush happened before query): count={}", countAuto);
 
         // Reset the title so the COMMIT demo starts clean.
-        movie.setTitle("Flush Mode Test Title — COMMIT");
+        movie.setTitle("Flush Mode Test Title: COMMIT");
 
         // COMMIT: Hibernate defers all flushes until commit. The query below
         // runs against the database without flushing pending changes first.
-        // Use with care — the query may return stale results.
+        // Use with care: the query may return stale results.
         em.setFlushMode(FlushModeType.COMMIT);
         log.info("FlushMode set to COMMIT");
         long countCommit = em.createQuery("SELECT COUNT(m) FROM Movie m", Long.class)

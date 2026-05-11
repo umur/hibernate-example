@@ -11,7 +11,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     /**
      * Bulk UPDATE that bypasses Hibernate's dirty-checking and the @Version
-     * mechanism entirely — {@code view_count} is also annotated with
+     * mechanism entirely: {@code view_count} is also annotated with
      * {@code @OptimisticLock(excluded = true)} on the entity, so even when
      * Hibernate does process the entity, this field never triggers a version
      * bump.  This query is the fast path for high-frequency increments.

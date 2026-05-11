@@ -14,11 +14,11 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 /**
  * Demonstrates two key optimistic locking patterns:
  *
- * 1. {@code @Version} — Hibernate increments this column on every UPDATE and
+ * 1. {@code @Version}: Hibernate increments this column on every UPDATE and
  *    checks it before flushing, throwing {@code OptimisticLockException} when
  *    a stale value is detected.
  *
- * 2. {@code @OptimisticLock(excluded = true)} on {@code viewCount} — tells
+ * 2. {@code @OptimisticLock(excluded = true)} on {@code viewCount}: tells
  *    Hibernate NOT to bump the version when only this field changes.  High-
  *    frequency view increments can therefore be applied with a plain
  *    {@code UPDATE ... SET view_count = view_count + 1} without causing spurious

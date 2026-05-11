@@ -81,7 +81,7 @@ class MovieSearchIT extends AbstractIntegrationTest {
 
     @Test
     void search_afterUpdate_returnsNewTitle() {
-        // "Inception" is already saved in setUp — update its title
+        // "Inception" is already saved in setUp: update its title
         Movie inception = movieSearchService.searchByKeyword("dream technology").stream()
                 .filter(m -> m.getTitle().equals("Inception"))
                 .findFirst()
@@ -138,7 +138,7 @@ class MovieSearchIT extends AbstractIntegrationTest {
         // Clear all movies so the index is built over an empty table
         movieRepository.deleteAll();
 
-        // Replicate MassIndexerConfig.buildIndex() directly — creates its own
+        // Replicate MassIndexerConfig.buildIndex() directly: creates its own
         // EntityManager so it does not interfere with the test's persistence context.
         jakarta.persistence.EntityManager em = entityManagerFactory.createEntityManager();
         try {

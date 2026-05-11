@@ -18,9 +18,9 @@ import org.hibernate.envers.RevisionMapping;
  * annotating with {@link RevisionEntity}, we add two extra fields:
  *
  * <ul>
- *   <li>{@code username} — the Spring Security principal name at commit time,
+ *   <li>{@code username}: the Spring Security principal name at commit time,
  *       populated by {@link CineTrackRevisionListener}.</li>
- *   <li>{@code ipAddress} — the remote IP of the HTTP request (optional;
+ *   <li>{@code ipAddress}: the remote IP of the HTTP request (optional;
  *       empty in non-web contexts such as batch jobs).</li>
  * </ul>
  *

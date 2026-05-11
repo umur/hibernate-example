@@ -18,9 +18,9 @@ import java.util.Map;
  *
  * <ul>
  *   <li>{@link org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider}
- *       — supplies tenant-scoped JDBC connections.</li>
+ *      : supplies tenant-scoped JDBC connections.</li>
  *   <li>{@link org.hibernate.context.spi.CurrentTenantIdentifierResolver}
- *       — resolves the tenant for the current thread.</li>
+ *      : resolves the tenant for the current thread.</li>
  * </ul>
  *
  * <p>The {@code hibernate.multiTenancy=SCHEMA} property is set in

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * <p>The active tenant is resolved transparently from the {@code X-Tenant-ID}
  * header by {@link com.cinetrack.multitenancy.TenantFilter}. No tenant-aware
- * code is needed here — Hibernate routes all repository calls to the correct
+ * code is needed here: Hibernate routes all repository calls to the correct
  * schema automatically.
  *
  * <pre>

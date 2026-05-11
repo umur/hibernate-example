@@ -9,7 +9,7 @@ import java.util.List;
  * Concrete implementation of the MovieRepositoryCustom fragment.
  *
  * Using EntityManager directly gives full control over the JPQL or Criteria
- * query — useful for complex aggregations that derived queries cannot express.
+ * query: useful for complex aggregations that derived queries cannot express.
  */
 @RequiredArgsConstructor
 public class MovieRepositoryCustomImpl implements MovieRepositoryCustom {

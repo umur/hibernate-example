@@ -19,7 +19,7 @@ import java.util.List;
  * When one item is invalid, the whole batch rolls back and you lose everything.
  *
  * <p>{@link TransactionTemplate} lets you commit each item individually, so
- * a bad row only loses that row. This is the "per-item commit" pattern — a
+ * a bad row only loses that row. This is the "per-item commit" pattern: a
  * pragmatic alternative to full chunk-based frameworks like Spring Batch when
  * the import is simple enough.
  *
@@ -44,7 +44,7 @@ public class MovieImportService {
      * <ul>
      *   <li>A new transaction is opened via {@link TransactionTemplate#execute}.</li>
      *   <li>Basic validation runs. If invalid, {@code status.setRollbackOnly()}
-     *       is called and the item is skipped — no INSERT reaches the database.</li>
+     *       is called and the item is skipped: no INSERT reaches the database.</li>
      *   <li>If valid, the movie is saved and the transaction commits when the
      *       lambda returns.</li>
      * </ul>
@@ -76,7 +76,7 @@ public class MovieImportService {
             });
         }
 
-        log.info("Import complete — {} imported, {} skipped", imported.size(), skipped.size());
+        log.info("Import complete: {} imported, {} skipped", imported.size(), skipped.size());
         return new ImportResult(imported, skipped);
     }
 

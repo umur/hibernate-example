@@ -42,7 +42,7 @@ public class AuditService {
      *
      * <p>This method is deliberately annotated with {@code REQUIRES_NEW} rather
      * than {@code REQUIRED}. If it used {@code REQUIRED}, a rollback in the
-     * outer transaction would also roll back the audit entry — defeating the
+     * outer transaction would also roll back the audit entry: defeating the
      * entire purpose.
      *
      * @param entityType the JPA entity class simple name (e.g., "Review")
@@ -53,7 +53,7 @@ public class AuditService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public AuditLog recordEvent(String entityType, Long entityId,
                                 String action, String performedBy) {
-        log.info("AuditService.recordEvent() — running in its own REQUIRES_NEW transaction");
+        log.info("AuditService.recordEvent(): running in its own REQUIRES_NEW transaction");
 
         AuditLog entry = AuditLog.builder()
                 .entityType(entityType)

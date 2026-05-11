@@ -12,15 +12,15 @@ import java.util.List;
  * Demonstrates Hibernate 7's extended HQL dialect:
  *
  * <ul>
- *   <li><strong>Window functions</strong> — {@code RANK() OVER (PARTITION BY … ORDER BY …)}
+ *   <li><strong>Window functions</strong>: {@code RANK() OVER (PARTITION BY … ORDER BY …)}
  *       computed inside HQL without dropping to native SQL.</li>
- *   <li><strong>CTEs</strong> — {@code WITH topMovies AS (…)} allows named
+ *   <li><strong>CTEs</strong>: {@code WITH topMovies AS (…)} allows named
  *       sub-queries that the main query can reference, keeping complex logic
  *       readable and database-portable.</li>
- *   <li><strong>FILTER on aggregates</strong> — {@code COUNT(r) FILTER (WHERE …)}
+ *   <li><strong>FILTER on aggregates</strong>: {@code COUNT(r) FILTER (WHERE …)}
  *       is the SQL:2003 standard for conditional counting; Hibernate 7 renders
  *       it natively on PostgreSQL instead of falling back to CASE expressions.</li>
- *   <li><strong>Custom functions</strong> — {@code similarity()} from pg_trgm
+ *   <li><strong>Custom functions</strong>: {@code similarity()} from pg_trgm
  *       is registered via {@link SimilarityFunctionContributor} and callable
  *       from HQL like any built-in function.</li>
  * </ul>
@@ -37,7 +37,7 @@ public class MovieQueryService {
      * SQL {@code RANK()} window function.
      *
      * <p>The query selects scalar columns rather than a managed entity so that
-     * Hibernate does not attempt to load associations — the result set is
+     * Hibernate does not attempt to load associations: the result set is
      * intended purely for reporting.</p>
      *
      * @return list of {@link MovieRankDto}, one row per movie
@@ -100,7 +100,7 @@ public class MovieQueryService {
      * <p>Returns movies whose title is trigram-similar to the given query
      * string (similarity score &gt; 0.1). The function is registered in
      * {@link SimilarityFunctionContributor} and resolved by Hibernate's
-     * function registry at parse time — no native query needed.</p>
+     * function registry at parse time: no native query needed.</p>
      *
      * @param titleQuery fuzzy title string to match against
      * @return movies with similarity score above threshold, ordered by score

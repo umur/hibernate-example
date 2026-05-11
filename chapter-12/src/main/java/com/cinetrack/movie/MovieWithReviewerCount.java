@@ -20,12 +20,12 @@ import org.springframework.beans.factory.annotation.Value;
  * <h2>When to prefer closed projections</h2>
  * <p>Use open projections only when the derived value cannot be expressed as a
  * plain JPQL or SQL expression. For simple column aliasing or format conversions,
- * prefer a DTO record with a constructor expression instead — it is explicit,
+ * prefer a DTO record with a constructor expression instead: it is explicit,
  * testable without proxies, and works equally well with native queries.</p>
  */
 public interface MovieWithReviewerCount {
 
-    /** Plain mapping — part of the closed subset. */
+    /** Plain mapping: part of the closed subset. */
     String getTitle();
 
     /**

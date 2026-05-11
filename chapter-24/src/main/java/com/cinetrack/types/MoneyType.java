@@ -20,15 +20,15 @@ import java.util.Objects;
  *
  * <h3>Design decisions</h3>
  * <ul>
- *   <li><strong>Single-column JSONB</strong> — {@code {"cents":1999,"currency":"USD"}}.
+ *   <li><strong>Single-column JSONB</strong>: {@code {"cents":1999,"currency":"USD"}}.
  *       This avoids the two-column complexity of splitting into
  *       {@code amount_cents INT} + {@code currency VARCHAR} while keeping the
  *       value human-readable in the database.</li>
- *   <li><strong>Immutability</strong> — {@code isMutable()} returns {@code false}
+ *   <li><strong>Immutability</strong>: {@code isMutable()} returns {@code false}
  *       and {@code deepCopy()} returns the same instance. Hibernate's dirty-checking
  *       uses {@code equals()} to detect changes; because {@code Money} is a record,
  *       equality is structural and correct without extra ceremony.</li>
- *   <li><strong>Registration</strong> — this class is registered globally by
+ *   <li><strong>Registration</strong>: this class is registered globally by
  *       {@link CineTrackTypeContributor} via the {@code TypeContributor} SPI,
  *       so entity fields of type {@link Money} need no {@code @Type} annotation.</li>
  * </ul>
@@ -104,7 +104,7 @@ public class MoneyType implements UserType<Money> {
     // ------------------------------------------------------------------
 
     /**
-     * Money is an immutable record — return the same instance.
+     * Money is an immutable record: return the same instance.
      * Hibernate will use {@link #equals} for dirty checking.
      */
     @Override

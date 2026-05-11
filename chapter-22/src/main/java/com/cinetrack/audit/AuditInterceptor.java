@@ -15,7 +15,7 @@ import java.util.Arrays;
  * during a session flush.  The interceptor receives both the
  * <em>previous</em> and <em>current</em> state arrays, indexed by
  * {@code propertyNames}, which makes it straightforward to record exactly
- * which fields changed — useful for change-data-capture or coarse audit logs
+ * which fields changed: useful for change-data-capture or coarse audit logs
  * without the overhead of Envers.</p>
  *
  * <p>Returning {@code false} signals that the interceptor did not modify

@@ -32,7 +32,7 @@ import java.util.List;
  *     <th>Works with native SQL</th>
  *   </tr>
  *   <tr>
- *     <td>Interface projection</td><td>Proxy — no</td><td>No</td><td>Limited</td>
+ *     <td>Interface projection</td><td>Proxy: no</td><td>No</td><td>Limited</td>
  *   </tr>
  *   <tr>
  *     <td>Constructor expression</td><td>Yes</td><td>Yes</td><td>Via @SqlResultSetMapping</td>
@@ -68,7 +68,7 @@ public class MovieQueryService {
      * }</pre>
      *
      * <p>Using the Criteria API makes each selection alias explicit and keeps
-     * the query refactor-safe — renaming {@code Review.rating} to
+     * the query refactor-safe: renaming {@code Review.rating} to
      * {@code Review.score} in the entity will cause a compile error here rather
      * than a runtime exception.</p>
      *

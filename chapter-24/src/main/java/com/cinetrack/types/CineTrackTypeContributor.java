@@ -16,7 +16,7 @@ import org.hibernate.service.ServiceRegistry;
  * on the classpath.  Spring Boot's fat-jar build preserves this file.</p>
  *
  * <p>Once registered, Hibernate resolves {@code Money} fields to
- * {@link MoneyType} at bootstrap time — before the first session is opened —
+ * {@link MoneyType} at bootstrap time: before the first session is opened : 
  * so there is zero per-request overhead.</p>
  *
  * <h3>Alternative: {@code @Type} annotation</h3>

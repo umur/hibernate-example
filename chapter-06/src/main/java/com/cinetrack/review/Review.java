@@ -10,19 +10,19 @@ import lombok.Setter;
 import java.time.Instant;
 
 /**
- * Review entity — the owning side of the bidirectional Movie ↔ Review association.
+ * Review entity: the owning side of the bidirectional Movie ↔ Review association.
  *
  * <h2>Owning vs inverse side</h2>
  * In a bidirectional {@code @OneToMany} / {@code @ManyToOne} pair, exactly one
  * side owns the foreign-key column.  The owning side is always the {@code @ManyToOne}
- * side — here, {@code Review.movie} with its {@code @JoinColumn(name="movie_id")}.
+ * side: here, {@code Review.movie} with its {@code @JoinColumn(name="movie_id")}.
  *
  * <p>Hibernate only looks at the owning side when deciding what SQL to emit.
  * If you add a {@code Review} to {@code Movie.reviews} but forget to set
  * {@code review.setMovie(movie)}, no FK will be written to the database.
  * Always use the {@link Movie#addReview} helper which sets both sides.
  *
- * <h2>{@code @Version} — optimistic locking</h2>
+ * <h2>{@code @Version}: optimistic locking</h2>
  * Appends {@code AND version = ?} to every UPDATE and increments the column on
  * success.  Concurrent edits to the same review (e.g. two users updating rating
  * simultaneously) are detected at flush time and raise

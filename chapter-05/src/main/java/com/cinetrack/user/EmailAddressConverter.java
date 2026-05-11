@@ -20,7 +20,7 @@ import jakarta.persistence.Converter;
  *
  * <h2>{@code autoApply = true}</h2>
  * With auto-apply enabled, Hibernate registers this converter globally.  Any
- * entity field of type {@code EmailAddress} — present or future — is converted
+ * entity field of type {@code EmailAddress}: present or future: is converted
  * automatically without needing a per-field {@code @Convert} annotation.
  * Opt out on a specific field with {@code @Convert(disableConversion=true)}.
  */
@@ -28,7 +28,7 @@ import jakarta.persistence.Converter;
 public class EmailAddressConverter implements AttributeConverter<EmailAddress, String> {
 
     /**
-     * Called before INSERT / UPDATE — converts the domain object to a DB value.
+     * Called before INSERT / UPDATE: converts the domain object to a DB value.
      *
      * @return the normalised e-mail string, or {@code null} if {@code attribute} is null
      */
@@ -38,7 +38,7 @@ public class EmailAddressConverter implements AttributeConverter<EmailAddress, S
     }
 
     /**
-     * Called after SELECT — reconstructs the domain object from the stored string.
+     * Called after SELECT: reconstructs the domain object from the stored string.
      * Validation runs inside the {@link EmailAddress} constructor, so a corrupt
      * DB value will throw at load time rather than silently producing garbage.
      *

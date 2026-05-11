@@ -37,7 +37,7 @@ public class HibernateConfig {
     /**
      * Returns the underlying Hibernate {@link SessionFactory}.
      *
-     * <p>You rarely need this in application code — Spring Data JPA and
+     * <p>You rarely need this in application code: Spring Data JPA and
      * {@code @Transactional} handle session lifecycle for you. The unwrap
      * is shown here purely for educational purposes: to illustrate that
      * JPA's EntityManagerFactory and Hibernate's SessionFactory are the

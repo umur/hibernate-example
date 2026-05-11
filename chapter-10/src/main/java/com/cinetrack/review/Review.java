@@ -30,7 +30,7 @@ public class Review {
     @SequenceGenerator(name = "reviews_seq", sequenceName = "reviews_id_seq", allocationSize = 1)
     private Long id;
 
-    /** Optimistic-lock column — Hibernate increments this on every UPDATE. */
+    /** Optimistic-lock column: Hibernate increments this on every UPDATE. */
     @Version
     private long version;
 

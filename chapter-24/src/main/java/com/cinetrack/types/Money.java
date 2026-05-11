@@ -7,7 +7,7 @@ package com.cinetrack.types;
  * errors. {@code Money(1999, "USD")} represents USD 19.99.</p>
  *
  * <p>Being a {@code record}, Money inherits compiler-generated
- * {@code equals}, {@code hashCode}, and {@code toString} — which
+ * {@code equals}, {@code hashCode}, and {@code toString}: which
  * {@link MoneyType} delegates to directly.</p>
  *
  * <p>The JSONB column layout on disk is:
@@ -20,7 +20,7 @@ package com.cinetrack.types;
  */
 public record Money(int amountCents, String currency) {
 
-    /** Convenience factory — {@code Money.of(1999, "USD")}. */
+    /** Convenience factory: {@code Money.of(1999, "USD")}. */
     public static Money of(int amountCents, String currency) {
         return new Money(amountCents, currency);
     }

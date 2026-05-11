@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  * Demonstrates three patterns for high-throughput write and read operations
  * against the {@code watch_logs} table.
  *
- * <h2>Pattern 1 — JPA batch insert ({@link #importBatch})</h2>
+ * <h2>Pattern 1: JPA batch insert ({@link #importBatch})</h2>
  * <p>Uses the standard JPA EntityManager with periodic {@code flush()} +
  * {@code clear()} calls. Hibernate accumulates INSERT statements in a JDBC
  * batch buffer (size = {@code hibernate.jdbc.batch_size}) and sends them to
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  * the first-level cache from growing unbounded and avoids
  * {@code OutOfMemoryError} on large imports.
  *
- * <h2>Pattern 2 — StatelessSession ({@link #importStateless})</h2>
+ * <h2>Pattern 2: StatelessSession ({@link #importStateless})</h2>
  * <p>Bypasses the persistence context entirely: no first-level cache, no dirty
  * checking, no lifecycle callbacks, no lazy loading.  Every {@code insert()}
  * call is translated directly to a JDBC statement (still batched by the
@@ -35,7 +35,7 @@ import java.util.stream.Stream;
  * workloads where you only need to persist data and do not need managed
  * entities afterwards.
  *
- * <h2>Pattern 3 — Server-side streaming ({@link #streamAll})</h2>
+ * <h2>Pattern 3: Server-side streaming ({@link #streamAll})</h2>
  * <p>Uses a Spring Data {@link Stream} with a JDBC fetch size hint so that
  * rows are fetched from the database in chunks rather than all at once.  This
  * keeps heap usage constant regardless of table size, making it safe to
@@ -64,7 +64,7 @@ public class WatchLogBatchService {
      * <ul>
      *   <li>{@code hibernate.jdbc.batch_size} must be > 1 (set to 50 in
      *       {@code application.yml}).</li>
-     *   <li>The entity must NOT use {@code IDENTITY} generation — this
+     *   <li>The entity must NOT use {@code IDENTITY} generation: this
      *       project uses a sequence so Hibernate can assign IDs before the
      *       INSERT, enabling true batching.</li>
      *   <li>{@code hibernate.order_inserts=true} groups INSERTs by entity
@@ -82,7 +82,7 @@ public class WatchLogBatchService {
             if ((i + 1) % BATCH_SIZE == 0) {
                 // Flush queued INSERTs to the database as a JDBC batch
                 entityManager.flush();
-                // Clear the L1 cache to free memory — entities are detached
+                // Clear the L1 cache to free memory: entities are detached
                 entityManager.clear();
                 log.debug("Flushed batch up to record {}", i + 1);
             }
@@ -118,14 +118,14 @@ public class WatchLogBatchService {
         log.info("Starting StatelessSession import of {} records", commands.size());
 
         if (commands.isEmpty()) {
-            log.info("StatelessSession import skipped — empty command list");
+            log.info("StatelessSession import skipped: empty command list");
             return;
         }
 
         // Unwrap the Hibernate SessionFactory from the EntityManagerFactory.
         // We deliberately avoid unwrapping the shared (transactional) EntityManager
         // here because StatelessSession opens its own JDBC connection and runs
-        // outside any Spring-managed transaction — calling unwrap() on the
+        // outside any Spring-managed transaction: calling unwrap() on the
         // shared EM would require an active transaction we are not in.
         SessionFactory sessionFactory =
                 entityManagerFactory.unwrap(SessionFactory.class);
@@ -133,7 +133,7 @@ public class WatchLogBatchService {
         try (StatelessSession session = sessionFactory.openStatelessSession()) {
             session.beginTransaction();
             try {
-                // Resolve the shared AppUser and Movie references once — all
+                // Resolve the shared AppUser and Movie references once: all
                 // commands in this batch share the same userId/movieId so we
                 // avoid repeating the same SELECT on every iteration.
                 // For workloads with many distinct user/movie combinations,

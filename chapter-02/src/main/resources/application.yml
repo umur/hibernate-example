@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/cinetrack_ch02}
+    username: ${DB_USER:cinetrack}
+    password: ${DB_PASS:cinetrack}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        generate_statistics: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration

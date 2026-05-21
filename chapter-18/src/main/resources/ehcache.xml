@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns='http://www.ehcache.org/v3'>
+
+    <!--
+        Movie entity cache: READ_WRITE strategy.
+        Entries expire 30 minutes after creation.  Heap limit of 1 000 entries
+        keeps memory usage bounded.
+    -->
+    <cache alias="com.cinetrack.movie.Movie">
+        <expiry>
+            <ttl unit="minutes">30</ttl>
+        </expiry>
+        <heap>1000</heap>
+    </cache>
+
+    <!--
+        Genre reference-data cache: READ_ONLY strategy.
+        Genre codes never change at runtime so a 24-hour TTL is safe.
+    -->
+    <cache alias="com.cinetrack.genre.GenreEntity">
+        <expiry>
+            <ttl unit="hours">24</ttl>
+        </expiry>
+        <heap>100</heap>
+    </cache>
+
+    <!--
+        Required internal Hibernate regions when query caching is enabled.
+        The update-timestamps region records when a table was last modified so
+        that cached query results can be invalidated on writes.
+    -->
+    <cache alias="default-update-timestamps-region">
+        <expiry>
+            <none/>
+        </expiry>
+        <heap>1000</heap>
+    </cache>
+
+    <cache alias="default-query-results-region">
+        <expiry>
+            <ttl unit="minutes">10</ttl>
+        </expiry>
+        <heap>500</heap>
+    </cache>
+
+</config>

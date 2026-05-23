@@ -26,8 +26,8 @@ The persistence layer is where most Spring Boot applications quietly fail in pro
 ## Quick start
 
 ```bash
-git clone https://github.com/umur/hibernate-spring-data-example
-cd hibernate-spring-data-example/chapter-01
+git clone https://github.com/umur/hibernate-example
+cd hibernate-example/chapter-01
 docker compose up -d
 mvn spring-boot:run
 ```
